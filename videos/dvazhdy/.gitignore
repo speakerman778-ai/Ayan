@@ -1,0 +1,14 @@
+node_modules/
+out/s*/
+out/check/
+out/*.log
+out/frames.txt
+out/sheet*.jpg
+tts/raw_*.wav
+tts/v_*.wav
+out/c*/
+out/fr2.txt
+out/sheet-*.png
+out/sheet-*.jpg
+out/
+tts_pavel/*.mp3

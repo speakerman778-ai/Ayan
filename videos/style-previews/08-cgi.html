@@ -1,0 +1,37 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;background:#000;overflow:hidden}canvas{width:1080px;height:1920px;display:block}
+#v{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%,transparent 45%,rgba(0,0,0,.85) 100%)}
+#cap{position:absolute;left:0;right:0;top:1380px;text-align:center;font:900 54px Inter,sans-serif;color:#fff;letter-spacing:3px;text-shadow:0 4px 18px rgba(0,0,0,.8)}
+#cap b{display:inline-block;background:#ffd23a;color:#111;padding:6px 26px;margin-top:14px;font-size:84px}
+</style></head><body><div id="v"></div><div id="cap">ОН ВЫЖИЛ<br><b>ДВАЖДЫ</b></div><script src="lib/three.min.js"></script><script>
+const W=1080,H=1920;const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setSize(W,H,false);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=0.85;r.outputEncoding=THREE.sRGBEncoding;document.body.prepend(r.domElement);
+const s=new THREE.Scene();s.background=new THREE.Color(0x05070d);s.fog=new THREE.FogExp2(0x0a0e18,0.035);
+const cam=new THREE.PerspectiveCamera(38,W/H,0.1,300);cam.position.set(-1.2,1.3,13);cam.lookAt(0.8,5.5,-10);
+s.add(new THREE.AmbientLight(0x223355,0.5));
+const rim=new THREE.DirectionalLight(0x88aaff,2.2);rim.position.set(4,6,-8);s.add(rim);
+const warm=new THREE.PointLight(0xff9a40,3,14);warm.position.set(0,0.6,3);s.add(warm);
+const flash=new THREE.PointLight(0xffc070,25,90,1.5);flash.position.set(2,9,-28);s.add(flash);
+const std=(c,m=0.6,ro=0.35)=>new THREE.MeshStandardMaterial({color:c,metalness:m,roughness:ro});
+// wet ground
+const g=new THREE.Mesh(new THREE.PlaneGeometry(300,300),std(0x0b0d12,0.85,0.18));g.rotation.x=-Math.PI/2;s.add(g);
+// city
+for(let i=0;i<60;i++){const w=1.5+Math.random()*3,h=3+Math.random()*16;const b=new THREE.Mesh(new THREE.BoxGeometry(w,h,w),std(0x12151d,0.7,0.5));const x=(Math.random()-.5)*70,z=-14-Math.random()*40;if(Math.abs(x-1.5)<9)continue;b.position.set(x,h/2,z);s.add(b);
+ for(let k=0;k<6;k++){const l=new THREE.Mesh(new THREE.PlaneGeometry(0.18,0.25),new THREE.MeshBasicMaterial({color:Math.random()<.7?0xffc070:0x9fc8ff}));l.position.set(x+(Math.random()-.5)*w*0.8,Math.random()*h,z+w/2+0.01);s.add(l)}}
+// glow sprites
+const spr=(c,size,x,y,z,o=1)=>{const cv=document.createElement('canvas');cv.width=cv.height=128;const q=cv.getContext('2d');const gr=q.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,c);gr.addColorStop(1,'rgba(0,0,0,0)');q.fillStyle=gr;q.fillRect(0,0,128,128);
+ const m=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(cv),blending:THREE.AdditiveBlending,transparent:true,opacity:o,depthWrite:false,fog:false}));m.position.set(x,y,z);m.scale.set(size,size,1);s.add(m)};
+spr('rgba(255,190,120,1)',22,2,10,-30,0.8);spr('rgba(255,120,50,0.6)',50,2,9,-32,0.55);spr('rgba(255,255,230,1)',5,2,10,-29);
+// fog sprites
+for(let i=0;i<30;i++)spr('rgba(120,140,180,0.06)',14+Math.random()*10,(Math.random()-.5)*30,1+Math.random()*3,-2-Math.random()*25,0.6);
+// figure: long coat silhouette, back-lit
+const fig=new THREE.Group();const coat=std(0x1a1d24,0.3,0.6);
+const body=new THREE.Mesh(new THREE.CylinderGeometry(0.32,0.5,1.7,24),coat);body.position.y=1.35;fig.add(body);
+const head=new THREE.Mesh(new THREE.SphereGeometry(0.22,32,32),std(0x8a6a5a,0.1,0.6));head.position.y=2.42;fig.add(head);
+const hat=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.24,0.18,24),coat);hat.position.y=2.6;fig.add(hat);const brim=new THREE.Mesh(new THREE.CylinderGeometry(0.38,0.38,0.03,32),coat);brim.position.y=2.52;fig.add(brim);
+[-1,1].forEach(k=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.08,0.9,12),coat);l.position.set(k*0.16,0.45,0);fig.add(l)});
+const case_=new THREE.Mesh(new THREE.BoxGeometry(0.55,0.4,0.16),std(0x5a3a22,0.4,0.4));case_.position.set(0.55,0.75,0);fig.add(case_);
+fig.position.set(-0.3,0,2.4);fig.rotation.y=Math.PI*0.92;s.add(fig);
+// light beam
+const beam=new THREE.Mesh(new THREE.ConeGeometry(6,40,32,1,true),new THREE.MeshBasicMaterial({color:0xffaa60,transparent:true,opacity:0.05,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,depthWrite:false}));beam.position.set(2,-6,-20);beam.rotation.x=-1.25;s.add(beam);
+r.render(s,cam);window.READY=1;
+</script></body></html>

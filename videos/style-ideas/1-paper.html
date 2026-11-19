@@ -1,0 +1,69 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}</style></head><body>
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" font-family="Inter,sans-serif">
+<defs>
+<filter id="paper" x="-5%" y="-5%" width="110%" height="110%">
+ <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2" result="n"/>
+ <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.9 0.55" result="grain"/>
+ <feComposite in="grain" in2="SourceGraphic" operator="in" result="g2"/>
+ <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="g2"/></feMerge>
+</filter>
+<filter id="sh" x="-20%" y="-20%" width="140%" height="140%">
+ <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#2a1a10" flood-opacity="0.45"/>
+</filter>
+<filter id="torn"><feTurbulence baseFrequency="0.06" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="14"/></filter>
+</defs>
+<g filter="url(#paper)">
+<rect width="1080" height="1920" fill="#f3c98f"/>
+<!-- sun / flash layers -->
+<g filter="url(#sh)"><circle cx="560" cy="700" r="420" fill="#f7dfae"/></g>
+<g filter="url(#sh)"><circle cx="560" cy="700" r="300" fill="#fbecc9"/></g>
+<g filter="url(#sh)"><circle cx="560" cy="700" r="180" fill="#fff8e8"/></g>
+<!-- mushroom cloud cut-out -->
+<g filter="url(#sh)">
+ <path d="M 500 1100 C 520 980 490 900 505 800 L 615 800 C 630 900 600 980 620 1100 Z" fill="#e9b47a"/>
+ <ellipse cx="560" cy="930" rx="120" ry="28" fill="#d9925a"/>
+</g>
+<g filter="url(#sh)">
+ <circle cx="430" cy="740" r="110" fill="#d9925a"/><circle cx="690" cy="740" r="110" fill="#d9925a"/>
+ <circle cx="500" cy="660" r="130" fill="#e9b47a"/><circle cx="630" cy="650" r="135" fill="#e9b47a"/>
+ <circle cx="565" cy="590" r="125" fill="#f3cf9c"/>
+</g>
+<!-- hills layers -->
+<g filter="url(#sh)"><path d="M 0 1040 Q 200 900 420 1010 Q 640 880 860 1000 Q 980 950 1080 990 L 1080 1920 L 0 1920 Z" fill="#9c7a5a"/></g>
+<!-- houses -->
+<g filter="url(#sh)">
+ <g transform="translate(110 1130)"><rect x="-90" y="-110" width="180" height="110" fill="#efe2c8"/><path d="M -125 -100 L -70 -170 L 70 -170 L 125 -100 Z" fill="#5a4a6a"/><rect x="-30" y="-70" width="40" height="70" fill="#7a5238"/></g>
+ <g transform="translate(940 1140)"><rect x="-90" y="-120" width="180" height="120" fill="#efe2c8"/><path d="M -125 -110 L -70 -180 L 70 -180 L 125 -110 Z" fill="#7a4a3a"/><rect x="20" y="-80" width="40" height="40" fill="#9fc6d8"/></g>
+</g>
+<g filter="url(#sh)"><path d="M 0 1140 Q 300 1080 540 1130 Q 800 1180 1080 1110 L 1080 1920 L 0 1920 Z" fill="#c9a77c"/></g>
+<g filter="url(#sh)"><path d="M 0 1330 Q 400 1280 1080 1340 L 1080 1920 L 0 1920 Z" fill="#b48a5e"/></g>
+<!-- paper doll character -->
+<g transform="translate(540 1320)">
+ <g filter="url(#sh)">
+  <rect x="-62" y="-260" width="44" height="250" rx="22" fill="#3c4a66"/>
+  <rect x="18" y="-260" width="44" height="250" rx="22" fill="#3c4a66"/>
+  <ellipse cx="-44" cy="-6" rx="46" ry="20" fill="#3a2a22"/><ellipse cx="44" cy="-6" rx="46" ry="20" fill="#3a2a22"/>
+ </g>
+ <g filter="url(#sh)"><path d="M -100 -500 L 100 -500 L 80 -230 L -80 -230 Z" fill="#4d6a8f"/><path d="M -30 -500 L 0 -440 L 30 -500 Z" fill="#f5efe2"/></g>
+ <g filter="url(#sh)">
+  <rect x="-140" y="-490" width="46" height="230" rx="23" fill="#4d6a8f" transform="rotate(12 -117 -480)"/>
+  <rect x="94" y="-490" width="46" height="230" rx="23" fill="#4d6a8f" transform="rotate(-6 117 -480)"/>
+  <circle cx="-150" cy="-260" r="30" fill="#f2c39a"/><circle cx="135" cy="-256" r="30" fill="#f2c39a"/>
+ </g>
+ <!-- suitcase -->
+ <g filter="url(#sh)"><rect x="110" y="-240" width="170" height="125" rx="12" fill="#a0522d"/><rect x="160" y="-262" width="70" height="26" rx="10" fill="none" stroke="#5a2e18" stroke-width="12"/><rect x="110" y="-190" width="170" height="14" fill="#7a3c1e"/></g>
+ <g filter="url(#sh)"><circle cx="0" cy="-620" r="120" fill="#f2c39a"/></g>
+ <path d="M -122 -640 C -120 -760 120 -770 122 -640 C 90 -690 40 -700 0 -680 C -40 -700 -90 -690 -122 -640 Z" fill="#2a211d" filter="url(#sh)"/>
+ <circle cx="-42" cy="-615" r="13" fill="#2a211d"/><circle cx="42" cy="-615" r="13" fill="#2a211d"/>
+ <path d="M -28 -560 Q 0 -545 28 -560" stroke="#2a211d" stroke-width="8" fill="none" stroke-linecap="round"/>
+ <ellipse cx="-72" cy="-580" rx="20" ry="12" fill="#e98f7a" opacity=".7"/><ellipse cx="72" cy="-580" rx="20" ry="12" fill="#e98f7a" opacity=".7"/>
+ <!-- brads -->
+ <g fill="#d4a63a" stroke="#8a6a1a" stroke-width="3"><circle cx="-117" cy="-475" r="9"/><circle cx="117" cy="-475" r="9"/><circle cx="-40" cy="-250" r="9"/><circle cx="40" cy="-250" r="9"/><circle cx="0" cy="-505" r="9"/></g>
+</g>
+<!-- torn paper caption -->
+<g transform="translate(540 1440) rotate(-2)">
+ <g filter="url(#sh)"><rect x="-290" y="-70" width="580" height="140" fill="#fbf6ea" filter="url(#torn)"/></g>
+ <text y="28" text-anchor="middle" font-size="84" font-weight="900" fill="#c0392b" letter-spacing="6">ДВАЖДЫ</text>
+</g>
+</g>
+</svg><script>window.READY=1</script></body></html>

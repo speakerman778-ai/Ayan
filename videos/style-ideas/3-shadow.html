@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}</style></head><body>
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" font-family="'DejaVu Serif',serif">
+<defs>
+<radialGradient id="fire" cx="55%" cy="36%" r="70%"><stop offset="0" stop-color="#fff2c8"/><stop offset=".18" stop-color="#ffc061"/><stop offset=".45" stop-color="#e3592c"/><stop offset=".8" stop-color="#7a1414"/><stop offset="1" stop-color="#2a0606"/></radialGradient>
+<filter id="soft"><feGaussianBlur stdDeviation="2"/></filter>
+<filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="4"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.18 0"/></filter>
+<linearGradient id="screen" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset=".2" stop-color="#000" stop-opacity="0"/><stop offset=".8" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></linearGradient>
+</defs>
+<rect width="1080" height="1920" fill="url(#fire)"/>
+<g fill="#0b0605" filter="url(#soft)">
+ <!-- mushroom silhouette -->
+ <path d="M 560 1080 C 540 940 575 880 555 800 C 470 810 380 790 360 730 C 330 700 360 640 410 640 C 400 580 470 540 520 560 C 550 500 640 500 670 550 C 730 530 790 580 770 640 C 820 650 840 710 800 740 C 770 790 690 805 625 800 C 605 880 640 940 620 1080 Z" opacity=".92"/>
+ <!-- ground + houses -->
+ <path d="M 0 1180 L 60 1180 L 60 1100 L 30 1100 L 100 1040 L 180 1100 L 150 1100 L 150 1180 L 300 1180 L 300 1130 L 270 1130 L 330 1080 L 390 1130 L 360 1130 L 360 1180 L 760 1180 L 760 1110 L 730 1110 L 800 1050 L 870 1110 L 840 1110 L 840 1180 L 1080 1180 L 1080 1920 L 0 1920 Z"/>
+ <!-- puppet man with hat + suitcase -->
+ <g transform="translate(470 1180)">
+  <ellipse cx="0" cy="-470" rx="70" ry="78"/>
+  <path d="M -95 -520 L 95 -520 L 75 -500 L -75 -500 Z"/><path d="M -55 -600 L 55 -600 L 60 -520 L -60 -520 Z"/>
+  <path d="M -95 -390 Q 0 -420 95 -390 L 120 -150 L -120 -150 Z"/>
+  <path d="M -70 -150 L -60 0 L -25 0 L 0 -140 L 25 0 L 60 0 L 70 -150 Z"/>
+  <path d="M -95 -385 L -140 -170 L -112 -165 L -78 -330 Z"/>
+  <path d="M 95 -385 L 150 -220 L 125 -205 L 82 -330 Z"/>
+  <rect x="120" y="-210" width="140" height="100" rx="8"/><path d="M 160 -210 v -24 h 60 v 24 h -12 v -12 h -36 v 12 z"/>
+ </g>
+</g>
+<!-- puppet rods -->
+<g stroke="#0b0605" stroke-width="6" opacity=".9"><line x1="610" y1="990" x2="700" y2="1920"/><line x1="350" y1="1020" x2="300" y2="1920"/></g>
+<rect width="1080" height="1920" fill="url(#screen)"/>
+<rect width="1080" height="1920" filter="url(#grain)"/>
+<!-- caption -->
+<g transform="translate(540 1440)">
+ <line x1="-260" y1="-70" x2="260" y2="-70" stroke="#e8c48a" stroke-width="2"/>
+ <text y="26" text-anchor="middle" font-size="88" fill="#f3dcb0" letter-spacing="22">ДВАЖДЫ</text>
+ <line x1="-260" y1="62" x2="260" y2="62" stroke="#e8c48a" stroke-width="2"/>
+</g>
+</svg><script>window.READY=1</script></body></html>

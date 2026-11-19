@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;background:#000;overflow:hidden}canvas{width:1080px;height:1920px;display:block}
+#cap{position:absolute;left:50%;top:1440px;transform:translate(-50%,-50%) rotate(-2deg);font:900 62px Inter,sans-serif;color:#2a3a5a;background:#fff6e8;padding:16px 44px;border-radius:24px;box-shadow:0 8px 0 #e0c8a8,0 16px 30px rgba(0,0,0,.25);letter-spacing:4px}
+</style></head><body><div id="cap">СМОТРИТЕЛЬ</div><script src="../style-previews/lib/three.min.js"></script><script>
+const W=1080,H=1920;const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setSize(W,H,false);r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;r.outputEncoding=THREE.sRGBEncoding;document.body.prepend(r.domElement);
+const s=new THREE.Scene();s.background=new THREE.Color(0xf4d9b8);
+const a=W/H,v=13;const cam=new THREE.OrthographicCamera(-v*a,v*a,v,-v,0.1,200);cam.position.set(30,26,30);cam.lookAt(0,4.5,0);
+s.add(new THREE.HemisphereLight(0xffffff,0xd8b890,0.55));const sun=new THREE.DirectionalLight(0xfff0d8,0.9);sun.position.set(-10,30,18);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-20,right:20,top:20,bottom:-20});s.add(sun);
+const P=c=>new THREE.MeshStandardMaterial({color:c,roughness:0.55,metalness:0});
+const add=(g,c,x,y,z,ry=0)=>{const m=new THREE.Mesh(g,P(c));m.position.set(x,y,z);m.rotation.y=ry;m.castShadow=m.receiveShadow=true;s.add(m);return m};
+// diorama base (cut-away block)
+add(new THREE.BoxGeometry(16,1.2,16),0x6a4a3a,0,-0.6,0);
+const water=new THREE.Mesh(new THREE.BoxGeometry(16,1.4,16),new THREE.MeshStandardMaterial({color:0x4aa0d8,roughness:0.15,transparent:true,opacity:0.85}));water.position.set(0,0.7,0);water.receiveShadow=true;s.add(water);
+// island
+add(new THREE.CylinderGeometry(5,6,3,7),0x8a7a6a,-2,1.5,-2,0.3);add(new THREE.CylinderGeometry(5.05,5.05,0.4,7),0x7ab86a,-2,3.2,-2,0.3);
+add(new THREE.CylinderGeometry(2.5,3,1.6,6),0x8a7a6a,4,0.9,3);add(new THREE.CylinderGeometry(1.2,1.4,1.2,6),0x9a8a7a,-5.5,0.8,4.5);
+// lighthouse
+[0xf6f2ea,0xe05a4a,0xf6f2ea,0xe05a4a].forEach((c,i)=>add(new THREE.CylinderGeometry(1.25-i*0.12-0.12,1.25-i*0.12,1.5,24),c,-3,4.15+i*1.5,-3));
+add(new THREE.CylinderGeometry(1.2,1.2,0.25,24),0x34405a,-3,9.5,-3);
+const lamp=new THREE.Mesh(new THREE.CylinderGeometry(0.7,0.7,1,24),new THREE.MeshStandardMaterial({color:0xfff2b0,emissive:0xffd060,emissiveIntensity:0.8}));lamp.position.set(-3,10.1,-3);s.add(lamp);
+add(new THREE.ConeGeometry(1,1,24),0xe05a4a,-3,11.1,-3);
+// little house
+add(new THREE.BoxGeometry(2.2,1.6,1.8),0xfff3dc,0.5,4.2,-3.5);const roof=add(new THREE.ConeGeometry(1.8,1.1,4),0x5a7ab0,0.5,5.55,-3.5,Math.PI/4);
+// keeper (toy figure)
+const k=new THREE.Group();const km=(g,c,x,y,z)=>{const m=new THREE.Mesh(g,P(c));m.position.set(x,y,z);m.castShadow=true;k.add(m);return m};
+km(new THREE.CylinderGeometry(0.45,0.6,1.3,20),0xf2c230,0,0.65,0);km(new THREE.SphereGeometry(0.45,24,24),0xf6c9a0,0,1.65,0);km(new THREE.SphereGeometry(0.32,20,20),0xffffff,0,1.4,0.22);
+km(new THREE.CylinderGeometry(0.62,0.62,0.06,24),0xf2c230,0,2.02,0);km(new THREE.SphereGeometry(0.4,20,12,0,Math.PI*2,0,Math.PI/2),0xf2c230,0,2.02,0);
+const lan=km(new THREE.BoxGeometry(0.3,0.4,0.3),0x34405a,0.65,0.9,0.3);const lg=new THREE.Mesh(new THREE.SphereGeometry(0.13,12,12),new THREE.MeshStandardMaterial({color:0xffe080,emissive:0xffc040,emissiveIntensity:1}));lg.position.set(0.65,0.9,0.46);k.add(lg);
+k.position.set(1.2,3.4,0.5);k.rotation.y=0.8;s.add(k);
+// cat
+const cat=new THREE.Group();const cm=(g,x,y,z)=>{const m=new THREE.Mesh(g,P(0xf08a3a));m.position.set(x,y,z);m.castShadow=true;cat.add(m)};cm(new THREE.SphereGeometry(0.32,16,16),0,0.3,0);cm(new THREE.SphereGeometry(0.22,16,16),0,0.72,0.05);cm(new THREE.ConeGeometry(0.08,0.16,8),-0.1,0.95,0.05);cm(new THREE.ConeGeometry(0.08,0.16,8),0.1,0.95,0.05);
+cat.position.set(2.3,3.4,1.3);s.add(cat);
+// boat
+add(new THREE.BoxGeometry(1.6,0.4,0.7),0xe05a4a,4.5,1.5,-5.5,0.4);add(new THREE.CylinderGeometry(0.04,0.04,1.4,8),0x6a4a3a,4.5,2.3,-5.5);
+// clouds
+[[-6,13,-6],[6,12,-8]].forEach(([x,y,z])=>{[0,0.8,1.6].forEach((o,i)=>{const c=new THREE.Mesh(new THREE.SphereGeometry(0.9+i%2*0.3,20,20),P(0xffffff));c.position.set(x+o,y+(i%2)*0.3,z);s.add(c)})});
+r.render(s,cam);window.READY=1;
+</script></body></html>

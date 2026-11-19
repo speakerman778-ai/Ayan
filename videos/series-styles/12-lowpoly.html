@@ -1,0 +1,41 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;background:#000;overflow:hidden}canvas{width:1080px;height:1920px;display:block}
+#cap{position:absolute;left:50%;top:1440px;transform:translate(-50%,-50%);font:800 64px Inter,sans-serif;color:#fff;letter-spacing:10px;padding:18px 44px;border:3px solid rgba(255,255,255,.8);background:rgba(10,20,40,.45)}
+</style></head><body><div id="cap">СМОТРИТЕЛЬ</div><script src="../style-previews/lib/three.min.js"></script><script>
+const W=1080,H=1920;const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setSize(W,H,false);r.outputEncoding=THREE.sRGBEncoding;document.body.prepend(r.domElement);
+const s=new THREE.Scene();s.background=new THREE.Color(0x1a2a4a);s.fog=new THREE.Fog(0x1a2a4a,30,90);
+const cam=new THREE.PerspectiveCamera(42,W/H,0.1,300);cam.position.set(9,9,24);cam.lookAt(-1,6,0);
+s.add(new THREE.HemisphereLight(0x8aa0d0,0x202030,0.55));const moon=new THREE.DirectionalLight(0xbfd0ff,0.8);moon.position.set(20,30,-10);s.add(moon);
+const M=c=>new THREE.MeshLambertMaterial({color:c,flatShading:true});
+const add=(g,c,x,y,z)=>{const m=new THREE.Mesh(g,M(c));m.position.set(x,y,z);s.add(m);return m};
+// sea low poly
+const sea=new THREE.PlaneGeometry(200,200,60,60);const pos=sea.attributes.position;for(let i=0;i<pos.count;i++)pos.setZ(i,Math.sin(pos.getX(i)*0.5)*0.4+Math.cos(pos.getY(i)*0.7)*0.4+Math.random()*0.3);sea.computeVertexNormals();
+const sm=new THREE.Mesh(sea,new THREE.MeshPhongMaterial({color:0x2a5a9a,flatShading:true,shininess:20,specular:0x1a2a44}));sm.rotation.x=-Math.PI/2;s.add(sm);
+// cliff: displaced dodecahedron
+const cl=new THREE.DodecahedronGeometry(9,1);const cp=cl.attributes.position;for(let i=0;i<cp.count;i++){cp.setX(i,cp.getX(i)*(1+Math.random()*0.15));cp.setY(i,cp.getY(i)*0.7+(Math.random()*0.6))}cl.computeVertexNormals();
+const cliff=add(cl,0x6a5a52,-3,0.5,0);const grass=add(new THREE.CylinderGeometry(7.2,7.8,0.6,9),0x4a8a4a,-3,6.6,0);
+// lighthouse
+const stripes=[0xf2f2f2,0xd0302a,0xf2f2f2,0xd0302a,0xf2f2f2];stripes.forEach((c,i)=>add(new THREE.CylinderGeometry(1.5-i*0.12-0.12,1.5-i*0.12,1.6,10),c,-5,7.7+i*1.6,0));
+add(new THREE.CylinderGeometry(1.4,1.4,0.3,10),0x2a2a3a,-5,15.6,0);
+const lamp=new THREE.Mesh(new THREE.CylinderGeometry(0.85,0.85,1.3,10),new THREE.MeshBasicMaterial({color:0xfff0a0}));lamp.position.set(-5,16.4,0);s.add(lamp);
+add(new THREE.ConeGeometry(1.2,1.2,10),0xd0302a,-5,17.7,0);
+const pl=new THREE.PointLight(0xffe0a0,3,30);pl.position.set(-5,16.4,1.5);s.add(pl);
+const beam=new THREE.Mesh(new THREE.ConeGeometry(3.5,30,24,1,true),new THREE.MeshBasicMaterial({color:0xfff0b0,transparent:true,opacity:0.16,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));beam.rotation.z=Math.PI/2*1.0;beam.rotation.y=-0.35;beam.position.set(10,16.4,5);s.add(beam);
+// keeper
+const k=new THREE.Group();const km=(g,c,x,y,z)=>{const m=new THREE.Mesh(g,M(c));m.position.set(x,y,z);k.add(m);return m};
+km(new THREE.ConeGeometry(0.9,2.2,7),0xf0c020,0,1.1,0);km(new THREE.IcosahedronGeometry(0.5,0),0xf2c49a,0,2.5,0);km(new THREE.ConeGeometry(0.42,0.6,7),0xf2f2f2,0,2.15,0.25).rotation.x=Math.PI;
+km(new THREE.CylinderGeometry(0.8,0.8,0.1,8),0xf0c020,0,2.9,0);km(new THREE.ConeGeometry(0.5,0.4,7),0xf0c020,0,3.1,0);
+const lan=km(new THREE.BoxGeometry(0.4,0.55,0.4),0x2a2a3a,0.95,1.5,0.3);const lg=new THREE.PointLight(0xffc060,2.5,8);lg.position.set(1,1.5,0.8);k.add(lg);
+const lb=new THREE.Mesh(new THREE.SphereGeometry(0.2,8,8),new THREE.MeshBasicMaterial({color:0xffe080}));lb.position.set(0.95,1.5,0.5);k.add(lb);
+k.position.set(0,6.9,3);k.rotation.y=0.6;s.add(k);
+// cat
+const cat=new THREE.Group();const cm=(g,x,y,z)=>{const m=new THREE.Mesh(g,M(0xf08a30));m.position.set(x,y,z);cat.add(m);return m};
+cm(new THREE.IcosahedronGeometry(0.45,0),0,0.4,0);cm(new THREE.IcosahedronGeometry(0.3,0),0,0.95,0.1);cm(new THREE.ConeGeometry(0.1,0.2,4),-0.15,1.25,0.1);cm(new THREE.ConeGeometry(0.1,0.2,4),0.15,1.25,0.1);
+cat.position.set(1.5,6.9,3.6);s.add(cat);
+// stars + moon
+for(let i=0;i<120;i++){const st=new THREE.Mesh(new THREE.IcosahedronGeometry(0.12,0),new THREE.MeshBasicMaterial({color:0xffffff,fog:false}));st.position.set((Math.random()-.5)*120,20+Math.random()*50,-60-Math.random()*10);s.add(st)}
+const mo=new THREE.Mesh(new THREE.IcosahedronGeometry(4,1),new THREE.MeshBasicMaterial({color:0xfff2c0,fog:false}));mo.position.set(25,40,-60);s.add(mo);
+// rocks
+[[8,0,4],[12,0,-2],[6,0,10]].forEach(([x,y,z])=>add(new THREE.DodecahedronGeometry(1.2,0),0x3a3a4a,x,y,z));
+r.render(s,cam);window.READY=1;
+</script></body></html>

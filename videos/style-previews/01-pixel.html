@@ -1,0 +1,59 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;background:#000}canvas{width:1080px;height:1920px;image-rendering:pixelated;display:block}
+</style></head><body><canvas id="c" width="270" height="480"></canvas><script>
+const c=document.getElementById('c').getContext('2d');
+const px=(x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(x|0,y|0,w|0,h|0)};
+// sky stripes
+const sky=['#1a0b2e','#2b1145','#45175a','#6a1f63','#93285f','#bd3c57','#df5a4a','#f07f3c','#f8a644'];
+sky.forEach((col,i)=>{px(0,i*36,270,36,col); for(let x=0;x<270;x+=2) if((x/2+i)%2==0) px(x,i*36+34,1,2,sky[i+1]||col)});
+// stars
+for(let i=0;i<60;i++){const x=(i*97)%270,y=(i*53)%140; px(x,y,1,1,i%5?'#ffffff':'#ffe9a0'); if(i%7==0){px(x-1,y,3,1,'#c9b6ff');px(x,y-1,1,3,'#c9b6ff')}}
+// sun flash behind
+for(let r=60;r>0;r-=6){c.fillStyle=['#fff7d6','#ffe28a','#ffc04a','#ff9a3a','#ff7a3a'][Math.floor(r/12)%5];c.beginPath();c.arc(185,250,r,0,7);c.fill()}
+// mushroom cloud
+const M='#fff2c4',M2='#e8b86a';
+px(178,220,14,80,M2);px(181,220,8,80,M);
+[[160,190,50,22],[150,200,70,20],[155,182,24,14],[180,178,26,16],[164,212,42,10]].forEach(([x,y,w,h])=>{px(x,y,w,h,M2);px(x+2,y+2,w-4,h-4,M)});
+for(let x=150;x<220;x+=4) px(x,210+(x%8?0:2),2,2,'#c98a4a');
+// ground city
+px(0,300,270,180,'#140a1c');
+const bh=[18,30,22,40,26,14,34,20,28,16,38,24];let bx=0;bh.forEach((h,i)=>{const w=16+(i*7)%10;px(bx,300-h,w,h,'#22102e');for(let y=300-h+4;y<298;y+=6)for(let x=bx+3;x<bx+w-3;x+=5)if((x+y+i)%3)px(x,y,2,2,'#ffcf6a');bx+=w+3});
+px(0,300,270,2,'#3a1d4a');
+// platform
+px(0,330,270,6,'#5a3a6a');px(0,336,270,2,'#2a1638');
+// hero sprite (engineer with hat, suitcase)
+const H={k:'#0d0710',s:'#f2c79a',c:'#3b5a8a',d:'#24395c',h:'#5a3a22',b:'#8a5a2a',w:'#ffffff'};
+const hero=[
+'....kkkkk....',
+'...khhhhhk...',
+'..kkkkkkkkk..',
+'...kssssk....',
+'...ksksks....',
+'...kssssk....',
+'....kssk.....',
+'..kkccckkk...',
+'.kccwcccdck..',
+'.kccwccccdk..',
+'.kscccccdsk..',
+'.kskcccckks..',
+'..k.kccck.bbb',
+'....kdkdk.bkb',
+'....kdkdk.bbb',
+'....kdkdk....',
+'....kk.kk....'];
+hero.forEach((row,y)=>[...row].forEach((ch,x)=>{if(ch!='.')px(70+x*3,280+y*3,3,3,H[ch]||H.k)}));
+// little people with placards
+const people=[[20,'ДВА'],[78,'РАЗА'],[150,'ВЫЖИЛ'],[215,'!!!']];
+c.font='bold 8px monospace';
+people.forEach(([x,t],i)=>{const y=420+((i%2)*4);px(x+8,y-26,2,14,'#c9a46a');px(x-4,y-40,36,15,'#f4ead0');px(x-4,y-26,36,1,'#7a5a3a');c.fillStyle='#2a1638';c.fillText(t,x-2+(4-t.length)*2.5,y-29);
+px(x+2,y-8,8,8,'#f2c79a');px(x+1,y,10,12,['#c9425a','#3a8a6a','#d98a2a','#5a6ac9'][i]);px(x+2,y+12,3,6,'#0d0710');px(x+7,y+12,3,6,'#0d0710');});
+// HUD
+px(4,4,262,26,'#0d0710');px(5,5,260,24,'#2a1638');
+c.font='bold 9px monospace';c.fillStyle='#ffe28a';c.fillText('ВЫЖИЛ',10,15);
+px(10,19,100,6,'#0d0710');px(11,20,98,4,'#5aff7a');c.fillStyle='#fff';c.fillText('x2',114,25);
+const heart=(x,y,f)=>{const m=['.kk.kk.','krrkrrk','krrrrrk','.krrrk.','..krk..','...k...'];m.forEach((r,j)=>[...r].forEach((ch,i)=>{if(ch!='.')px(x+i*2,y+j*2,2,2,ch=='k'?'#0d0710':(f?'#ff3a5a':'#5a2a3a'))}))};
+heart(200,9,1);heart(218,9,1);heart(236,9,0);
+// caption
+px(55,360,160,24,'#0d0710');px(56,361,158,22,'#ffe28a');c.font='bold 14px monospace';c.fillStyle='#0d0710';c.fillText('ДВАЖДЫ',100,377);
+window.READY=1;
+</script></body></html>

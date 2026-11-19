@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;background:#000;overflow:hidden}canvas{width:1080px;height:1920px;display:block}
+</style></head><body><script src="lib/three.min.js"></script><script>
+const W=1080,H=1920;const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setSize(W,H,false);r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;r.outputEncoding=THREE.sRGBEncoding;document.body.appendChild(r.domElement);
+const s=new THREE.Scene();s.background=new THREE.Color(0x8fd0ff);
+const cam=new THREE.PerspectiveCamera(46,W/H,0.1,300);cam.position.set(7,9,32);cam.lookAt(0,7.5,-1);
+s.add(new THREE.HemisphereLight(0xffffff,0x88aa66,0.75));const sun=new THREE.DirectionalLight(0xffffff,0.9);sun.position.set(12,25,14);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-25,right:25,top:25,bottom:-25});s.add(sun);
+const mat=c=>new THREE.MeshStandardMaterial({color:c,roughness:0.25,metalness:0});
+const U=1,HB=1.2;const cube=new THREE.BoxGeometry(U*0.98,HB*0.98,U*0.98);const stud=new THREE.CylinderGeometry(0.3,0.3,0.2,20);
+const bricks={};const add=(x,y,z,c)=>{(bricks[c]=bricks[c]||[]).push([x,y,z])};
+// baseplate
+for(let x=-12;x<12;x++)for(let z=-8;z<8;z++)add(x,-1,z,0x3aa84a);
+// building (station) left
+for(let y=0;y<7;y++)for(let x=-10;x<-4;x++)for(let z=-6;z<-2;z++){if(y<6&&x>-10&&x<-5&&z>-6&&z<-3)continue;const win=(y==3||y==4)&&(x==-8||x==-6)&&z==-3;add(x,y,z,win?0x9fdcff:(y==6?0xc0392b:0xf2f2f2))}
+// mushroom cloud being assembled (top layers floating)
+const cx=5,cz=-5;for(let y=0;y<9;y++)for(let x=-1;x<1;x++)for(let z=-1;z<1;z++)add(cx+x,y,cz+z,0xbdbdbd);
+for(let y=9;y<14;y++){const rr=y<11?3+y-9:5-(y-11);for(let x=-rr;x<=rr;x++)for(let z=-rr;z<=rr;z++)if(x*x+z*z<=rr*rr+1)add(cx+x,y+(y>11?(y-11)*0.9:0),cz+z,y%2?0xff9a2a:0xffd23a)}
+// suitcase
+for(let x=0;x<2;x++)add(2+x,0,3,0x8b5a2b);
+// placard
+for(let x=-3;x<4;x++)add(x,5,6,0xffd23a);
+for(const c in bricks){const arr=bricks[c];const m1=new THREE.InstancedMesh(cube,mat(+c),arr.length);const m2=new THREE.InstancedMesh(stud,mat(+c),arr.length);const o=new THREE.Object3D();
+ arr.forEach(([x,y,z],i)=>{o.position.set(x*U,y*HB+HB/2,z*U);o.updateMatrix();m1.setMatrixAt(i,o.matrix);o.position.y+=HB/2+0.1;o.updateMatrix();m2.setMatrixAt(i,o.matrix)});
+ [m1,m2].forEach(m=>{m.castShadow=m.receiveShadow=true;s.add(m)})}
+// minifigure
+const fig=new THREE.Group();const Y=0xffd23a;
+const leg=(x)=>{const l=new THREE.Mesh(new THREE.BoxGeometry(0.55,1.4,0.7),mat(0x1f3a7a));l.position.set(x,0.7,0);fig.add(l)};leg(-0.3);leg(0.3);
+const hip=new THREE.Mesh(new THREE.BoxGeometry(1.2,0.3,0.7),mat(0x1f3a7a));hip.position.y=1.55;fig.add(hip);
+const torso=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.65,1.4,4,1),mat(0x2e6fd8));torso.rotation.y=Math.PI/4;torso.scale.set(1.25,1,0.75);torso.position.y=2.4;fig.add(torso);
+const arm=(x,rz)=>{const a=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.2,1.1,16),mat(0x2e6fd8));a.position.set(x,2.4,0);a.rotation.z=rz;fig.add(a);const h=new THREE.Mesh(new THREE.TorusGeometry(0.17,0.08,10,20),mat(Y));h.position.set(x+Math.sin(rz)*0.65*(x>0?1:-1)*-1,1.8,0.1);fig.add(h)};arm(-0.85,-0.25);arm(0.85,0.25);
+const neck=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,0.15,16),mat(Y));neck.position.y=3.17;fig.add(neck);
+const head=new THREE.Mesh(new THREE.CylinderGeometry(0.42,0.42,0.75,32),mat(Y));head.position.y=3.6;fig.add(head);
+const hs=new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.22,0.18,20),mat(Y));hs.position.y=4.05;fig.add(hs);
+const eye=(x)=>{const e=new THREE.Mesh(new THREE.SphereGeometry(0.06,12,12),mat(0x111111));e.position.set(x,3.7,0.41);fig.add(e)};eye(-0.14);eye(0.14);
+const sm=new THREE.Mesh(new THREE.TorusGeometry(0.14,0.03,8,16,Math.PI),mat(0x111111));sm.position.set(0,3.5,0.41);sm.rotation.z=Math.PI;fig.add(sm);
+const band=new THREE.Mesh(new THREE.TorusGeometry(0.43,0.07,8,32),mat(0xffffff));band.position.y=3.85;band.rotation.x=Math.PI/2;band.rotation.y=0.3;fig.add(band);
+fig.position.set(0.5,0,2.5);fig.rotation.y=0.35;fig.traverse(m=>{if(m.isMesh){m.castShadow=true}});s.add(fig);
+// sign text on placard bricks
+const cv=document.createElement('canvas');cv.width=1024;cv.height=160;const q=cv.getContext('2d');q.fillStyle='#ffd23a';q.fillRect(0,0,1024,160);q.fillStyle='#111';q.font='900 120px Inter, sans-serif';q.textAlign='center';q.fillText('ДВАЖДЫ',512,125);
+const sign=new THREE.Mesh(new THREE.PlaneGeometry(6.9,1.08),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(cv)}));sign.position.set(0.0,5*HB+HB/2,6.5);s.add(sign);
+r.render(s,cam);window.READY=1;
+</script></body></html>

@@ -1,0 +1,55 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}</style></head><body>
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" font-family="'DejaVu Sans',sans-serif">
+<defs>
+<pattern id="dotsBlue" width="18" height="18" patternUnits="userSpaceOnUse"><rect width="18" height="18" fill="#7fd0f5"/><circle cx="9" cy="9" r="5" fill="#3da5dc"/></pattern>
+<pattern id="dotsSkin" width="12" height="12" patternUnits="userSpaceOnUse"><rect width="12" height="12" fill="#ffd9b0"/><circle cx="6" cy="6" r="2.6" fill="#f08a7a"/></pattern>
+<pattern id="dotsYel" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#ffe14a"/><circle cx="7" cy="7" r="3.5" fill="#ffb52a"/></pattern>
+<pattern id="dotsRed" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#ff6a4a"/><circle cx="7" cy="7" r="4" fill="#d9302a"/></pattern>
+</defs>
+<rect width="1080" height="1920" fill="#fff"/>
+<!-- panel 1: action -->
+<g><clipPath id="p1"><path d="M30 30 H1050 V900 L30 960 Z"/></clipPath>
+<g clip-path="url(#p1)"><rect width="1080" height="1000" fill="url(#dotsBlue)"/>
+
+<g id="rays"></g>
+<circle cx="700" cy="420" r="230" fill="url(#dotsYel)" stroke="#111" stroke-width="10"/>
+<path d="M640 650 Q630 560 660 470 M760 650 Q770 560 740 470" fill="#fff" stroke="#111" stroke-width="10"/>
+<path d="M520 470 Q500 330 600 300 Q650 220 740 260 Q840 230 870 330 Q930 400 880 470 Z" fill="#fff6e0" stroke="#111" stroke-width="10"/>
+<rect x="0" y="650" width="1080" height="400" fill="#6a5acd" stroke="#111" stroke-width="10"/>
+<path d="M60 650 v-120 h70 v120 M160 650 v-180 h90 v180 M290 650 v-90 h60 v90 M910 650 v-150 h80 v150" fill="#9a8ae0" stroke="#111" stroke-width="8"/>
+<!-- hero running -->
+<g stroke="#111" stroke-width="9" stroke-linejoin="round">
+<path d="M260 900 L230 760 L320 760 L350 900 Z" fill="#2a5aa8"/>
+<path d="M230 770 L160 840 M320 770 L400 720" fill="none" stroke-linecap="round"/>
+<rect x="390" y="690" width="110" height="80" rx="10" fill="#a0522d"/>
+<circle cx="275" cy="700" r="60" fill="url(#dotsSkin)"/>
+<path d="M215 680 Q275 610 335 680 Z" fill="#333"/>
+<path d="M240 880 L210 990 M330 880 L370 990" fill="none" stroke-linecap="round"/>
+</g></g>
+<path d="M30 30 H1050 V900 L30 960 Z" fill="none" stroke="#111" stroke-width="14"/></g>
+<!-- burst -->
+<g transform="translate(330 300) rotate(-8)"><path d="M0 -190 L60 -110 L170 -150 L130 -50 L230 0 L130 50 L180 150 L60 110 L0 200 L-60 110 L-190 150 L-130 40 L-230 -10 L-130 -60 L-170 -160 L-60 -110 Z" fill="#ffe14a" stroke="#e02a2a" stroke-width="14"/><text y="35" text-anchor="middle" font-size="120" font-weight="900" fill="#e02a2a" stroke="#111" stroke-width="4">БАХ!</text></g>
+<!-- panel 2: reaction close-up -->
+<g><clipPath id="p2"><path d="M30 1000 L1050 940 V1890 H30 Z"/></clipPath>
+<g clip-path="url(#p2)"><rect x="0" y="900" width="1080" height="1100" fill="url(#dotsRed)"/>
+<g stroke="#111" stroke-width="6" opacity=".9">
+<path d="M540 1430 L-100 900 M540 1430 L200 900 M540 1430 L600 900 M540 1430 L1000 900 M540 1430 L1200 1200 M540 1430 L1200 1700 M540 1430 L800 2000 M540 1430 L200 2000 M540 1430 L-100 1700 M540 1430 L-100 1300"/></g>
+<g stroke="#111" stroke-width="12" stroke-linejoin="round">
+<path d="M300 1900 Q320 1700 540 1680 Q760 1700 780 1900 Z" fill="#2a5aa8"/>
+<ellipse cx="540" cy="1430" rx="230" ry="260" fill="url(#dotsSkin)"/>
+<path d="M310 1350 Q330 1150 540 1160 Q760 1150 770 1360 Q700 1260 540 1270 Q380 1260 310 1350 Z" fill="#333"/>
+<path d="M330 1300 L760 1380 M330 1340 L740 1420" stroke="#fff" stroke-width="22"/><path d="M330 1300 L760 1380 M330 1340 L740 1420" stroke="#111" stroke-width="3" fill="none"/>
+<ellipse cx="460" cy="1450" rx="42" ry="52" fill="#fff"/><ellipse cx="625" cy="1450" rx="42" ry="52" fill="#fff"/>
+<circle cx="465" cy="1458" r="16" fill="#111"/><circle cx="620" cy="1458" r="16" fill="#111"/>
+<path d="M410 1380 L500 1395 M580 1395 L670 1380" fill="none"/>
+<ellipse cx="545" cy="1590" rx="50" ry="38" fill="#7a1a1a"/>
+</g>
+<path d="M800 1350 q20 -40 0 -80 M840 1360 q30 -60 0 -120" stroke="#111" stroke-width="8" fill="none"/></g>
+<path d="M30 1000 L1050 940 V1890 H30 Z" fill="none" stroke="#111" stroke-width="14"/></g>
+<!-- speech bubble -->
+<g><path d="M90 1080 h420 a30 30 0 0 1 30 30 v120 a30 30 0 0 1 -30 30 h-260 l-60 70 l10 -70 h-110 a30 30 0 0 1 -30 -30 v-120 a30 30 0 0 1 30 -30 z" fill="#fff" stroke="#111" stroke-width="8"/><text x="300" y="1190" text-anchor="middle" font-size="60" font-weight="900" fill="#111">ОПЯТЬ?!</text></g>
+<!-- caption burst -->
+<g transform="translate(540 1440) rotate(4)"><path d="M-300 -70 L-220 -110 L-120 -80 L0 -125 L110 -80 L230 -110 L300 -60 L330 10 L290 80 L170 100 L40 130 L-90 95 L-230 110 L-310 60 L-340 -5 Z" fill="#ffe14a" stroke="#e02a2a" stroke-width="12"/><text y="35" text-anchor="middle" font-size="96" font-weight="900" fill="#e02a2a" stroke="#111" stroke-width="3">ДВАЖДЫ!</text></g>
+</svg>
+<script>
+const g=document.getElementById('rays');let s='';for(let i=0;i<24;i++){const a=i/24*Math.PI*2;s+=`<path d="M700 420 L${700+Math.cos(a)*1400} ${420+Math.sin(a)*1400} L${700+Math.cos(a+0.08)*1400} ${420+Math.sin(a+0.08)*1400} Z" fill="#111" opacity=".85"/>`}g.innerHTML=s;window.READY=1</script></body></html>
