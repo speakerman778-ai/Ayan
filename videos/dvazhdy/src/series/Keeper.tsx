@@ -191,6 +191,59 @@ const Lighthouse: React.FC<{x: number; y: number; t: number}> = ({x, y, t}) => {
 	);
 };
 
+
+// cliff top curve: M -20 1000 C 220 930 560 940 760 1000
+const bez = (u: number): [number, number] => {
+	const p = [[-20, 1000], [220, 930], [560, 940], [760, 1000]];
+	const a = (1 - u) ** 3, b = 3 * (1 - u) ** 2 * u, c = 3 * (1 - u) * u * u, d = u ** 3;
+	return [a * p[0][0] + b * p[1][0] + c * p[2][0] + d * p[3][0], a * p[0][1] + b * p[1][1] + c * p[2][1] + d * p[3][1]];
+};
+
+const GrassTop: React.FC<{t: number}> = ({t}) => {
+	// scalloped lower edge hanging over the rock
+	const n = 14;
+	let lower = '';
+	for (let i = n; i >= 0; i--) {
+		const [x, y] = bez(i / n);
+		const depth = 70 + (i % 3) * 18;
+		const [px, py] = bez(Math.max(0, (i - 0.5) / n));
+		lower += i === n ? `L ${x + 30} ${y + depth} ` : `Q ${px} ${py + depth + 34} ${x} ${y + depth} `;
+	}
+	const top = 'M -20 1000 C 220 930 560 940 760 1000 Q 800 1010 806 1050 ';
+	const light = 'M -20 1000 C 220 930 560 940 760 1000 L 752 1018 C 560 962 220 952 -20 1022 Z';
+	const tufts = [0.06, 0.18, 0.3, 0.47, 0.63, 0.86, 0.95];
+	const flowers = [0.11, 0.24, 0.4, 0.55, 0.72, 0.9];
+	return (
+		<g>
+			<path d={top + lower + 'Z'} fill="#5f9e55" stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+			<path d={light} fill="#7dbb6a" />
+			{/* dirt path from the lighthouse door */}
+			<path d="M 200 990 Q 330 1000 420 978 Q 500 966 560 990 Q 500 1006 420 1000 Q 330 1022 200 1012 Z" fill="#cbb48a" stroke={OL} strokeWidth={5} strokeLinejoin="round" />
+			{tufts.map((u, i) => {
+				const [x, y] = bez(u);
+				const sway = Math.sin(t * 2 + i) * 4;
+				return (
+					<g key={i} transform={`translate(${x} ${y + 30 + (i % 2) * 18})`}>
+						<path d={`M -16 0 L ${-12 + sway} -26 L -4 0 M -4 0 L ${2 + sway} -34 L 6 0 M 6 0 L ${14 + sway} -24 L 16 0`} fill="#4e8a46" stroke={OL} strokeWidth={4} strokeLinejoin="round" />
+					</g>
+				);
+			})}
+			{flowers.map((u, i) => {
+				const [x, y] = bez(u);
+				const col = i % 2 ? '#fff6e0' : '#ffd23a';
+				return (
+					<g key={i} transform={`translate(${x + 14} ${y + 52 + (i % 3) * 10})`}>
+						{[0, 1, 2, 3, 4].map((k) => (
+							<circle key={k} cx={Math.cos((k / 5) * Math.PI * 2) * 7} cy={Math.sin((k / 5) * Math.PI * 2) * 7} r={6} fill={col} stroke={OL} strokeWidth={2.5} />
+						))}
+						<circle r={4} fill="#e8743a" />
+					</g>
+				);
+			})}
+		</g>
+	);
+};
+
 const Outside: React.FC<{t: number}> = ({t}) => (
 	<>
 		<rect width={1080} height={1920} fill="#1d2b4f" />
@@ -204,7 +257,7 @@ const Outside: React.FC<{t: number}> = ({t}) => (
 			<path key={r} d={`M ${-140 + ((r % 2) * 70) - ((t * 30) % 140)} ${1110 + r * 120} ` + Array.from({length: 10}).map(() => 'q 35 -30 70 0 q 35 30 70 0').join(' ')} fill="none" stroke="#6f9ad0" strokeWidth={7} strokeLinecap="round" />
 		))}
 		<path d="M -20 1000 C 220 930 560 940 760 1000 C 840 1080 800 1300 850 1500 C 880 1700 820 1850 800 1940 L -20 1940 Z" fill="#7a6a5a" stroke={OL} strokeWidth={OW} />
-		<path d="M -20 1000 C 220 930 560 940 760 1000 L 756 1030 C 560 970 220 960 -20 1030 Z" fill="#6aa36a" stroke={OL} strokeWidth={OW} />
+		<GrassTop t={t} />
 		<Lighthouse x={230} y={990} t={t} />
 		<Keeper x={590} y={1012} s={0.52} armR={[100, -30]} face="neutral" />
 		{/* lantern */}
