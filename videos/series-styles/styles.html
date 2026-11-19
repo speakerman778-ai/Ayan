@@ -104,6 +104,6 @@ poster: {
 },
 };
 const name = new URLSearchParams(location.search).get('s');
-document.getElementById('root').innerHTML = renderScene(STYLES[name]);
+const qs=new URLSearchParams(location.search);const st=STYLES[name];if(qs.get('nocap'))st.caption='';document.getElementById('root').innerHTML = renderScene(st);
 window.READY = 1;
 </script></body></html>
