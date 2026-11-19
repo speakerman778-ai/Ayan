@@ -30,7 +30,7 @@ export const KaraokeLine: React.FC<{words: Word[]; t: number; y?: number; maxPer
 			}}
 		>
 			{[words].map((row, ri) => (
-				<div key={ri} style={{display: 'flex', columnGap: 18, rowGap: 10, flexWrap: 'wrap', justifyContent: 'center', width: '100%'}}>
+				<div key={ri} style={{display: 'flex', columnGap: 30, rowGap: 10, flexWrap: 'wrap', justifyContent: 'center', width: '100%'}}>
 					{row.map((w, wi) => {
 						const active = t >= w.start && t < w.end;
 						const k = active ? interpolate(t, [w.start, w.start + 0.12], [0, 1], {extrapolateRight: 'clamp'}) : 0;
@@ -40,19 +40,16 @@ export const KaraokeLine: React.FC<{words: Word[]; t: number; y?: number; maxPer
 								style={{
 									fontFamily: 'Inter',
 									fontWeight: 900,
-									fontSize: 74,
+									fontSize: 78,
 									lineHeight: 1.15,
 									textTransform: 'uppercase',
-									color: active ? '#2a2232' : '#ffffff',
-									opacity: active ? 1 : 0.35,
-									WebkitTextStroke: active ? '0px' : '3px #2a2232',
+									color: '#ffffff',
+									opacity: active ? 1 : 0.32,
+									WebkitTextStroke: active ? '10px #1a1424' : '0px',
 									paintOrder: 'stroke fill',
-									background: active ? '#ffd23a' : 'transparent',
-									borderRadius: 16,
-									padding: '0 14px',
-									transform: `scale(${1 + 0.12 * k})`,
-									boxShadow: active ? '0 8px 0 #2a2232' : 'none',
-									border: active ? '5px solid #2a2232' : '5px solid transparent',
+									textShadow: active ? '0 6px 0 #1a1424, 0 0 24px rgba(0,0,0,0.45)' : '0 3px 8px rgba(0,0,0,0.35)',
+									transform: `scale(${1 + 0.06 * k})`,
+									display: 'inline-block',
 								}}
 							>
 								{w.text}
