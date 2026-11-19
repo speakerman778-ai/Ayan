@@ -295,9 +295,10 @@ export const Char: React.FC<CharProps> = (p) => {
 				{hoodie && (
 					<g>
 						<path d={`M ${-shoulderX + 6} ${shY + 8} Q 0 ${shY + 70} ${shoulderX - 6} ${shY + 8} Q 0 ${shY + 34} ${-shoulderX + 6} ${shY + 8} Z`} fill={jacket} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
-						<path d={`M -18 ${shY + 40} L -22 ${shY + 110} M 18 ${shY + 40} L 22 ${shY + 110}`} stroke={OL} strokeWidth={5} strokeLinecap="round" />
-						<circle cx={-22} cy={shY + 114} r={7} fill={C.white} stroke={OL} strokeWidth={4} />
-						<circle cx={22} cy={shY + 114} r={7} fill={C.white} stroke={OL} strokeWidth={4} />
+						<path d={`M -18 ${shY + 40} Q -26 ${shY + 100} -20 ${shY + 150} M 18 ${shY + 40} Q 28 ${shY + 110} 24 ${shY + 140}`} stroke={OL} strokeWidth={9} fill="none" strokeLinecap="round" />
+						<path d={`M -18 ${shY + 40} Q -26 ${shY + 100} -20 ${shY + 150} M 18 ${shY + 40} Q 28 ${shY + 110} 24 ${shY + 140}`} stroke={C.white} strokeWidth={4} fill="none" strokeLinecap="round" />
+						<rect x={-27} y={shY + 146} width={14} height={22} rx={5} fill={C.red} stroke={OL} strokeWidth={4} />
+						<rect x={17} y={shY + 136} width={14} height={22} rx={5} fill={C.red} stroke={OL} strokeWidth={4} />
 						<path d={`M -56 ${hipY - 86} L 56 ${hipY - 86} L 70 ${hipY - 14} L -70 ${hipY - 14} Z`} fill="none" stroke={OL} strokeWidth={5} strokeLinejoin="round" />
 						<path d={`M -${shoulderX - 4} ${hipY - 4} L ${shoulderX - 4} ${hipY - 4}`} stroke={OL} strokeWidth={5} />
 					</g>

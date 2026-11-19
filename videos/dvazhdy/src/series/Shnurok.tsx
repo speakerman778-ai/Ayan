@@ -4,28 +4,28 @@ import {ShotCtx, hash} from '../lib';
 import {C, Char, CharProps, OL, OW} from '../cartoon/parts';
 import {Room} from './Keeper';
 
-// Лёха — главный герой канала «Вселенная Лёхи».
-// Вихор на макушке, веснушки, охристое худи с нашивкой-планетой, синие джинсы.
+// Шнурок — главный герой канала «Вселенная Лёхи». Прозвище — по шнуркам на худи.
+// Вихор на макушке, длинные шнурки худи с красными наконечниками, веснушки, охристое худи с нашивкой-планетой, синие джинсы.
 
-export const LYOKHA = {
+export const SHNUROK = {
 	hair: '#7a4a2a',
 	hoodie: '#e8a93a',
 	jeans: '#3d5a8a',
 };
 
-export const Lyokha: React.FC<Partial<CharProps> & {x: number; y: number; thinking?: boolean}> = ({thinking = false, face, armR, armL, ...rest}) => (
+export const Shnurok: React.FC<Partial<CharProps> & {x: number; y: number; thinking?: boolean}> = ({thinking = false, face, armR, armL, ...rest}) => (
 	<Char
 		{...rest}
 		headS={0.82}
 		bodyS={1.14}
 		headDrop={18}
 		hair="lyokha"
-		hairColor={LYOKHA.hair}
+		hairColor={SHNUROK.hair}
 		freckles
 		hoodie
 		patch
-		jacket={LYOKHA.hoodie}
-		pants={LYOKHA.jeans}
+		jacket={SHNUROK.hoodie}
+		pants={SHNUROK.jeans}
 		face={face ?? (thinking ? 'think' : 'smile')}
 		armR={thinking ? [-46, 213] : armR}
 		foreR={1}
@@ -63,8 +63,8 @@ const Space: React.FC<{t: number; w: number; h: number}> = ({t, w, h}) => (
 	</>
 );
 
-/** Avatar for the channel: Лёха thinking, a big question mark, space behind. Square 1080. */
-export const LyokhaAvatar: React.FC = () => {
+/** Avatar for the channel: Шнурок thinking, a big question mark in the porthole. Square 1080. */
+export const ShnurokAvatar: React.FC = () => {
 	const t = useCurrentFrame() / 30;
 	return (
 		<ShotCtx.Provider value={{t, dur: 1, scatter: 0}}>
@@ -73,7 +73,7 @@ export const LyokhaAvatar: React.FC = () => {
 					<g transform="translate(0 -150)">
 						<Room t={t} />
 					</g>
-					<Lyokha x={460} y={1640} s={1.9} thinking />
+					<Shnurok x={460} y={1640} s={1.9} thinking />
 					<QMark x={770} y={470} s={0.8} t={t} />
 				</svg>
 			</AbsoluteFill>
@@ -82,7 +82,7 @@ export const LyokhaAvatar: React.FC = () => {
 };
 
 /** Character sheet: full height + emotions. */
-export const LyokhaSheet: React.FC = () => {
+export const ShnurokSheet: React.FC = () => {
 	const t = useCurrentFrame() / 30;
 	const faces: [CharProps['face'], string][] = [
 		['smile', 'рад'],
@@ -97,18 +97,18 @@ export const LyokhaSheet: React.FC = () => {
 					<rect x={60} y={60} width={960} height={120} rx={18} fill={C.paper} stroke={OL} strokeWidth={OW} />
 					<rect x={60} y={60} width={34} height={120} rx={10} fill={C.red} stroke={OL} strokeWidth={OW} />
 					<text x={130} y={140} fontFamily="Inter" fontWeight={900} fontSize={54} fill={OL}>
-						Лёха · главный герой
+						Шнурок · главный герой
 					</text>
 					<rect x={40} y={1100} width={1000} height={26} rx={13} fill={C.wood} stroke={OL} strokeWidth={6} />
-					<Lyokha x={300} y={1100} s={1.0} face="smile" armR={[30, -20]} />
-					<Lyokha x={780} y={1100} s={1.0} thinking />
+					<Shnurok x={300} y={1100} s={1.0} face="smile" armR={[30, -20]} />
+					<Shnurok x={780} y={1100} s={1.0} thinking />
 					<g transform="translate(940 380)">
 						<text textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={160} fill={C.ochre} stroke={OL} strokeWidth={10} paintOrder="stroke">
 							?
 						</text>
 					</g>
 					<text x={300} y={1180} textAnchor="middle" fontFamily="Inter" fontWeight={800} fontSize={40} fill={OL}>
-						Лёха
+						Шнурок
 					</text>
 					<text x={300} y={1222} textAnchor="middle" fontFamily="Inter" fontWeight={600} fontSize={30} fill={C.red}>
 						рассказчик, всё ему интересно
@@ -122,7 +122,7 @@ export const LyokhaSheet: React.FC = () => {
 					<rect x={40} y={1720} width={1000} height={26} rx={13} fill={C.wood} stroke={OL} strokeWidth={6} />
 					{faces.map(([f, l], i) => (
 						<g key={l}>
-							<Lyokha x={170 + i * 245} y={1720} s={0.55} face={f} />
+							<Shnurok x={170 + i * 245} y={1720} s={0.55} face={f} />
 							<text x={170 + i * 245} y={1790} textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={32} fill={OL}>
 								{l}
 							</text>
