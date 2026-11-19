@@ -60,7 +60,7 @@ export const Cat: React.FC<{x: number; y: number; s?: number; t: number; look?: 
 };
 
 const Keeper: React.FC<{x: number; y: number; s?: number; armR?: [number, number]; armL?: [number, number]; face?: 'smile' | 'neutral' | 'think' | 'shock'}> = ({x, y, s = 1, armR, armL, face = 'smile'}) => (
-	<Char x={x} y={y} s={s} headS={0.82} bodyS={1.14} headDrop={34} hair="old" beard nose hat="souwester" hatColor={COAT} jacket={COAT} pants="#3d4a66" face={face} armR={armR} armL={armL} />
+	<Char x={x} y={y} s={s} headS={0.82} bodyS={1.14} headDrop={18} hair="old" beard nose hat="souwester" hatColor={COAT} jacket={COAT} pants="#3d4a66" face={face} armR={armR} armL={armL} />
 );
 
 // ------------------------------------------------------------------ scene 1: inside the lighthouse
