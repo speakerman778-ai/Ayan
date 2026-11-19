@@ -295,7 +295,9 @@ const S4Beach: React.FC<{t: number}> = ({t}) => {
 	const wk = clamp01(t / walkEnd);
 	const x = 140 + ease(wk) * 380;
 	const walking = t < walkEnd;
-	const step = walking ? Math.sin(t * 7) * 16 : 0;
+	const ph = t * 7;
+	const step = walking ? Math.sin(ph) * 18 : 0; // one leg forward, then the other
+	const bob = walking ? -Math.abs(Math.cos(ph)) * 7 : 0;
 	const surprised = t > 7.25;
 	return (
 		<Cam z={1.02 + 0.05 * ease(t / 8.5)} cx={540} cy={1100}>
@@ -324,7 +326,7 @@ const S4Beach: React.FC<{t: number}> = ({t}) => {
 			<Starfish x={640} y={1440} />
 			<Starfish x={980} y={1860} r={20} />
 			<path d="M 60 1400 q 20 -40 0 -80 M 80 1400 q -10 -30 10 -60" fill="none" stroke="#5f9e55" strokeWidth={9} strokeLinecap="round" />
-			<Keeper x={x} y={1390} s={0.66} face={surprised ? 'shock' : 'smile'} legL={3 + step} legR={3 - step} handOnHead={surprised} look={surprised ? 1 : 0} />
+			<Keeper x={x} y={1390 + bob} s={0.66} face={surprised ? 'shock' : 'smile'} legL={3 + step} legR={3 + step} armL={walking ? [12 + step * 0.7, -10] : undefined} handOnHead={surprised} armR={walking ? [12 - step * 0.7, -10] : undefined} look={surprised ? 1 : 0} />
 			<Bubble x={880} y={1180} text="мяу" from={7.25} size={56} tail={[40, 120]} />
 		</Cam>
 	);
@@ -464,30 +466,53 @@ const Pier: React.FC<{x: number; y: number}> = ({x, y}) => (
 );
 
 const S8Fog: React.FC<{t: number}> = ({t}) => {
-	// local 0 = 51.35; «туман» 54.73 → 3.4; cat 58.34 → 7.0; turn 62.08 → 10.7; pier 64.63 → 13.3; bump ~66.8 → 15.5
+	// local 0 = 51.35; «Через год они вышли на лодке» → they stand on the pier and climb into the boat (0–2.3);
+	// «туман» 54.73 → 3.4; cat stands up 58.34 → 7.0; turn 62.08 → 10.7; pier 64.63 → 13.3; bump ~66.95 → 15.6
+	const board = ease((t - 0.9) / 1.1); // keeper climbs in
+	const boardCat = ease((t - 1.4) / 0.8); // cat hops in
+	const depart = ease((t - 2.3) / 1.8);
 	const fog = ease((t - 2.6) / 1.6) * (1 - ease((t - 6.6) / 1.2) * 0.35) * (1 - ease((t - 13.0) / 2.0) * 0.75);
 	const turn = ease((t - 10.7) / 1.5);
 	const arrive = ease((t - 13.0) / 2.6);
 	const bump = t > 15.6 && t < 16.2 ? Math.sin((t - 15.6) * 20) * 6 * (1 - (t - 15.6) / 0.6) : 0;
-	const bx = 330 + arrive * 170 + bump;
-	const rot = -turn * 4;
+	const bx = 500 - depart * 170 + arrive * 170 + bump;
+	const by = 1180;
+	const rot = -turn * 4 + Math.sin(t * 1.4) * 1.5;
 	const handUp = t > 4.2 && t < 7.0;
 	const gaze = prog(t, 7.4, 0.8);
+	const pierVis = Math.max(1 - depart, arrive);
+	const sky = interpolateColor(depart, '#bfe3f0', '#dfe3e6');
+	const sea = interpolateColor(depart, '#5d84ad', '#b8c4cc');
+	// keeper: standing on the pier → seated in the boat (only his upper body shows above the side)
+	const kPier: [number, number] = [830, 1150];
+	const kSeat: [number, number] = [bx - 110, by + 250];
+	const hopK = Math.sin(board * Math.PI) * 70;
+	const kx = kPier[0] + (kSeat[0] - kPier[0]) * board;
+	const ky = kPier[1] + (kSeat[1] - kPier[1]) * board - hopK;
+	// cat: on the pier → sitting inside at the bow → stands up on the bow on «Барсик встал»
+	const stand = ease((t - 7.0) / 0.6);
+	const cPier: [number, number] = [950, 1150];
+	const cSeat: [number, number] = [bx + 170, by + 40 - stand * 70];
+	const hopC = Math.sin(boardCat * Math.PI) * 90;
+	const cx = cPier[0] + (cSeat[0] - cPier[0]) * boardCat;
+	const cy = cPier[1] + (cSeat[1] - cPier[1]) * boardCat - hopC;
 	return (
 		<Cam z={1.0 + 0.06 * ease(t / 16)} cx={540} cy={1100}>
-			<rect width={1080} height={1920} fill="#dfe3e6" />
-			<rect x={0} y={1000} width={1080} height={920} fill="#b8c4cc" />
-			<Waves t={t} y={1050} rows={8} color="#9aa6b2" gap={110} amp={14} speed={20} />
-			{/* pier appears out of the fog */}
-			<g opacity={arrive}>
+			<rect width={1080} height={1920} fill={sky} />
+			<rect x={0} y={1000} width={1080} height={920} fill={sea} />
+			<Waves t={t} y={1050} rows={8} color={interpolateColor(depart, '#6f9ad0', '#9aa6b2')} gap={110} amp={14} speed={20} />
+			<g opacity={pierVis}>
 				<Pier x={700} y={1200} />
 			</g>
-			<g transform={`translate(${bx} 1180) rotate(${rot})`}>
-				<Keeper x={-110} y={130} s={0.6} face={t > 13.3 ? 'smile' : t > 3.6 ? 'think' : 'smile'} armR={handUp ? [150, 20] : [70, -40]} look={t > 7.4 ? 1 : 0} />
-				<Cat x={180} y={-40} s={0.42} t={t} look={1} />
+			<clipPath id="aboveHull"><rect x={-200} y={0} width={1480} height={by + 60} /></clipPath>
+			<g clipPath="url(#aboveHull)">
+			<Keeper x={kx} y={ky} s={0.6} face={t > 13.3 ? 'smile' : t > 3.6 ? 'think' : 'smile'} armR={handUp ? [150, 20] : board < 1 ? [40, -20] : [70, -40]} look={t > 7.4 ? 1 : 0} />
+			<Cat x={cx} y={cy} s={0.42} t={t} look={1} />
+			</g>
+			<g transform={`translate(${bx} ${by}) rotate(${rot})`}>
 				<Boat x={0} y={40} s={0.95} t={t} />
 			</g>
-			{gaze > 0 && <path d={`M 720 1010 L ${720 + 300 * gaze} 1010`} stroke="#fffaf0" strokeWidth={10} strokeDasharray="26 22" strokeLinecap="round" opacity={0.9 * (1 - arrive)} />}
+			{gaze > 0 && <path d={`M ${bx + 260} 1010 L ${bx + 260 + 300 * gaze} 1010`} stroke="#fffaf0" strokeWidth={10} strokeDasharray="26 22" strokeLinecap="round" opacity={0.9 * (1 - arrive)} />}
 			{/* fog banks */}
 			<g opacity={fog}>
 				{Array.from({length: 7}).map((_, i) => {
