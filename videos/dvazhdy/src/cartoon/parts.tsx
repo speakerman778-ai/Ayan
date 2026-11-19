@@ -198,6 +198,7 @@ export type CharProps = {
 	headDrop?: number; // move head down toward shoulders
 	armROver?: boolean; // draw right arm in front of the head (hand on head)
 	hairColor?: string;
+	acc?: 'phones' | 'phonesNeck' | 'goggles' | 'bow' | 'tipped' | 'pencil' | 'star' | 'bandaid';
 	foreR?: number; // right forearm length multiplier
 	freckles?: boolean;
 	hoodie?: boolean; // hood + drawstrings + pocket instead of shirt collar and buttons
@@ -240,6 +241,7 @@ export const Char: React.FC<CharProps> = (p) => {
 		headDrop = 0,
 		armROver = false,
 		hairColor,
+		acc,
 		foreR = 1,
 		freckles = false,
 		hoodie = false,
@@ -350,7 +352,7 @@ export const Char: React.FC<CharProps> = (p) => {
 					{hair === 'boy' && <path d="M -114 -4 C -124 -96 -64 -138 0 -136 C 64 -138 124 -96 114 -4 L 80 -40 L 50 -20 L 20 -44 L -14 -22 L -44 -44 L -76 -22 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />}
 					{hair === 'lyokha' && (
 						<g>
-							<path d="M -56 -122 L -48 -160 L -24 -134 L -6 -172 L 14 -136 L 40 -164 L 46 -128 L 66 -146 L 64 -114 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M 6 -128 C -6 -186 34 -214 62 -196 C 40 -192 30 -176 40 -156 C 52 -180 84 -180 92 -160 C 70 -160 60 -146 56 -128 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 							<path d="M -114 -2 C -126 -98 -62 -142 6 -138 C 80 -136 126 -90 114 -6 L 96 -34 L 84 -18 L 66 -52 L 46 -30 L 26 -60 L 4 -36 L -18 -62 L -38 -36 L -62 -58 L -78 -30 L -96 -46 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 						</g>
 					)}
@@ -444,6 +446,63 @@ export const Char: React.FC<CharProps> = (p) => {
 						</g>
 					)}
 					{hair === 'boss' && <path d="M -112 -10 C -116 -70 -96 -110 -60 -118 C -50 -96 -90 -70 -108 -10 Z M 112 -10 C 116 -70 96 -110 60 -118 C 50 -96 90 -70 108 -10 Z" fill={hairCol} stroke={OL} strokeWidth={OW} />}
+					{acc === 'tipped' && (
+						<path d="M 16 -170 C 14 -192 34 -214 62 -196 C 40 -192 30 -180 32 -168 Z M 52 -168 C 62 -182 84 -180 92 -160 C 74 -160 64 -154 60 -146 Z" fill={C.ochre} stroke={OL} strokeWidth={5} strokeLinejoin="round" />
+					)}
+					{acc === 'bow' && (
+						<g transform="translate(30 -150) rotate(-10)">
+							<path d="M 0 0 L -34 -18 L -30 18 Z M 0 0 L 34 -18 L 30 18 Z" fill={C.red} stroke={OL} strokeWidth={5} strokeLinejoin="round" />
+							<circle r={9} fill={C.red} stroke={OL} strokeWidth={5} />
+							<path d="M -4 8 Q -12 40 -2 56 M 4 8 Q 14 36 8 60" fill="none" stroke={OL} strokeWidth={9} strokeLinecap="round" />
+							<path d="M -4 8 Q -12 40 -2 56 M 4 8 Q 14 36 8 60" fill="none" stroke={C.white} strokeWidth={4} strokeLinecap="round" />
+						</g>
+					)}
+					{acc === 'star' && (
+						<path transform="translate(-70 -96) rotate(-12)" d="M 0 -26 L 8 -8 L 26 -8 L 12 4 L 18 24 L 0 12 L -18 24 L -12 4 L -26 -8 L -8 -8 Z" fill={C.ochre} stroke={OL} strokeWidth={5} strokeLinejoin="round" />
+					)}
+					{acc === 'pencil' && (
+						<g transform="translate(128 -6) rotate(-78)">
+							<rect x={-70} y={-9} width={120} height={18} fill={C.ochre} stroke={OL} strokeWidth={5} />
+							<rect x={-86} y={-9} width={18} height={18} fill="#f29b8a" stroke={OL} strokeWidth={5} />
+							<path d="M 50 -9 L 76 0 L 50 9 Z" fill="#f6c9a0" stroke={OL} strokeWidth={5} strokeLinejoin="round" />
+							<path d="M 68 -3 L 76 0 L 68 3 Z" fill={OL} />
+						</g>
+					)}
+					{acc === 'goggles' && (
+						<g>
+							<path d="M -116 -90 Q 0 -118 116 -90 L 116 -72 Q 0 -100 -116 -72 Z" fill="#3a3f55" stroke={OL} strokeWidth={6} />
+							{[-1, 1].map((k) => (
+								<g key={k} transform={`translate(${k * 44} -100)`}>
+									<ellipse rx={38} ry={28} fill="#c9963e" stroke={OL} strokeWidth={OW} />
+									<ellipse rx={26} ry={18} fill="#6fb4d0" stroke={OL} strokeWidth={5} />
+								</g>
+							))}
+						</g>
+					)}
+					{acc === 'phones' && (
+						<g>
+							<path d="M -122 -10 C -130 -170 130 -170 122 -10" fill="none" stroke={OL} strokeWidth={26} strokeLinecap="round" />
+							<path d="M -122 -10 C -130 -170 130 -170 122 -10" fill="none" stroke={C.red} strokeWidth={12} strokeLinecap="round" />
+							{[-1, 1].map((k) => (
+								<g key={k}>
+									<rect x={k * 122 - 26} y={-30} width={52} height={76} rx={22} fill={C.red} stroke={OL} strokeWidth={OW} />
+									<rect x={k * 122 - 12} y={-16} width={24} height={48} rx={10} fill="#3a3f55" />
+								</g>
+							))}
+						</g>
+					)}
+					{acc === 'phonesNeck' && (
+						<g>
+							<path d="M -110 150 C -110 220 110 220 110 150" fill="none" stroke={OL} strokeWidth={24} strokeLinecap="round" />
+							<path d="M -110 150 C -110 220 110 220 110 150" fill="none" stroke="#3a3f55" strokeWidth={10} strokeLinecap="round" />
+							{[-1, 1].map((k) => (
+								<g key={k}>
+									<ellipse cx={k * 110} cy={150} rx={36} ry={44} fill="#3a3f55" stroke={OL} strokeWidth={OW} />
+									<ellipse cx={k * 110} cy={150} rx={20} ry={26} fill={C.ochre} stroke={OL} strokeWidth={5} />
+								</g>
+							))}
+						</g>
+					)}
 					{/* cheeks */}
 					<ellipse cx={-62} cy={34} rx={18} ry={11} fill={C.cheek} opacity={0.55} />
 					<ellipse cx={62} cy={34} rx={18} ry={11} fill={C.cheek} opacity={0.55} />
@@ -472,6 +531,12 @@ export const Char: React.FC<CharProps> = (p) => {
 						</g>
 					)}
 					{nose && <ellipse cx={0} cy={22} rx={20} ry={16} fill={C.cheek} stroke={OL} strokeWidth={5} />}
+					{acc === 'bandaid' && (
+						<g transform="translate(70 26) rotate(-25)">
+							<rect x={-30} y={-11} width={60} height={22} rx={10} fill="#f2d2a8" stroke={OL} strokeWidth={5} />
+							<rect x={-10} y={-11} width={20} height={22} fill="#e8b888" stroke={OL} strokeWidth={4} />
+						</g>
+					)}
 					{mustache && <path d="M -46 40 Q -20 24 0 36 Q 20 24 46 40 Q 24 50 0 44 Q -24 50 -46 40 Z" fill={C.gray} stroke={OL} strokeWidth={5} />}
 					{(!beard || face === 'shock' || talk > 0) && <Mouth face={face} talk={talk} />}
 					{hair === 'old' && (

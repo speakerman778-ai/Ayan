@@ -5,7 +5,7 @@ import {C, Char, CharProps, OL, OW} from '../cartoon/parts';
 import {Room} from './Keeper';
 
 // Шнурок — главный герой канала «Вселенная Лёхи». Прозвище — по шнуркам на худи.
-// Торчащие прядки-ёжик на макушке, длинные шнурки худи с красными наконечниками, веснушки, охристое худи с нашивкой-планетой, синие джинсы.
+// Вихор-завиток на макушке, длинные шнурки худи с красными наконечниками, веснушки, охристое худи с нашивкой-планетой, синие джинсы.
 
 export const SHNUROK = {
 	hair: '#7a4a2a',
@@ -134,26 +134,33 @@ export const ShnurokSheet: React.FC = () => {
 	);
 };
 
-/** Hairstyle options side by side. */
+/** Look options on top of the original hair (tuft on top). */
 export const ShnurokHairOptions: React.FC = () => {
 	const t = useCurrentFrame() / 30;
-	const opts: [CharProps['hair'], string][] = [
-		['goggles', '9 · лётные очки'],
-		['capback', '10 · кепка назад'],
-		['phones', '11 · наушники'],
-		['tips', '12 · хохолок-огонёк'],
+	const opts: [CharProps['acc'], string][] = [
+		['phones', '1 · наушники'],
+		['phonesNeck', '2 · наушники на шее'],
+		['bow', '3 · вихор на шнурке'],
+		['tipped', '4 · рыжий кончик'],
+		['goggles', '5 · лётные очки'],
+		['pencil', '6 · карандаш за ухом'],
+		['star', '7 · заколка-звезда'],
+		['bandaid', '8 · пластырь на щеке'],
 	];
 	return (
 		<ShotCtx.Provider value={{t, dur: 1, scatter: 0}}>
 			<AbsoluteFill style={{background: C.wall}}>
 				<svg width={1080} height={1920} viewBox="0 0 1080 1920">
-					{opts.map(([h, l], i) => {
-						const x = 280 + (i % 2) * 520;
-						const y = 860 + Math.floor(i / 2) * 860;
+					{opts.map(([a, l], i) => {
+						const x = 270 + (i % 2) * 540;
+						const y = 440 + Math.floor(i / 2) * 470;
 						return (
 							<g key={l}>
-								<Shnurok x={x} y={y} s={0.95} hair={h} />
-								<text x={x} y={y + 70} textAnchor="middle" fontFamily="Inter" fontWeight={800} fontSize={40} fill={OL}>
+								<clipPath id={`cl${i}`}><rect x={x - 260} y={y - 420} width={520} height={400} /></clipPath>
+								<g clipPath={`url(#cl${i})`}>
+									<Shnurok x={x} y={y + 340} s={0.95} acc={a} />
+								</g>
+								<text x={x} y={y + 30} textAnchor="middle" fontFamily="Inter" fontWeight={800} fontSize={38} fill={OL}>
 									{l}
 								</text>
 							</g>
