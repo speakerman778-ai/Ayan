@@ -30,7 +30,9 @@
   // На страницах, где сторонние запросы запрещены, TMDB отключается флагом window.NO_TMDB
   const TMDB_ALLOWED = !window.NO_TMDB;
   const useTmdb = () => TMDB_ALLOWED && !!tmdbKey;
-  const localAll = () => [...window.CATALOG, ...userTitles];
+  // Обложки встроенного каталога: posters.js задаёт window.POSTERS = { id: "путь или data:URI" }
+  const POSTERS = window.POSTERS || {};
+  const localAll = () => [...window.CATALOG.map((t) => (POSTERS[t.id] && !t.poster ? { ...t, poster: POSTERS[t.id] } : t)), ...userTitles];
 
   function gradient(str) {
     let h = 0;
@@ -359,6 +361,7 @@
         ${head}
       </div>
       <div class="d-body">
+        ${t.poster && !det.backdrop ? `<img class="d-poster" src="${esc(t.poster)}" alt="" onerror="this.remove()">` : ""}
         <p class="muted">${facts}</p>
         <div class="chips">${(t.genres || []).map((g) => `<span class="chip">${esc(g)}</span>`).join("")}</div>
         ${det.tagline ? `<p><i>«${esc(det.tagline)}»</i></p>` : ""}
