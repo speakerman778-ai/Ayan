@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Моё кино</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">🎬 <span>Моё кино</span></div>
+    <input id="search" type="search" placeholder="Поиск фильмов и сериалов…" autocomplete="off" />
+    <button id="addBtn" class="btn primary">+ Добавить</button>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="all" class="active">Всё</button>
+    <button data-tab="movie">Фильмы</button>
+    <button data-tab="series">Сериалы</button>
+    <button data-tab="want">Хочу посмотреть</button>
+    <button data-tab="watching">Смотрю</button>
+    <button data-tab="watched">Просмотрено</button>
+    <button data-tab="fav">❤ Любимое</button>
+  </nav>
+
+  <section class="filters">
+    <select id="genre"><option value="">Все жанры</option></select>
+    <select id="sort">
+      <option value="rating">По рейтингу</option>
+      <option value="year">Сначала новые</option>
+      <option value="yearAsc">Сначала старые</option>
+      <option value="title">По названию</option>
+    </select>
+    <button id="randomBtn" class="btn">🎲 Что посмотреть?</button>
+    <span id="count" class="muted"></span>
+  </section>
+
+  <main id="grid" class="grid"></main>
+  <p id="empty" class="empty" hidden>Ничего не найдено.</p>
+
+  <!-- Карточка тайтла -->
+  <dialog id="details"></dialog>
+
+  <!-- Добавление своего тайтла -->
+  <dialog id="addDialog">
+    <form id="addForm" method="dialog" class="form">
+      <h2>Добавить фильм или сериал</h2>
+      <label>Название <input name="title" required /></label>
+      <label>Оригинальное название <input name="original" /></label>
+      <div class="row">
+        <label>Тип
+          <select name="type"><option value="movie">Фильм</option><option value="series">Сериал</option></select>
+        </label>
+        <label>Год <input name="year" type="number" min="1890" max="2100" /></label>
+        <label>Рейтинг <input name="rating" type="number" step="0.1" min="0" max="10" /></label>
+      </div>
+      <label>Жанры (через запятую) <input name="genres" placeholder="Драма, Комедия" /></label>
+      <label>Описание <textarea name="desc" rows="3"></textarea></label>
+      <div class="actions">
+        <button type="button" class="btn" id="addCancel">Отмена</button>
+        <button type="submit" class="btn primary">Сохранить</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
