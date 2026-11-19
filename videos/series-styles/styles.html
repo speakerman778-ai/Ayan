@@ -1,0 +1,109 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}</style></head><body><div id="root"></div>
+<script src="scene.js"></script><script>
+const T = 'СМОТРИТЕЛЬ';
+const capBox = (fill, stroke, color, font, extra = '') => `<g transform="translate(540 1440)">${extra}<rect x="-330" y="-74" width="660" height="148" rx="14" fill="${fill}" stroke="${stroke}" stroke-width="6"/><text y="30" text-anchor="middle" font-family="${font}" font-weight="900" font-size="68" fill="${color}" letter-spacing="4">${T}</text></g>`;
+const grain = (op = 0.15, seed = 3) => `<filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="${seed}"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ${op} 0"/></filter>`;
+const grainRect = '<rect width="1080" height="1920" filter="url(#grain)"/>';
+
+const STYLES = {
+// ---------------------------------------------------------------- flat cartoon
+cartoon: {
+  palette: {star: '#fff6c8', moon: '#fff1c0', moonShade: '#f3d98a', beam: '#ffe89a', sea: '#2b4a7a', wave: '#6f9ad0', rock: '#3a3f55', cliff: '#7a6a5a', cliffShade: '#655748', grass: '#6aa36a', tower: '#f6efe2', stripe: '#d9483b', door: '#7a4a2a', window: '#ffd36a', gallery: '#3a3f55', lampRoom: '#ffe08a', lamp: '#fff6c8', roof: '#d9483b', coat: '#f2c230', boots: '#3a2a22', skin: '#f6c9a0', beard: '#f1efe8', hat: '#f2c230', glow: '#ffd36a', lanternBody: '#3a3f55', cat: '#ef8a3a'},
+  stroke: '#2a2232', sw: 7, lineColor: {wave: '#6f9ad0'},
+  bg: '<rect width="1080" height="1920" fill="#1d2b4f"/>',
+  caption: capBox('#fff6e6', '#2a2232', '#2a2232', 'Inter'),
+},
+// ---------------------------------------------------------------- paper cut
+paper: {
+  defs: `<filter id="sh" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="9" stdDeviation="8" flood-color="#0b1020" flood-opacity=".55"/></filter>${grain(0.22, 5)}
+         <filter id="torn"><feTurbulence baseFrequency="0.06" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="14"/></filter>`,
+  palette: {star: '#f7f0d8', moon: '#f7ecc8', moonShade: '#eadcae', beam: '#fbeab0', sea: '#2f4f7f', wave: '#4f75a8', rock: '#26324a', cliff: '#8a7058', cliffShade: '#6f5a46', grass: '#7aa36a', tower: '#f3ece0', stripe: '#c9483b', door: '#6a4a32', window: '#f4c860', gallery: '#26324a', lampRoom: '#f6d88a', lamp: '#fff4cf', roof: '#c9483b', coat: '#e8b432', boots: '#2a2018', skin: '#efc39e', beard: '#f3f0e8', hat: '#e8b432', glow: '#f6d88a', lanternBody: '#26324a', cat: '#e07a34'},
+  filter: 'sh', waveW: 14, lineColor: {wave: '#4f75a8'},
+  bg: '<rect width="1080" height="1920" fill="#1f2d4d"/>',
+  overlay: grainRect,
+  caption: `<g transform="translate(540 1440) rotate(-2)"><g filter="url(#sh)"><rect x="-320" y="-74" width="640" height="148" fill="#fbf6ea" filter="url(#torn)"/></g><text y="30" text-anchor="middle" font-family="Inter" font-weight="900" font-size="80" fill="#c9483b" letter-spacing="6">${T}</text></g>`,
+},
+// ---------------------------------------------------------------- watercolor
+watercolor: {
+  defs: `<filter id="wc" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="9" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="22" result="d"/><feMorphology in="d" operator="erode" radius="2" result="e"/><feComposite in="d" in2="e" operator="out" result="rim"/><feGaussianBlur in="d" stdDeviation="2.5" result="soft"/><feMerge><feMergeNode in="soft"/><feMergeNode in="rim"/></feMerge></filter>${grain(0.12, 2)}
+  <radialGradient id="wsky" cx="75%" cy="15%" r="90%"><stop offset="0" stop-color="#f6e7c4"/><stop offset=".35" stop-color="#9fb4d0"/><stop offset="1" stop-color="#3f5778"/></radialGradient>`,
+  palette: {star: '#fff', moon: '#fbf1d0', moonShade: '#efdfae', beam: '#fff1c0', sea: '#4f6f95', wave: '#e8eef4', rock: '#4a4f63', cliff: '#9a8470', cliffShade: '#7a6656', grass: '#8aaa76', tower: '#f6efe2', stripe: '#c8645a', door: '#7a5a42', window: '#f6d27a', gallery: '#4a4f63', lampRoom: '#f8e3a0', lamp: '#fff8dc', roof: '#c8645a', coat: '#e9be4a', boots: '#3a2f2a', skin: '#f1cdb0', beard: '#faf8f2', hat: '#e9be4a', glow: '#f8dc8a', lanternBody: '#4a4f63', cat: '#e39a5a'},
+  filter: 'wc', beamOp: 0.45, waveW: 5,
+  bg: '<rect width="1080" height="1920" fill="#f6efe2"/><rect x="24" y="24" width="1032" height="1872" fill="url(#wsky)" filter="url(#wc)"/>',
+  overlay: grainRect,
+  caption: `<g transform="translate(540 1440)"><rect x="-320" y="-70" width="640" height="140" fill="#f6efe2" opacity=".9" filter="url(#wc)"/><text y="28" text-anchor="middle" font-family="DejaVu Serif" font-style="italic" font-weight="700" font-size="80" fill="#3f5778">Смотритель</text></g>`,
+},
+// ---------------------------------------------------------------- shadow theatre
+shadow: {
+  defs: `<radialGradient id="fire" cx="72%" cy="20%" r="85%"><stop offset="0" stop-color="#e9f3ff"/><stop offset=".15" stop-color="#9fd0e8"/><stop offset=".5" stop-color="#2f7a9a"/><stop offset=".85" stop-color="#0d2a3d"/><stop offset="1" stop-color="#050f18"/></radialGradient>${grain(0.2, 4)}`,
+  palette: {default: '#05090d', star: 'none', moon: '#f4fbff', moonShade: 'none', beam: '#e9f7ff', glow: '#e9f7ff', wave: '#0b1a24', lamp: '#f4fbff'},
+  beamOp: 0.25, glowOp: 0.35,
+  bg: '<rect width="1080" height="1920" fill="url(#fire)"/>',
+  overlay: grainRect + '<g stroke="#05090d" stroke-width="5"><line x1="560" y1="900" x2="520" y2="1920"/><line x1="705" y1="900" x2="760" y2="1920"/></g>',
+  caption: `<g transform="translate(540 1440)"><line x1="-280" y1="-70" x2="280" y2="-70" stroke="#bfe3f2" stroke-width="2"/><text y="26" text-anchor="middle" font-family="DejaVu Serif" font-size="80" fill="#dff3ff" letter-spacing="18">${T}</text><line x1="-280" y1="60" x2="280" y2="60" stroke="#bfe3f2" stroke-width="2"/></g>`,
+},
+// ---------------------------------------------------------------- neon synthwave
+neon: {
+  defs: `<filter id="neon" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <linearGradient id="nsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b0420"/><stop offset=".55" stop-color="#2a0b4a"/><stop offset="1" stop-color="#4a0e5a"/></linearGradient>`,
+  palette: {star: '#ffffff', moon: '#ff4fd8', moonShade: '#ff4fd8', beam: '#ff9df0', sea: '#22e4ff', wave: '#22e4ff', rock: '#7a5cff', cliff: '#ff4fd8', cliffShade: '#ff4fd8', grass: '#39ff9a', tower: '#ffffff', stripe: '#ff4f6a', door: '#ffd23a', window: '#ffd23a', gallery: '#22e4ff', lampRoom: '#ffd23a', lamp: '#fff4a0', roof: '#ff4f6a', coat: '#ffd23a', boots: '#22e4ff', skin: '#ffb38a', beard: '#ffffff', hat: '#ffd23a', glow: '#ffd23a', lanternBody: '#22e4ff', cat: '#ff9a3a'},
+  outlineOnly: true, olw: 5, glow: 'neon', beamOp: 0.18, glowOp: 0.3, waveW: 4,
+  bg: '<rect width="1080" height="1920" fill="url(#nsky)"/>' + Array.from({length: 14}, (_, i) => `<line x1="${-600 + i * 170}" y1="1920" x2="540" y2="1080" stroke="#ff4fd8" stroke-opacity=".25" stroke-width="2"/>`).join(''),
+  caption: `<g transform="translate(540 1440)" filter="url(#neon)"><rect x="-330" y="-74" width="660" height="148" rx="74" fill="none" stroke="#22e4ff" stroke-width="5"/><text y="28" text-anchor="middle" font-family="Inter" font-weight="300" font-size="64" fill="none" stroke="#ff4fd8" stroke-width="3" letter-spacing="6">${T}</text></g>`,
+},
+// ---------------------------------------------------------------- blueprint
+blueprint: {
+  defs: `<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-opacity=".12" stroke-width="2"/></pattern>`,
+  palette: {default: '#e8f2ff', star: 'none', moonShade: 'none', beam: '#e8f2ff', glow: '#e8f2ff', sea: 'none', cliffShade: 'none'},
+  outlineOnly: true, olw: 3.5, beamOp: 0.08, glowOp: 0.1, waveW: 3, lineColor: {wave: '#9cc4f0'},
+  bg: '<rect width="1080" height="1920" fill="#1b4f8f"/><rect width="1080" height="1920" fill="url(#grid)"/>',
+  overlay: `<g stroke="#e8f2ff" stroke-width="2" fill="#e8f2ff" font-family="DejaVu Sans Mono" font-size="26">
+    <line x1="150" y1="330" x2="150" y2="950"/><line x1="140" y1="330" x2="160" y2="330"/><line x1="140" y1="950" x2="160" y2="950"/><text x="60" y="650" transform="rotate(-90 100 650)" stroke="none">h = 32 м</text>
+    <line x1="200" y1="1010" x2="400" y2="1010"/><text x="250" y="1050" stroke="none">Ø 8 м</text>
+    <circle cx="300" cy="450" r="60" fill="none" stroke-dasharray="8 8"/><line x1="360" y1="450" x2="460" y2="380"/><text x="465" y="375" stroke="none">ЛИНЗА ФРЕНЕЛЯ</text>
+    <line x1="660" y1="800" x2="760" y2="720"/><text x="765" y="715" stroke="none">ФОНАРЬ</text>
+    <rect x="720" y="1720" width="320" height="150" fill="none"/><text x="740" y="1765" stroke="none">ЛИСТ 01</text><text x="740" y="1805" stroke="none">МАЯК · 1:200</text><text x="740" y="1845" stroke="none">СЕРИЯ 1</text></g>`,
+  caption: `<g transform="translate(540 1440)"><rect x="-330" y="-74" width="660" height="148" fill="#1b4f8f" stroke="#e8f2ff" stroke-width="4"/><text y="28" text-anchor="middle" font-family="DejaVu Sans Mono" font-weight="700" font-size="74" fill="#e8f2ff" letter-spacing="6">${T}</text></g>`,
+},
+// ---------------------------------------------------------------- stained glass
+glass: {
+  defs: `<radialGradient id="gl" cx="30%" cy="30%" r="80%"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></radialGradient>
+  <filter id="glassTex"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="3"/><feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0"/></filter>`,
+  palette: {star: '#fff3a0', moon: '#fff3a0', moonShade: '#ffd84a', beam: '#ffe66a', sea: '#1f5fae', wave: '#0c0c10', rock: '#3b2a6a', cliff: '#6a3a8a', cliffShade: '#4a2a6a', grass: '#2f9a4a', tower: '#f2f2f2', stripe: '#d0202a', door: '#8a4a1a', window: '#ffd84a', gallery: '#0c0c10', lampRoom: '#ffd84a', lamp: '#fffbe0', roof: '#d0202a', coat: '#ffb81c', boots: '#0c0c10', skin: '#f7c89a', beard: '#ffffff', hat: '#ffb81c', glow: '#ffd84a', lanternBody: '#1f5fae', cat: '#ff6a1c'},
+  stroke: '#0c0c10', sw: 14, beamOp: 0.55, waveW: 10,
+  bg: '<rect width="1080" height="1920" fill="#16245a"/>' + Array.from({length: 9}, (_, i) => `<path d="M ${i * 140 - 100} 0 L ${i * 140 + 60} 1080" stroke="#0c0c10" stroke-width="10"/>`).join('') + Array.from({length: 6}, (_, i) => `<path d="M 0 ${i * 190} L 1080 ${i * 190 + 120}" stroke="#0c0c10" stroke-width="10"/>`).join(''),
+  overlay: '<rect width="1080" height="1920" fill="url(#gl)"/><rect width="1080" height="1920" filter="url(#glassTex)"/><rect x="10" y="10" width="1060" height="1900" rx="40" fill="none" stroke="#0c0c10" stroke-width="22"/>',
+  caption: capBox('#ffd84a', '#0c0c10', '#0c0c10', 'DejaVu Serif'),
+},
+// ---------------------------------------------------------------- linocut
+lino: {
+  defs: `${grain(0.35, 8)}<pattern id="hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><rect width="14" height="14" fill="#efe6d2"/><line x1="0" y1="0" x2="0" y2="14" stroke="#141210" stroke-width="5"/></pattern>
+  <filter id="rough"><feTurbulence baseFrequency="0.05" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="6"/></filter>`,
+  palette: {default: '#141210', star: '#efe6d2', moon: '#efe6d2', moonShade: 'none', beam: 'url(#hatch)', sea: '#141210', wave: '#efe6d2', cliff: 'url(#hatch)', cliffShade: '#141210', grass: '#141210', tower: '#efe6d2', stripe: '#c23a2b', window: '#efe6d2', lampRoom: '#efe6d2', lamp: '#c23a2b', coat: 'url(#hatch)', skin: '#efe6d2', beard: '#efe6d2', glow: '#efe6d2', cat: '#141210', hat: '#141210'},
+  stroke: '#141210', sw: 6, beamOp: 1, glowOp: 0.25, filter: 'rough', waveW: 7,
+  bg: '<rect width="1080" height="1920" fill="#141210"/>',
+  overlay: grainRect.replace('filter="url(#grain)"', 'filter="url(#grain)" opacity=".6"'),
+  caption: `<g transform="translate(540 1440)" filter="url(#rough)"><rect x="-330" y="-74" width="660" height="148" fill="#c23a2b"/><text y="30" text-anchor="middle" font-family="DejaVu Serif" font-weight="700" font-size="64" fill="#efe6d2" letter-spacing="4">${T}</text></g>`,
+},
+// ---------------------------------------------------------------- pastel crayon on dark paper
+crayon: {
+  defs: `<filter id="cr" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" seed="6" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -0.55 1.12" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in" result="c"/><feTurbulence baseFrequency="0.05" numOctaves="2" seed="2" result="w"/><feDisplacementMap in="c" in2="w" scale="5"/></filter>`,
+  palette: {star: '#fff6d0', moon: '#fff1c4', moonShade: '#f2d68a', beam: '#fff1b0', sea: '#3d5a8a', wave: '#a8c8f0', rock: '#2a2f45', cliff: '#7a6a8a', cliffShade: '#5a4a6a', grass: '#8ac08a', tower: '#f3eee6', stripe: '#e8746a', door: '#8a5a4a', window: '#f8d878', gallery: '#2a2f45', lampRoom: '#f8e0a0', lamp: '#fffbe6', roof: '#e8746a', coat: '#f2cf5a', boots: '#2a2f45', skin: '#f6d0b4', beard: '#ffffff', hat: '#f2cf5a', glow: '#f8e0a0', lanternBody: '#2a2f45', cat: '#f2a26a'},
+  filter: 'cr', beamOp: 0.5, waveW: 8,
+  bg: '<rect width="1080" height="1920" fill="#232438"/>',
+  caption: `<g transform="translate(540 1440)" filter="url(#cr)"><rect x="-330" y="-74" width="660" height="148" rx="20" fill="#f3eee6"/><text y="30" text-anchor="middle" font-family="Comic Sans MS, DejaVu Sans" font-weight="700" font-size="80" fill="#3d5a8a">Смотритель</text></g>`,
+},
+// ---------------------------------------------------------------- retro 50s poster
+poster: {
+  defs: `${grain(0.25, 11)}<pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="6" cy="6" r="2.2" fill="#000" opacity=".18"/></pattern>`,
+  palette: {star: '#f4e3b6', moon: '#f4e3b6', moonShade: '#e8cf8a', beam: '#f4e3b6', sea: '#1e5b66', wave: '#f4e3b6', rock: '#123c44', cliff: '#c7643a', cliffShade: '#a24c2a', grass: '#e2a13a', tower: '#f4e3b6', stripe: '#c7323a', door: '#123c44', window: '#e2a13a', gallery: '#123c44', lampRoom: '#e2a13a', lamp: '#fff3cc', roof: '#c7323a', coat: '#e2a13a', boots: '#123c44', skin: '#f0c49a', beard: '#f4e3b6', hat: '#e2a13a', glow: '#f4e3b6', lanternBody: '#123c44', cat: '#123c44'},
+  beamOp: 0.4, waveW: 9,
+  bg: '<rect width="1080" height="1920" fill="#2b7a7f"/>',
+  overlay: '<rect width="1080" height="1920" fill="url(#dots)"/>' + grainRect + '<rect x="30" y="30" width="1020" height="1860" fill="none" stroke="#f4e3b6" stroke-width="12"/><text x="540" y="160" text-anchor="middle" font-family="DejaVu Serif" font-weight="700" font-size="46" fill="#f4e3b6" letter-spacing="14">НОВЫЙ СЕРИАЛ</text>',
+  caption: `<g transform="translate(540 1440)"><rect x="-340" y="-78" width="680" height="156" fill="#c7323a"/><text y="32" text-anchor="middle" font-family="DejaVu Serif" font-weight="700" font-size="66" fill="#f4e3b6" letter-spacing="4">${T}</text></g>`,
+},
+};
+const name = new URLSearchParams(location.search).get('s');
+document.getElementById('root').innerHTML = renderScene(STYLES[name]);
+window.READY = 1;
+</script></body></html>
