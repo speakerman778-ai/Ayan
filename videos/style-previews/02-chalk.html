@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}</style></head><body>
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" font-family="'Comic Sans MS','DejaVu Sans',sans-serif">
+<defs>
+<filter id="chalk"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="6"/></filter>
+<filter id="grain"><feTurbulence baseFrequency="1.6" numOctaves="1" seed="5" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -1.6 1.1" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter>
+<radialGradient id="smudge" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#3f6b52" stop-opacity=".9"/><stop offset="1" stop-color="#2b4d3b" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1080" height="1920" fill="#5a3a20"/>
+<rect x="30" y="30" width="1020" height="1700" fill="#2c4a3a"/>
+<ellipse cx="300" cy="500" rx="380" ry="200" fill="url(#smudge)"/><ellipse cx="760" cy="1200" rx="420" ry="230" fill="url(#smudge)"/><ellipse cx="560" cy="900" rx="300" ry="500" fill="url(#smudge)" opacity=".5"/>
+<rect x="30" y="1730" width="1020" height="40" fill="#7a5230"/><rect x="200" y="1712" width="90" height="18" rx="9" fill="#f2efe4"/><rect x="320" y="1715" width="70" height="15" rx="7" fill="#f3d24a"/><rect x="420" y="1716" width="60" height="14" rx="7" fill="#f2a2c0"/>
+<g filter="url(#chalk)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<g filter="url(#grain)">
+<text x="540" y="180" text-anchor="middle" font-size="110" fill="#f2efe4" font-weight="bold">Дважды</text>
+<path d="M300 220 Q540 250 790 214" stroke="#f3d24a" stroke-width="10"/>
+<!-- two cities -->
+<text x="260" y="360" text-anchor="middle" font-size="46" fill="#f2efe4">Хиросима</text>
+<text x="800" y="360" text-anchor="middle" font-size="46" fill="#f2efe4">Нагасаки</text>
+<text x="260" y="410" text-anchor="middle" font-size="36" fill="#9fd4f0">6 августа</text>
+<text x="800" y="410" text-anchor="middle" font-size="36" fill="#9fd4f0">9 августа</text>
+<!-- mushrooms -->
+<g stroke="#f2efe4" stroke-width="6"><path d="M235 760 Q230 640 245 600 M285 760 Q290 640 275 600"/><path d="M160 600 Q150 520 200 500 Q230 440 280 470 Q340 450 350 520 Q380 560 350 600 Z"/><path d="M180 560 l30 20 M230 520 l25 25 M290 520 l20 30" stroke-width="4"/></g>
+<g stroke="#f2efe4" stroke-width="6"><path d="M775 760 Q770 640 785 600 M825 760 Q830 640 815 600"/><path d="M700 600 Q690 520 740 500 Q770 440 820 470 Q880 450 890 520 Q920 560 890 600 Z"/><path d="M720 560 l30 20 M770 520 l25 25 M830 520 l20 30" stroke-width="4"/></g>
+<path d="M120 760 H960" stroke="#f2efe4" stroke-width="5"/>
+<!-- train arrow -->
+<path d="M330 820 Q540 700 740 820" stroke="#f2a2c0" stroke-width="7"/><path d="M712 790 L742 822 L700 832" stroke="#f2a2c0" stroke-width="7"/>
+<text x="540" y="700" text-anchor="middle" font-size="40" fill="#f2a2c0">поезд домой</text>
+<!-- hero -->
+<g stroke="#f2efe4" stroke-width="6">
+<circle cx="540" cy="1010" r="58"/><path d="M500 975 Q540 940 582 975" stroke-width="5"/><circle cx="522" cy="1012" r="4" fill="#f2efe4"/><circle cx="556" cy="1012" r="4" fill="#f2efe4"/><path d="M525 1040 Q540 1050 555 1040"/>
+<path d="M470 980 L610 1000" stroke="#f2efe4" stroke-width="5"/><path d="M480 1000 L600 1030" stroke-width="4"/>
+<path d="M475 1080 Q540 1065 605 1080 L620 1290 L460 1290 Z"/><path d="M475 1090 L420 1230 M605 1090 L650 1220"/><rect x="630" y="1215" width="110" height="80" rx="10"/><path d="M670 1215 v-15 h30 v15"/>
+<path d="M500 1290 L490 1440 M580 1290 L595 1440"/>
+<!-- hatching -->
+<path d="M480 1110 l30 -20 M480 1150 l60 -40 M480 1190 l90 -60 M490 1230 l100 -70 M500 1270 l100 -70" stroke-width="3" opacity=".7"/>
+</g>
+<!-- labels -->
+<path d="M700 1000 Q780 980 820 930" stroke="#f3d24a" stroke-width="5"/><path d="M800 925 L822 928 L818 950" stroke="#f3d24a" stroke-width="5"/>
+<text x="860" y="905" text-anchor="middle" font-size="40" fill="#f3d24a">бинты</text>
+<!-- checks -->
+<circle cx="230" cy="1120" r="45" stroke="#9fd4f0" stroke-width="6"/><path d="M205 1120 l18 20 l32 -40" stroke="#f2efe4" stroke-width="7"/>
+<text x="230" y="1210" text-anchor="middle" font-size="40" fill="#f2efe4">выжил</text>
+<circle cx="230" cy="1320" r="45" stroke="#9fd4f0" stroke-width="6"/><path d="M205 1320 l18 20 l32 -40" stroke="#f2efe4" stroke-width="7"/>
+<text x="230" y="1410" text-anchor="middle" font-size="40" fill="#f2efe4">выжил</text>
+<!-- stick man commenting -->
+<g stroke="#f2efe4" stroke-width="5"><circle cx="890" cy="1450" r="26"/><path d="M890 1476 V1560 M890 1500 L850 1470 M890 1500 L930 1530 M890 1560 L865 1620 M890 1560 L915 1620"/></g>
+<text x="830" y="1380" text-anchor="middle" font-size="40" fill="#9fd4f0">серьёзно?!</text>
+</g></g>
+<!-- caption -->
+<g transform="translate(540 1440)"><rect x="-230" y="-55" width="460" height="110" rx="14" fill="#1f362b" stroke="#f3d24a" stroke-width="4" stroke-dasharray="14 10"/><text y="20" text-anchor="middle" font-size="60" fill="#f3d24a" font-weight="bold">ДВАЖДЫ</text></g>
+</svg><script>window.READY=1</script></body></html>
