@@ -195,6 +195,7 @@ export type CharProps = {
 	nose?: boolean;
 	headS?: number; // head size multiplier
 	bodyS?: number; // torso + legs length multiplier
+	headDrop?: number; // move head down toward shoulders
 };
 
 export const Char: React.FC<CharProps> = (p) => {
@@ -230,6 +231,7 @@ export const Char: React.FC<CharProps> = (p) => {
 		nose = false,
 		headS = 1,
 		bodyS = 1,
+		headDrop = 0,
 	} = p;
 	const breathe = Math.sin(t * 2.2 + blinkSeed) * 0.012;
 	const cyc = (t + blinkSeed * 1.7) % 3.4;
@@ -237,7 +239,7 @@ export const Char: React.FC<CharProps> = (p) => {
 	const legLen = (kid ? 80 : 100) * bodyS;
 	const hipY = -legLen * 2 - 10;
 	const shY = hipY - (kid ? 150 : 210) * bodyS;
-	const headY = shY - (kid ? 120 : 140) * headS;
+	const headY = shY - (kid ? 120 : 140) * headS + headDrop;
 	const shoulderX = kid ? 62 : 84;
 	const hairCol = hair === 'old' || hair === 'boss' ? C.gray : C.hair;
 	const skin = C.skin;

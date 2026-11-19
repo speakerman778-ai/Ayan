@@ -60,7 +60,7 @@ export const Cat: React.FC<{x: number; y: number; s?: number; t: number; look?: 
 };
 
 const Keeper: React.FC<{x: number; y: number; s?: number; armR?: [number, number]; armL?: [number, number]; face?: 'smile' | 'neutral' | 'think' | 'shock'}> = ({x, y, s = 1, armR, armL, face = 'smile'}) => (
-	<Char x={x} y={y} s={s} headS={0.82} bodyS={1.14} hair="old" beard nose hat="souwester" hatColor={COAT} jacket={COAT} pants="#3d4a66" face={face} armR={armR} armL={armL} />
+	<Char x={x} y={y} s={s} headS={0.82} bodyS={1.14} headDrop={34} hair="old" beard nose hat="souwester" hatColor={COAT} jacket={COAT} pants="#3d4a66" face={face} armR={armR} armL={armL} />
 );
 
 // ------------------------------------------------------------------ scene 1: inside the lighthouse
@@ -206,15 +206,15 @@ const Outside: React.FC<{t: number}> = ({t}) => (
 		<path d="M -20 1000 C 220 930 560 940 760 1000 C 840 1080 800 1300 850 1500 C 880 1700 820 1850 800 1940 L -20 1940 Z" fill="#7a6a5a" stroke={OL} strokeWidth={OW} />
 		<path d="M -20 1000 C 220 930 560 940 760 1000 L 756 1030 C 560 970 220 960 -20 1030 Z" fill="#6aa36a" stroke={OL} strokeWidth={OW} />
 		<Lighthouse x={230} y={990} t={t} />
-		<Keeper x={560} y={1010} s={0.82} armR={[100, -30]} face="neutral" />
+		<Keeper x={590} y={1012} s={0.52} armR={[100, -30]} face="neutral" />
 		{/* lantern */}
-		<g transform={`translate(782 ${718 + Math.sin(t * 3) * 3})`}>
+		<g transform={`translate(731 ${836 + Math.sin(t * 3) * 3}) scale(0.62)`}>
 			<circle r={70} fill="#ffd36a" opacity={0.35} />
 			<path d="M -16 -50 Q 0 -70 16 -50" fill="none" stroke={OL} strokeWidth={6} />
 			<rect x={-26} y={-48} width={52} height={70} rx={8} fill="#3a3f55" stroke={OL} strokeWidth={6} />
 			<rect x={-16} y={-38} width={32} height={50} rx={6} fill="#fff1b0" />
 		</g>
-		<Cat x={770} y={1015} s={0.55} t={t} look={-1} />
+		<Cat x={760} y={1016} s={0.34} t={t} look={-1} />
 	</>
 );
 
