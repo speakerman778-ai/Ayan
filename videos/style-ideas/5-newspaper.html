@@ -1,0 +1,73 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}</style></head><body>
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" font-family="'DejaVu Serif',serif" id="s">
+<defs>
+<filter id="paper"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" seed="8"/><feColorMatrix type="matrix" values="0 0 0 0 0.35 0 0 0 0 0.3 0 0 0 0 0.22 0 0 0 0.16 0"/></filter>
+<pattern id="ht" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><circle cx="5" cy="5" r="2.6" fill="#1d1a17"/></pattern>
+<pattern id="ht2" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><circle cx="5" cy="5" r="4.2" fill="#1d1a17"/></pattern>
+<filter id="sh"><feDropShadow dx="6" dy="10" stdDeviation="8" flood-opacity=".35"/></filter>
+<filter id="marker"><feTurbulence baseFrequency="0.03" numOctaves="2" seed="5"/><feDisplacementMap in="SourceGraphic" scale="8"/></filter>
+<filter id="torn"><feTurbulence baseFrequency="0.08" numOctaves="3" seed="3"/><feDisplacementMap in="SourceGraphic" scale="16"/></filter>
+</defs>
+<rect width="1080" height="1920" fill="#e9e1cf"/>
+<g id="cols" fill="#8c857a"></g>
+<!-- masthead -->
+<text x="540" y="150" text-anchor="middle" font-size="64" font-weight="700" fill="#1d1a17" letter-spacing="4">ВЕЧЕРНИЙ ВЕСТНИК</text>
+<line x1="60" y1="180" x2="1020" y2="180" stroke="#1d1a17" stroke-width="4"/><line x1="60" y1="190" x2="1020" y2="190" stroke="#1d1a17" stroke-width="1.5"/>
+<text x="60" y="222" font-size="26" fill="#1d1a17">АВГУСТ 1945</text><text x="1020" y="222" text-anchor="end" font-size="26" fill="#1d1a17">ЦЕНА 5 СЕН</text>
+<!-- cutout 1: halftone flash photo -->
+<g transform="translate(110 290) rotate(-3)" filter="url(#sh)">
+ <rect width="520" height="620" fill="#f4efe3" filter="url(#torn)"/>
+ <g transform="translate(20 20)">
+  <rect width="480" height="580" fill="#d8d0c0"/>
+  <circle cx="240" cy="230" r="230" fill="url(#ht)" opacity=".55"/>
+  <path d="M 200 580 C 210 460 190 400 205 330 L 275 330 C 290 400 270 460 280 580 Z" fill="url(#ht2)"/>
+  <path d="M 90 360 Q 60 290 130 260 Q 130 180 220 180 Q 270 120 350 170 Q 430 170 420 250 Q 470 300 410 360 Q 330 390 240 370 Q 160 395 90 360 Z" fill="url(#ht2)"/>
+  <rect y="480" width="480" height="100" fill="url(#ht2)"/>
+ </g>
+ <text x="260" y="660" text-anchor="middle" font-size="26" font-style="italic" fill="#1d1a17">Хиросима, 6 августа</text>
+</g>
+<!-- cutout 2: second -->
+<g transform="translate(640 380) rotate(4)" filter="url(#sh)">
+ <rect width="360" height="440" fill="#f4efe3" filter="url(#torn)"/>
+ <g transform="translate(16 16)"><rect width="328" height="400" fill="#d8d0c0"/>
+  <path d="M 140 400 C 148 320 132 280 144 230 L 194 230 C 206 280 190 320 198 400 Z" fill="url(#ht2)"/>
+  <path d="M 60 250 Q 40 200 90 180 Q 90 120 150 125 Q 190 80 240 115 Q 300 115 290 170 Q 320 205 280 250 Q 220 270 165 255 Q 110 272 60 250 Z" fill="url(#ht2)"/>
+ </g>
+ <text x="180" y="470" text-anchor="middle" font-size="24" font-style="italic" fill="#1d1a17">Нагасаки, 9 августа</text>
+</g>
+<!-- character cutout: halftone portrait of an engineer (drawn) -->
+<g transform="translate(330 900) rotate(2)" filter="url(#sh)">
+ <rect width="420" height="470" fill="#f4efe3" filter="url(#torn)"/>
+ <g transform="translate(210 470)">
+  <path d="M -150 0 L -130 -170 Q 0 -215 130 -170 L 150 0 Z" fill="url(#ht2)"/>
+  <path d="M -40 -190 L 0 -120 L 40 -190 Z" fill="#f4efe3"/>
+  <ellipse cx="0" cy="-290" rx="95" ry="110" fill="url(#ht)"/>
+  <path d="M -95 -300 C -95 -420 95 -420 95 -300 C 60 -350 -60 -350 -95 -300 Z" fill="#1d1a17"/>
+  <circle cx="-34" cy="-290" r="9" fill="#1d1a17"/><circle cx="34" cy="-290" r="9" fill="#1d1a17"/>
+  <path d="M -22 -235 q 22 10 44 0" stroke="#1d1a17" stroke-width="5" fill="none"/>
+ </g>
+</g>
+<!-- tape -->
+<g opacity=".75"><rect x="300" y="270" width="160" height="46" fill="#f3e3a0" transform="rotate(-12 380 293)"/><rect x="860" y="360" width="140" height="44" fill="#f3e3a0" transform="rotate(18 930 382)"/><rect x="460" y="880" width="160" height="44" fill="#f3e3a0" transform="rotate(-4 540 902)"/></g>
+<!-- red marker -->
+<g fill="none" stroke="#d0312d" stroke-width="10" stroke-linecap="round" filter="url(#marker)">
+ <ellipse cx="540" cy="1135" rx="250" ry="270"/>
+ <path d="M 640 620 Q 760 820 700 960"/><path d="M 676 930 L 700 966 L 732 936"/>
+ <path d="M 380 900 Q 250 820 330 700"/><path d="M 300 722 L 330 698 L 350 732"/>
+</g>
+<text x="850" y="1010" font-size="54" fill="#d0312d" font-family="'Comic Sans MS','DejaVu Sans'" transform="rotate(-8 850 1010)" filter="url(#marker)">ОН?!</text>
+<!-- typewriter labels -->
+<g font-family="'DejaVu Sans Mono',monospace" font-size="30" fill="#1d1a17">
+ <g transform="translate(90 1250) rotate(-2)"><rect width="250" height="54" fill="#f4efe3" filter="url(#sh)"/><text x="16" y="38">ИНЖЕНЕР</text></g>
+</g>
+<!-- headline caption -->
+<g transform="translate(540 1440)">
+ <rect x="-330" y="-80" width="660" height="160" fill="#1d1a17" filter="url(#sh)"/>
+ <text y="34" text-anchor="middle" font-size="104" font-weight="700" fill="#e9e1cf" letter-spacing="6">ДВАЖДЫ</text>
+</g>
+<rect width="1080" height="1920" filter="url(#paper)"/>
+</svg><script>
+const c=document.getElementById('cols');let s='';
+for(let col=0;col<3;col++)for(let i=0;i<42;i++){const y=1560+i*9.2;if(y>1880)break;const w=290-(i%7==6?120:Math.random()*20);s+=`<rect x="${60+col*330}" y="${y}" width="${w}" height="4"/>`}
+for(let i=0;i<70;i++){const y=250+i*22;s+=`<rect x="60" y="${y}" width="${960-Math.random()*40}" height="5" opacity=".35"/>`}
+c.innerHTML=s;window.READY=1</script></body></html>

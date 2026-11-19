@@ -1,0 +1,68 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}</style></head><body>
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" font-family="'DejaVu Serif',serif">
+<defs>
+<filter id="wood" x="0" y="0" width="100%" height="100%">
+ <feTurbulence type="fractalNoise" baseFrequency="0.004 0.12" numOctaves="3" seed="6" result="n"/>
+ <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.2 0 0 0 0 0.12 0 0 0 0 0.05 0 0 0 0.35 0" result="g"/>
+ <feComposite in="g" in2="SourceGraphic" operator="in" result="g2"/>
+ <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="g2"/></feMerge>
+</filter>
+<filter id="rough"><feTurbulence baseFrequency="0.05" numOctaves="2" seed="2"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f3f6e"/><stop offset=".35" stop-color="#3f6f9a"/><stop offset=".62" stop-color="#e8b26a"/><stop offset=".72" stop-color="#f2d9a8"/></linearGradient>
+</defs>
+<rect width="1080" height="1920" fill="#efe1c2"/>
+<g filter="url(#wood)">
+<rect x="40" y="40" width="1000" height="1840" fill="url(#sky)"/>
+<!-- stylized flash with rays -->
+<g transform="translate(600 820)">
+ <g fill="#f6e3b4" opacity=".9"></g>
+ <circle r="170" fill="#fff4d6" stroke="#2a2018" stroke-width="7"/>
+ <circle r="120" fill="#f9d98a"/>
+</g>
+<!-- curly cloud bands (original motif) -->
+<g fill="#f2e6cc" stroke="#2a2018" stroke-width="7" stroke-linejoin="round">
+ <path d="M 60 560 Q 120 500 200 540 Q 240 480 320 520 Q 380 470 440 530 L 440 570 L 60 570 Z"/>
+ <path d="M 700 440 Q 760 380 840 420 Q 880 360 960 400 Q 1010 380 1040 420 L 1040 460 L 700 460 Z"/>
+</g>
+<g fill="none" stroke="#2a2018" stroke-width="5"><path d="M 140 548 q 20 -26 40 0"/><path d="M 300 540 q 20 -26 40 0"/><path d="M 820 430 q 20 -26 40 0"/></g>
+<!-- mushroom as layered stylized cloud -->
+<g stroke="#2a2018" stroke-width="7" stroke-linejoin="round">
+ <path d="M 560 1180 C 545 1040 580 960 565 880 L 645 880 C 630 960 665 1040 650 1180 Z" fill="#e9c78f"/>
+ <path d="M 430 900 Q 380 840 440 790 Q 430 700 530 690 Q 580 620 680 660 Q 780 650 790 740 Q 860 790 800 870 Q 700 920 600 900 Q 500 930 430 900 Z" fill="#f2dcae"/>
+ <path d="M 470 860 q 30 -40 70 -10 q 30 -40 80 -5 q 40 -30 80 10" fill="none"/>
+</g>
+<!-- sea waves -->
+<g stroke="#2a2018" stroke-width="7" stroke-linejoin="round">
+ <path d="M 40 1180 L 1040 1180 L 1040 1880 L 40 1880 Z" fill="#2c5a8a"/>
+ <path d="M 40 1260 Q 140 1200 240 1260 Q 340 1200 440 1260 Q 540 1200 640 1260 Q 740 1200 840 1260 Q 940 1200 1040 1260" fill="none" stroke="#f2e6cc" stroke-width="8"/>
+</g>
+<!-- shore + pier -->
+<path d="M 40 1300 L 1040 1300 L 1040 1880 L 40 1880 Z" fill="#c9a26a" stroke="#2a2018" stroke-width="7"/>
+<g stroke="#2a2018" stroke-width="5" opacity=".5"><line x1="40" y1="1380" x2="1040" y2="1380"/><line x1="40" y1="1560" x2="1040" y2="1560"/><line x1="40" y1="1740" x2="1040" y2="1740"/></g>
+<!-- figure in kimono-like coat, flat colors -->
+<g transform="translate(330 1330)" stroke="#2a2018" stroke-width="7" stroke-linejoin="round">
+ <path d="M -90 -380 L 90 -380 L 130 0 L -130 0 Z" fill="#1f3f6e"/>
+ <path d="M -90 -380 L 0 -260 L 90 -380" fill="#e9dcc0"/>
+ <path d="M -50 -380 L 0 -300 L 50 -380" fill="#c0392b"/>
+ <rect x="-110" y="-200" width="220" height="40" fill="#c0392b"/>
+ <path d="M 90 -370 L 170 -200 L 140 -190 L 75 -320 Z" fill="#1f3f6e"/>
+ <rect x="140" y="-210" width="140" height="100" fill="#8a4a24"/>
+ <circle cx="0" cy="-460" r="78" fill="#f0d2ae"/>
+ <path d="M -80 -470 Q -70 -560 0 -555 Q 70 -560 80 -470 Q 40 -510 0 -500 Q -40 -510 -80 -470 Z" fill="#1a1412"/>
+ <path d="M -36 -462 l 20 0 M 16 -462 l 20 0" stroke-width="6"/>
+ <path d="M -14 -425 q 14 8 28 0" fill="none" stroke-width="5"/>
+</g>
+<!-- vertical red cartouche -->
+<g transform="translate(900 560)">
+ <rect x="-60" y="-260" width="120" height="520" fill="#c0392b" stroke="#2a2018" stroke-width="7"/>
+ <rect x="-46" y="-246" width="92" height="492" fill="none" stroke="#f2e6cc" stroke-width="3"/>
+ <g fill="#f2e6cc" font-size="64" font-weight="700" text-anchor="middle"><text y="-170">Д</text><text y="-90">В</text><text y="-10">А</text><text y="70">Ж</text><text y="150">Д</text><text y="230">Ы</text></g>
+</g>
+</g>
+<rect x="40" y="40" width="1000" height="1840" fill="none" stroke="#2a2018" stroke-width="14"/>
+<g transform="translate(540 1440)" filter="url(#rough)">
+ <rect x="-280" y="-66" width="560" height="132" fill="#f2e6cc" stroke="#2a2018" stroke-width="7"/>
+ <text y="28" text-anchor="middle" font-size="80" font-weight="700" fill="#c0392b" letter-spacing="10">ДВАЖДЫ</text>
+</g>
+</svg><script>
+const g=document.querySelector('g[fill="#f6e3b4"]');let s='';for(let i=0;i<16;i++){const a=i/16*Math.PI*2,b=a+0.12;s+=`<path d="M 0 0 L ${Math.cos(a)*520} ${Math.sin(a)*520} L ${Math.cos(b)*520} ${Math.sin(b)*520} Z"/>`}g.innerHTML=s;window.READY=1</script></body></html>
