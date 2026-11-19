@@ -193,6 +193,8 @@ export type CharProps = {
 	hat?: 'souwester';
 	hatColor?: string;
 	nose?: boolean;
+	headS?: number; // head size multiplier
+	bodyS?: number; // torso + legs length multiplier
 };
 
 export const Char: React.FC<CharProps> = (p) => {
@@ -226,14 +228,16 @@ export const Char: React.FC<CharProps> = (p) => {
 		hat,
 		hatColor = C.ochre,
 		nose = false,
+		headS = 1,
+		bodyS = 1,
 	} = p;
 	const breathe = Math.sin(t * 2.2 + blinkSeed) * 0.012;
 	const cyc = (t + blinkSeed * 1.7) % 3.4;
 	const blink = cyc > 3.2 && cyc < 3.32 ? 0.15 : 1;
-	const legLen = kid ? 80 : 100;
+	const legLen = (kid ? 80 : 100) * bodyS;
 	const hipY = -legLen * 2 - 10;
-	const shY = hipY - (kid ? 150 : 210);
-	const headY = shY - (kid ? 120 : 140);
+	const shY = hipY - (kid ? 150 : 210) * bodyS;
+	const headY = shY - (kid ? 120 : 140) * headS;
 	const shoulderX = kid ? 62 : 84;
 	const hairCol = hair === 'old' || hair === 'boss' ? C.gray : C.hair;
 	const skin = C.skin;
@@ -298,8 +302,8 @@ export const Char: React.FC<CharProps> = (p) => {
 					</g>
 				)}
 				{/* neck + head */}
-				<rect x={-22} y={headY + 100} width={44} height={shY - headY - 90} fill={skin} stroke={OL} strokeWidth={OW} />
-				<g transform={`translate(0 ${headY}) rotate(${headTilt}) scale(${kid ? 0.82 : 1})`}>
+				<rect x={-22} y={headY + 100 * headS} width={44} height={shY - headY - 90 * headS} fill={skin} stroke={OL} strokeWidth={OW} />
+				<g transform={`translate(0 ${headY}) rotate(${headTilt}) scale(${(kid ? 0.82 : 1) * headS})`}>
 					{/* hair back (bun) */}
 					{hair === 'wife' && <circle cx={0} cy={-128} r={46} fill={hairCol} stroke={OL} strokeWidth={OW} />}
 					{/* ears */}
@@ -327,9 +331,12 @@ export const Char: React.FC<CharProps> = (p) => {
 					)}
 					<path d="M -4 16 Q 8 28 -6 34" stroke={OL} strokeWidth={6} fill="none" strokeLinecap="round" />
 					{beard && (
-						<path d="M -104 20 C -100 120 -50 176 0 178 C 50 176 100 120 104 20 C 80 60 50 74 0 76 C -50 74 -80 60 -104 20 Z" fill="#f4f1ea" stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+						<g>
+							<path d="M -92 34 C -96 92 -56 128 -22 132 L 0 150 L 22 132 C 56 128 96 92 92 34 C 70 62 40 72 0 72 C -40 72 -70 62 -92 34 Z" fill="#f4f1ea" stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -46 90 q 8 14 18 4 M 28 94 q 10 10 18 -4 M -6 112 q 6 12 14 0" fill="none" stroke="#cfc8bb" strokeWidth={5} strokeLinecap="round" />
+							<path d="M -50 50 Q -24 30 0 44 Q 24 30 50 50 Q 28 62 0 56 Q -28 62 -50 50 Z" fill="#f4f1ea" stroke={OL} strokeWidth={5} />
+						</g>
 					)}
-					{beard && <path d="M -48 52 Q -20 30 0 44 Q 20 30 48 52 Q 24 64 0 58 Q -24 64 -48 52 Z" fill="#f4f1ea" stroke={OL} strokeWidth={5} />}
 					{nose && <ellipse cx={0} cy={22} rx={20} ry={16} fill={C.cheek} stroke={OL} strokeWidth={5} />}
 					{mustache && <path d="M -46 40 Q -20 24 0 36 Q 20 24 46 40 Q 24 50 0 44 Q -24 50 -46 40 Z" fill={C.gray} stroke={OL} strokeWidth={5} />}
 					{(!beard || face === 'shock' || talk > 0) && <Mouth face={face} talk={talk} />}
