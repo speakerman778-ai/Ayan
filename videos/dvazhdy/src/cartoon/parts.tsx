@@ -163,7 +163,7 @@ const Mouth: React.FC<{face: Face; talk?: number}> = ({face, talk = 0}) => {
 };
 
 // ------------------------------------------------------------------ character
-export type Hair = 'guy' | 'wife' | 'boy' | 'boss' | 'old' | 'lyokha' | 'sweep' | 'curly' | 'crew' | 'shaggy';
+export type Hair = 'guy' | 'wife' | 'boy' | 'boss' | 'old' | 'lyokha' | 'sweep' | 'curly' | 'crew' | 'shaggy' | 'quiff' | 'middle' | 'buzz' | 'beanie';
 export type CharProps = {
 	x: number;
 	y: number;
@@ -372,6 +372,34 @@ export const Char: React.FC<CharProps> = (p) => {
 					)}
 					{hair === 'shaggy' && (
 						<path d="M -126 40 C -140 -90 -70 -146 0 -142 C 70 -146 140 -90 126 40 L 108 10 L 100 34 L 92 -30 L 70 -6 L 58 -56 L 34 -30 L 16 -66 L -6 -36 L -28 -66 L -46 -30 L -66 -58 L -80 -10 L -98 -32 L -102 30 L -114 4 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+					)}
+					{hair === 'quiff' && (
+						<path d="M -112 -6 C -118 -80 -90 -112 -60 -122 C -40 -170 40 -186 96 -150 C 70 -150 60 -140 66 -128 C 100 -110 118 -70 112 -6 C 100 -46 78 -66 50 -74 C 10 -62 -40 -66 -80 -60 C -96 -44 -106 -26 -112 -6 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+					)}
+					{hair === 'middle' && (
+						<g fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round">
+							<path d="M 0 -136 C -70 -138 -124 -96 -116 10 C -96 -40 -60 -60 -30 -66 C -14 -80 -4 -106 0 -136 Z" />
+							<path d="M 0 -136 C 70 -138 124 -96 116 10 C 96 -40 60 -60 30 -66 C 14 -80 4 -106 0 -136 Z" />
+						</g>
+					)}
+					{hair === 'buzz' && (
+						<g>
+							<path d="M -110 -20 C -116 -100 -60 -132 0 -132 C 60 -132 116 -100 110 -20 C 96 -70 60 -92 0 -94 C -60 -92 -96 -70 -110 -20 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							{[-70, -40, -10, 20, 50, 80].map((dx, i) => (
+								<circle key={i} cx={dx} cy={-112 + Math.abs(dx) * 0.12} r={3} fill={OL} opacity={0.5} />
+							))}
+						</g>
+					)}
+					{hair === 'beanie' && (
+						<g>
+							<path d="M -112 -2 C -116 -40 -100 -60 -80 -62 L 80 -62 C 100 -60 116 -40 112 -2 C 90 -30 60 -40 0 -42 C -60 -40 -90 -30 -112 -2 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -116 -84 C -120 -164 -60 -184 0 -184 C 60 -184 120 -164 116 -84 Z" fill={C.red} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<rect x={-124} y={-104} width={248} height={44} rx={18} fill={C.red} stroke={OL} strokeWidth={OW} />
+							{[-90, -54, -18, 18, 54, 90].map((dx) => (
+								<line key={dx} x1={dx} y1={-98} x2={dx} y2={-66} stroke={OL} strokeWidth={4} opacity={0.5} />
+							))}
+							<circle cx={0} cy={-190} r={22} fill={C.white} stroke={OL} strokeWidth={OW} />
+						</g>
 					)}
 					{hair === 'boss' && <path d="M -112 -10 C -116 -70 -96 -110 -60 -118 C -50 -96 -90 -70 -108 -10 Z M 112 -10 C 116 -70 96 -110 60 -118 C 50 -96 90 -70 108 -10 Z" fill={hairCol} stroke={OL} strokeWidth={OW} />}
 					{/* cheeks */}

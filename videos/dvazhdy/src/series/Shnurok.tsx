@@ -138,10 +138,10 @@ export const ShnurokSheet: React.FC = () => {
 export const ShnurokHairOptions: React.FC = () => {
 	const t = useCurrentFrame() / 30;
 	const opts: [CharProps['hair'], string][] = [
-		['sweep', '1 · чёлка набок'],
-		['curly', '2 · кудри'],
-		['crew', '3 · короткая стрижка'],
-		['shaggy', '4 · лохматые'],
+		['quiff', '5 · кок вверх'],
+		['middle', '6 · пробор посередине'],
+		['buzz', '7 · под машинку'],
+		['beanie', '8 · шапка-бини'],
 	];
 	return (
 		<ShotCtx.Provider value={{t, dur: 1, scatter: 0}}>
