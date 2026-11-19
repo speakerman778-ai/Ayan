@@ -350,7 +350,7 @@ export const Char: React.FC<CharProps> = (p) => {
 					{hair === 'boy' && <path d="M -114 -4 C -124 -96 -64 -138 0 -136 C 64 -138 124 -96 114 -4 L 80 -40 L 50 -20 L 20 -44 L -14 -22 L -44 -44 L -76 -22 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />}
 					{hair === 'lyokha' && (
 						<g>
-							<path d="M 6 -128 C -6 -186 34 -214 62 -196 C 40 -192 30 -176 40 -156 C 52 -180 84 -180 92 -160 C 70 -160 60 -146 56 -128 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -56 -122 L -48 -160 L -24 -134 L -6 -172 L 14 -136 L 40 -164 L 46 -128 L 66 -146 L 64 -114 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 							<path d="M -114 -2 C -126 -98 -62 -142 6 -138 C 80 -136 126 -90 114 -6 L 96 -34 L 84 -18 L 66 -52 L 46 -30 L 26 -60 L 4 -36 L -18 -62 L -38 -36 L -62 -58 L -78 -30 L -96 -46 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 						</g>
 					)}
