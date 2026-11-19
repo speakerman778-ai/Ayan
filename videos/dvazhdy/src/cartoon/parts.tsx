@@ -189,6 +189,10 @@ export type CharProps = {
 	headTilt?: number;
 	kid?: boolean;
 	tone?: number; // 0..1 darken (silhouette)
+	beard?: boolean;
+	hat?: 'souwester';
+	hatColor?: string;
+	nose?: boolean;
 };
 
 export const Char: React.FC<CharProps> = (p) => {
@@ -218,6 +222,10 @@ export const Char: React.FC<CharProps> = (p) => {
 		headTilt = 0,
 		kid = false,
 		tone = 0,
+		beard = false,
+		hat,
+		hatColor = C.ochre,
+		nose = false,
 	} = p;
 	const breathe = Math.sin(t * 2.2 + blinkSeed) * 0.012;
 	const cyc = (t + blinkSeed * 1.7) % 3.4;
@@ -318,13 +326,25 @@ export const Char: React.FC<CharProps> = (p) => {
 						</g>
 					)}
 					<path d="M -4 16 Q 8 28 -6 34" stroke={OL} strokeWidth={6} fill="none" strokeLinecap="round" />
+					{beard && (
+						<path d="M -104 20 C -100 120 -50 176 0 178 C 50 176 100 120 104 20 C 80 60 50 74 0 76 C -50 74 -80 60 -104 20 Z" fill="#f4f1ea" stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+					)}
+					{beard && <path d="M -48 52 Q -20 30 0 44 Q 20 30 48 52 Q 24 64 0 58 Q -24 64 -48 52 Z" fill="#f4f1ea" stroke={OL} strokeWidth={5} />}
+					{nose && <ellipse cx={0} cy={22} rx={20} ry={16} fill={C.cheek} stroke={OL} strokeWidth={5} />}
 					{mustache && <path d="M -46 40 Q -20 24 0 36 Q 20 24 46 40 Q 24 50 0 44 Q -24 50 -46 40 Z" fill={C.gray} stroke={OL} strokeWidth={5} />}
-					<Mouth face={face} talk={talk} />
+					{(!beard || face === 'shock' || talk > 0) && <Mouth face={face} talk={talk} />}
 					{hair === 'old' && (
 						<g stroke={OL} strokeWidth={4} opacity={0.5} fill="none">
 							<path d="M -80 18 q 8 6 16 0" />
 							<path d="M 64 18 q 8 6 16 0" />
 							<path d="M -30 -84 q 30 -8 60 0" />
+						</g>
+					)}
+					{hat === 'souwester' && (
+						<g>
+							<path d="M -170 -40 Q 0 -90 170 -40 Q 150 0 120 -10 Q 0 -50 -120 -10 Q -150 0 -170 -40 Z" fill={hatColor} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -112 -50 C -116 -150 -50 -176 0 -176 C 50 -176 116 -150 112 -50 Q 0 -80 -112 -50 Z" fill={hatColor} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -60 -150 Q 0 -165 60 -150" fill="none" stroke={OL} strokeWidth={4} opacity={0.5} />
 						</g>
 					)}
 					{bandage && (
