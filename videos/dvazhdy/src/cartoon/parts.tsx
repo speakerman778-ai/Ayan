@@ -163,7 +163,7 @@ const Mouth: React.FC<{face: Face; talk?: number}> = ({face, talk = 0}) => {
 };
 
 // ------------------------------------------------------------------ character
-export type Hair = 'guy' | 'wife' | 'boy' | 'boss' | 'old';
+export type Hair = 'guy' | 'wife' | 'boy' | 'boss' | 'old' | 'lyokha';
 export type CharProps = {
 	x: number;
 	y: number;
@@ -197,6 +197,11 @@ export type CharProps = {
 	bodyS?: number; // torso + legs length multiplier
 	headDrop?: number; // move head down toward shoulders
 	armROver?: boolean; // draw right arm in front of the head (hand on head)
+	hairColor?: string;
+	foreR?: number; // right forearm length multiplier
+	freckles?: boolean;
+	hoodie?: boolean; // hood + drawstrings + pocket instead of shirt collar and buttons
+	patch?: boolean; // little planet patch on the chest
 };
 
 export const Char: React.FC<CharProps> = (p) => {
@@ -234,6 +239,11 @@ export const Char: React.FC<CharProps> = (p) => {
 		bodyS = 1,
 		headDrop = 0,
 		armROver = false,
+		hairColor,
+		foreR = 1,
+		freckles = false,
+		hoodie = false,
+		patch = false,
 	} = p;
 	const breathe = Math.sin(t * 2.2 + blinkSeed) * 0.012;
 	const cyc = (t + blinkSeed * 1.7) % 3.4;
@@ -243,7 +253,7 @@ export const Char: React.FC<CharProps> = (p) => {
 	const shY = hipY - (kid ? 150 : 210) * bodyS;
 	const headY = shY - (kid ? 120 : 140) * headS + headDrop;
 	const shoulderX = kid ? 62 : 84;
-	const hairCol = hair === 'old' || hair === 'boss' ? C.gray : C.hair;
+	const hairCol = hairColor ?? (hair === 'old' || hair === 'boss' ? C.gray : C.hair);
 	const skin = C.skin;
 	const body = (
 		<g>
@@ -272,7 +282,7 @@ export const Char: React.FC<CharProps> = (p) => {
 				) : (
 					<rect x={-shoulderX} y={shY} width={shoulderX * 2} height={hipY - shY + 14} rx={kid ? 34 : 44} fill={jacket} stroke={OL} strokeWidth={OW} />
 				)}
-				{!skirt && !kid && (
+				{!skirt && !kid && !hoodie && (
 					<g>
 						<path d={`M -30 ${shY + 2} L 0 ${shY + 46} L 30 ${shY + 2}`} fill={C.shirt} stroke={OL} strokeWidth={OW - 1} strokeLinejoin="round" />
 						<line x1={0} y1={shY + 50} x2={0} y2={hipY + 8} stroke={OL} strokeWidth={5} />
@@ -282,9 +292,26 @@ export const Char: React.FC<CharProps> = (p) => {
 						<rect x={28} y={shY + 70} width={40} height={30} rx={6} fill="none" stroke={OL} strokeWidth={5} />
 					</g>
 				)}
+				{hoodie && (
+					<g>
+						<path d={`M ${-shoulderX + 6} ${shY + 8} Q 0 ${shY + 70} ${shoulderX - 6} ${shY + 8} Q 0 ${shY + 34} ${-shoulderX + 6} ${shY + 8} Z`} fill={jacket} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+						<path d={`M -18 ${shY + 40} L -22 ${shY + 110} M 18 ${shY + 40} L 22 ${shY + 110}`} stroke={OL} strokeWidth={5} strokeLinecap="round" />
+						<circle cx={-22} cy={shY + 114} r={7} fill={C.white} stroke={OL} strokeWidth={4} />
+						<circle cx={22} cy={shY + 114} r={7} fill={C.white} stroke={OL} strokeWidth={4} />
+						<path d={`M -56 ${hipY - 86} L 56 ${hipY - 86} L 70 ${hipY - 14} L -70 ${hipY - 14} Z`} fill="none" stroke={OL} strokeWidth={5} strokeLinejoin="round" />
+						<path d={`M -${shoulderX - 4} ${hipY - 4} L ${shoulderX - 4} ${hipY - 4}`} stroke={OL} strokeWidth={5} />
+					</g>
+				)}
+				{patch && (
+					<g transform={`translate(44 ${shY + 74})`}>
+						<circle r={20} fill="#5b86c4" stroke={OL} strokeWidth={4} />
+						<ellipse rx={32} ry={9} fill="none" stroke={C.red} strokeWidth={5} transform="rotate(-18)" />
+						<circle cx={-6} cy={-6} r={4} fill="#fff" opacity={0.8} />
+					</g>
+				)}
 				{/* arms */}
 				<Limb from={[-shoulderX + 8, shY + 26]} a1={-armL[0]} a2={-armL[1]} l1={kid ? 80 : 110} l2={kid ? 70 : 100} w={kid ? 32 : 40} color={skirt ?? jacket} end="hand" />
-				<Limb from={[shoulderX - 8, shY + 26]} a1={armR[0]} a2={armR[1]} l1={kid ? 80 : 110} l2={kid ? 70 : 100} w={kid ? 32 : 40} color={skirt ?? jacket} end="hand" />
+				<Limb from={[shoulderX - 8, shY + 26]} a1={armR[0]} a2={armR[1]} l1={kid ? 80 : 110} l2={(kid ? 70 : 100) * foreR} w={kid ? 32 : 40} color={skirt ?? jacket} end="hand" />
 				{cane && (() => {
 					const la = kid ? 80 : 110, lb = kid ? 70 : 100;
 					const sx = shoulderX - 8, sy = shY + 26;
@@ -320,10 +347,23 @@ export const Char: React.FC<CharProps> = (p) => {
 					{hair === 'old' && <path d="M -112 -2 C -118 -80 -70 -128 4 -130 C 76 -128 118 -84 112 -6 C 100 -40 80 -60 50 -70 C 30 -56 -20 -60 -54 -74 C -78 -58 -98 -36 -112 -2 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />}
 					{hair === 'wife' && <path d="M -114 20 C -126 -90 -60 -136 0 -134 C 64 -136 126 -90 114 20 C 104 -30 70 -78 0 -86 C -70 -78 -104 -30 -114 20 Z" fill={hairCol} stroke={OL} strokeWidth={OW} />}
 					{hair === 'boy' && <path d="M -114 -4 C -124 -96 -64 -138 0 -136 C 64 -138 124 -96 114 -4 L 80 -40 L 50 -20 L 20 -44 L -14 -22 L -44 -44 L -76 -22 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />}
+					{hair === 'lyokha' && (
+						<g>
+							<path d="M 6 -128 C -6 -186 34 -214 62 -196 C 40 -192 30 -176 40 -156 C 52 -180 84 -180 92 -160 C 70 -160 60 -146 56 -128 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -114 -2 C -126 -98 -62 -142 6 -138 C 80 -136 126 -90 114 -6 L 96 -34 L 84 -18 L 66 -52 L 46 -30 L 26 -60 L 4 -36 L -18 -62 L -38 -36 L -62 -58 L -78 -30 L -96 -46 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+						</g>
+					)}
 					{hair === 'boss' && <path d="M -112 -10 C -116 -70 -96 -110 -60 -118 C -50 -96 -90 -70 -108 -10 Z M 112 -10 C 116 -70 96 -110 60 -118 C 50 -96 90 -70 108 -10 Z" fill={hairCol} stroke={OL} strokeWidth={OW} />}
 					{/* cheeks */}
 					<ellipse cx={-62} cy={34} rx={18} ry={11} fill={C.cheek} opacity={0.55} />
 					<ellipse cx={62} cy={34} rx={18} ry={11} fill={C.cheek} opacity={0.55} />
+					{freckles && (
+						<g fill="#b86a4a">
+							{[[-74, 22], [-58, 30], [-80, 38], [-64, 44], [74, 22], [58, 30], [80, 38], [64, 44]].map(([fx, fy], i) => (
+								<circle key={i} cx={fx} cy={fy} r={3.5} />
+							))}
+						</g>
+					)}
 					<Brows face={face} />
 					<Eyes face={face} blink={blink} look={look} />
 					{glasses && (
@@ -366,7 +406,7 @@ export const Char: React.FC<CharProps> = (p) => {
 						</g>
 					)}
 				</g>
-				{armROver && <Limb from={[shoulderX - 8, shY + 26]} a1={armR[0]} a2={armR[1]} l1={kid ? 80 : 110} l2={kid ? 70 : 100} w={kid ? 32 : 40} color={skirt ?? jacket} end="hand" />}
+				{armROver && <Limb from={[shoulderX - 8, shY + 26]} a1={armR[0]} a2={armR[1]} l1={kid ? 80 : 110} l2={(kid ? 70 : 100) * foreR} w={kid ? 32 : 40} color={skirt ?? jacket} end="hand" />}
 			</g>
 		</g>
 	);
