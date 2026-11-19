@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {ShotCtx, hash} from '../lib';
-import {C, Char, NameTag, OL, OW} from '../cartoon/parts';
+import {C, Char, CharProps, NameTag, OL, OW} from '../cartoon/parts';
 import {KaraokeLine, timeWords} from '../subs/Karaoke';
 
 const COAT = '#f2c230';
@@ -76,12 +76,12 @@ export const Cat: React.FC<{x: number; y: number; s?: number; t: number; look?: 
 	);
 };
 
-export const Keeper: React.FC<{x: number; y: number; s?: number; armR?: [number, number]; armL?: [number, number]; face?: 'smile' | 'neutral' | 'think' | 'shock'; handOnHead?: boolean}> = ({x, y, s = 1, armR, armL, face = 'smile', handOnHead = false}) => (
-	<Char x={x} y={y} s={s} headS={0.82} bodyS={1.14} headDrop={18} hair="old" beard nose hat="souwester" hatColor={COAT} jacket={COAT} pants="#3d4a66" face={face} armR={handOnHead ? [150, 72] : armR} armL={armL} armROver={handOnHead} />
+export const Keeper: React.FC<Partial<CharProps> & {x: number; y: number; handOnHead?: boolean}> = ({handOnHead = false, armR, face = 'smile', ...rest}) => (
+	<Char {...rest} face={face} armR={handOnHead ? [150, 72] : armR} armROver={handOnHead} headS={0.82} bodyS={1.14} headDrop={18} hair="old" beard nose hat="souwester" hatColor={COAT} jacket={COAT} pants="#3d4a66" />
 );
 
 // ------------------------------------------------------------------ scene 1: inside the lighthouse
-const Room: React.FC<{t: number}> = ({t}) => {
+export const Room: React.FC<{t: number}> = ({t}) => {
 	const sweep = (t * 0.6) % 1;
 	return (
 		<g>
@@ -144,7 +144,7 @@ const Room: React.FC<{t: number}> = ({t}) => {
 	);
 };
 
-const Table: React.FC<{t: number}> = ({t}) => (
+export const Table: React.FC<{t: number}> = ({t}) => (
 	<g>
 		<rect x={640} y={1070} width={400} height={36} rx={10} fill={C.wood} stroke={OL} strokeWidth={OW} />
 		<rect x={670} y={1106} width={30} height={200} fill={C.woodDark} stroke={OL} strokeWidth={OW} />
@@ -187,7 +187,7 @@ const Inside: React.FC<{t: number}> = ({t}) => (
 );
 
 // ------------------------------------------------------------------ scene 2: outside at night
-const Lighthouse: React.FC<{x: number; y: number; t: number}> = ({x, y, t}) => {
+export const Lighthouse: React.FC<{x: number; y: number; t: number}> = ({x, y, t}) => {
 	const sweep = Math.sin(t * 1.2);
 	return (
 		<g transform={`translate(${x} ${y})`}>
@@ -216,7 +216,7 @@ const bez = (u: number): [number, number] => {
 	return [a * p[0][0] + b * p[1][0] + c * p[2][0] + d * p[3][0], a * p[0][1] + b * p[1][1] + c * p[2][1] + d * p[3][1]];
 };
 
-const GrassTop: React.FC<{t: number}> = ({t}) => {
+export const GrassTop: React.FC<{t: number}> = ({t}) => {
 	// scalloped lower edge hanging over the rock
 	const n = 14;
 	let lower = '';
@@ -261,7 +261,7 @@ const GrassTop: React.FC<{t: number}> = ({t}) => {
 	);
 };
 
-const Outside: React.FC<{t: number}> = ({t}) => (
+export const Outside: React.FC<{t: number}> = ({t}) => (
 	<>
 		<rect width={1080} height={1920} fill="#1d2b4f" />
 		{Array.from({length: 40}).map((_, i) => (
