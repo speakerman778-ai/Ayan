@@ -163,7 +163,7 @@ const Mouth: React.FC<{face: Face; talk?: number}> = ({face, talk = 0}) => {
 };
 
 // ------------------------------------------------------------------ character
-export type Hair = 'guy' | 'wife' | 'boy' | 'boss' | 'old' | 'lyokha' | 'sweep' | 'curly' | 'crew' | 'shaggy' | 'quiff' | 'middle' | 'buzz' | 'beanie';
+export type Hair = 'guy' | 'wife' | 'boy' | 'boss' | 'old' | 'lyokha' | 'sweep' | 'curly' | 'crew' | 'shaggy' | 'quiff' | 'middle' | 'buzz' | 'beanie' | 'goggles' | 'capback' | 'phones' | 'tips';
 export type CharProps = {
 	x: number;
 	y: number;
@@ -399,6 +399,48 @@ export const Char: React.FC<CharProps> = (p) => {
 								<line key={dx} x1={dx} y1={-98} x2={dx} y2={-66} stroke={OL} strokeWidth={4} opacity={0.5} />
 							))}
 							<circle cx={0} cy={-190} r={22} fill={C.white} stroke={OL} strokeWidth={OW} />
+						</g>
+					)}
+					{hair === 'goggles' && (
+						<g>
+							<path d="M -116 10 C -130 -100 -64 -146 0 -142 C 64 -146 130 -100 116 10 L 100 -20 L 86 0 L 76 -50 L 50 -40 L 30 -60 L 0 -46 L -30 -60 L -50 -40 L -76 -50 L -86 0 L -100 -20 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -118 -84 Q 0 -112 118 -84 L 118 -66 Q 0 -94 -118 -66 Z" fill="#3a3f55" stroke={OL} strokeWidth={6} />
+							{[-1, 1].map((k) => (
+								<g key={k} transform={`translate(${k * 44} -96)`}>
+									<ellipse rx={40} ry={30} fill="#c9963e" stroke={OL} strokeWidth={OW} />
+									<ellipse rx={28} ry={20} fill="#6fb4d0" stroke={OL} strokeWidth={5} />
+									<path d="M -14 -8 Q -6 -14 4 -12" stroke="#fff" strokeWidth={5} fill="none" strokeLinecap="round" />
+								</g>
+							))}
+						</g>
+					)}
+					{hair === 'capback' && (
+						<g>
+							<path d="M -112 0 C -112 -40 -100 -60 -86 -66 L 86 -66 C 100 -60 112 -40 112 0 C 96 -30 70 -44 40 -48 L 30 -30 L 14 -50 L -4 -30 L -20 -50 L -40 -32 L -50 -50 C -80 -44 -100 -26 -112 0 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -114 -84 C -118 -164 -60 -182 0 -182 C 60 -182 118 -164 114 -84 Z" fill="#3d7a5a" stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M 70 -164 Q 130 -184 168 -144 Q 140 -134 104 -136 Z" fill="#2f6248" stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<rect x={-114} y={-96} width={228} height={18} rx={6} fill="#2f6248" stroke={OL} strokeWidth={5} />
+							<circle cx={0} cy={-182} r={10} fill="#2f6248" stroke={OL} strokeWidth={5} />
+						</g>
+					)}
+					{hair === 'phones' && (
+						<g>
+							<path d="M -116 0 C -126 -100 -60 -142 0 -140 C 60 -142 126 -100 116 0 C 100 -40 80 -54 56 -62 L 40 -40 L 26 -66 L 4 -44 L -16 -70 L -36 -44 L -54 -66 C -84 -56 -104 -36 -116 0 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -122 -10 C -130 -170 130 -170 122 -10" fill="none" stroke={OL} strokeWidth={26} strokeLinecap="round" />
+							<path d="M -122 -10 C -130 -170 130 -170 122 -10" fill="none" stroke={C.red} strokeWidth={12} strokeLinecap="round" />
+							{[-1, 1].map((k) => (
+								<g key={k}>
+									<rect x={k * 122 - 26} y={-30} width={52} height={76} rx={22} fill={C.red} stroke={OL} strokeWidth={OW} />
+									<rect x={k * 122 - 12} y={-16} width={24} height={48} rx={10} fill="#3a3f55" />
+								</g>
+							))}
+						</g>
+					)}
+					{hair === 'tips' && (
+						<g>
+							<path d="M -40 -120 L -62 -200 L -26 -170 L -18 -250 L 6 -180 L 30 -240 L 34 -170 L 66 -206 L 50 -120 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -55 -175 L -62 -200 L -40 -182 Z M -21 -212 L -18 -250 L -6 -214 Z M 24 -212 L 30 -240 L 33 -208 Z M 56 -186 L 66 -206 L 61 -174 Z" fill={C.ochre} stroke={OL} strokeWidth={5} strokeLinejoin="round" />
+							<path d="M -116 4 C -128 -100 -64 -146 0 -144 C 64 -146 128 -100 116 4 L 104 -30 L 96 -6 L 84 -60 L 62 -40 L 52 -86 L 28 -60 L 10 -100 L -10 -62 L -32 -98 L -48 -58 L -70 -84 L -78 -40 L -98 -56 L -100 -6 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 						</g>
 					)}
 					{hair === 'boss' && <path d="M -112 -10 C -116 -70 -96 -110 -60 -118 C -50 -96 -90 -70 -108 -10 Z M 112 -10 C 116 -70 96 -110 60 -118 C 50 -96 90 -70 108 -10 Z" fill={hairCol} stroke={OL} strokeWidth={OW} />}
