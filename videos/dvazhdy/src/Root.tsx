@@ -1,9 +1,14 @@
 import React from 'react';
 import {Composition} from 'remotion';
 import {Dvazhdy} from './Video';
+import {Sheet} from './cartoon/Sheet';
+import {DvazhdyCartoon} from './cartoon/Cartoon';
 import timeline from '../public/timeline.json';
 
 export const Root: React.FC = () => (
+	<>
+	<Composition id="DvazhdyCartoon" component={DvazhdyCartoon} width={1080} height={1920} fps={30} durationInFrames={Math.ceil(timeline.total * 30)} />
+	<Composition id="Sheet" component={Sheet} width={1080} height={1920} fps={30} durationInFrames={30} />
 	<Composition
 		id="Dvazhdy"
 		component={Dvazhdy}
@@ -12,4 +17,5 @@ export const Root: React.FC = () => (
 		fps={30}
 		durationInFrames={Math.ceil(timeline.total * 30)}
 	/>
+	</>
 );
