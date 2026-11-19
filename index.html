@@ -11,7 +11,10 @@
     <div class="brand">🎬 <span>Моё кино</span></div>
     <input id="search" type="search" placeholder="Поиск фильмов и сериалов…" autocomplete="off" />
     <button id="addBtn" class="btn primary">+ Добавить</button>
+    <button id="settingsBtn" class="btn" title="Настройки" aria-label="Настройки">⚙</button>
   </header>
+
+  <div id="banner" class="banner" hidden></div>
 
   <nav class="tabs" id="tabs">
     <button data-tab="all" class="active">Всё</button>
@@ -26,6 +29,7 @@
   <section class="filters">
     <select id="genre"><option value="">Все жанры</option></select>
     <select id="sort">
+      <option value="popularity">По популярности</option>
       <option value="rating">По рейтингу</option>
       <option value="year">Сначала новые</option>
       <option value="yearAsc">Сначала старые</option>
@@ -36,7 +40,9 @@
   </section>
 
   <main id="grid" class="grid"></main>
+  <p id="loading" class="loading" hidden>Загрузка…</p>
   <p id="empty" class="empty" hidden>Ничего не найдено.</p>
+  <button id="moreBtn" class="btn more" hidden>Показать ещё</button>
 
   <!-- Карточка тайтла -->
   <dialog id="details"></dialog>
@@ -58,6 +64,27 @@
       <label>Описание <textarea name="desc" rows="3"></textarea></label>
       <div class="actions">
         <button type="button" class="btn" id="addCancel">Отмена</button>
+        <button type="submit" class="btn primary">Сохранить</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Настройки: ключ TMDB -->
+  <dialog id="settings">
+    <form id="settingsForm" method="dialog" class="form">
+      <h2>Подключение к TMDB</h2>
+      <p class="hint">
+        TMDB — открытая база почти всех фильмов и сериалов. Ключ бесплатный:
+        зарегистрируйтесь на <a href="https://www.themoviedb.org/signup" target="_blank" rel="noopener">themoviedb.org</a>,
+        затем откройте <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener">Настройки → API</a>
+        и скопируйте «Ключ API» или «Токен доступа к API».
+      </p>
+      <label>Ключ API или токен доступа <input name="key" autocomplete="off" spellcheck="false" placeholder="например, 1a2b3c…" /></label>
+      <p class="hint">Ключ хранится только в этом браузере.</p>
+      <p id="settingsMsg" class="hint" hidden></p>
+      <div class="actions">
+        <button type="button" class="btn" id="keyRemove">Отключить</button>
+        <button type="button" class="btn" id="settingsCancel">Отмена</button>
         <button type="submit" class="btn primary">Сохранить</button>
       </div>
     </form>
