@@ -19,7 +19,7 @@ export const Shnurok: React.FC<Partial<CharProps> & {x: number; y: number; think
 		headS={0.82}
 		bodyS={1.14}
 		headDrop={18}
-		hair="lyokha"
+		hair={rest.hair ?? "lyokha"}
 		hairColor={SHNUROK.hair}
 		freckles
 		hoodie
@@ -128,6 +128,37 @@ export const ShnurokSheet: React.FC = () => {
 							</text>
 						</g>
 					))}
+				</svg>
+			</AbsoluteFill>
+		</ShotCtx.Provider>
+	);
+};
+
+/** Hairstyle options side by side. */
+export const ShnurokHairOptions: React.FC = () => {
+	const t = useCurrentFrame() / 30;
+	const opts: [CharProps['hair'], string][] = [
+		['sweep', '1 · чёлка набок'],
+		['curly', '2 · кудри'],
+		['crew', '3 · короткая стрижка'],
+		['shaggy', '4 · лохматые'],
+	];
+	return (
+		<ShotCtx.Provider value={{t, dur: 1, scatter: 0}}>
+			<AbsoluteFill style={{background: C.wall}}>
+				<svg width={1080} height={1920} viewBox="0 0 1080 1920">
+					{opts.map(([h, l], i) => {
+						const x = 280 + (i % 2) * 520;
+						const y = 860 + Math.floor(i / 2) * 860;
+						return (
+							<g key={l}>
+								<Shnurok x={x} y={y} s={0.95} hair={h} />
+								<text x={x} y={y + 70} textAnchor="middle" fontFamily="Inter" fontWeight={800} fontSize={40} fill={OL}>
+									{l}
+								</text>
+							</g>
+						);
+					})}
 				</svg>
 			</AbsoluteFill>
 		</ShotCtx.Provider>

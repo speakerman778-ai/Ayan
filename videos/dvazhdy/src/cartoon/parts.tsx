@@ -163,7 +163,7 @@ const Mouth: React.FC<{face: Face; talk?: number}> = ({face, talk = 0}) => {
 };
 
 // ------------------------------------------------------------------ character
-export type Hair = 'guy' | 'wife' | 'boy' | 'boss' | 'old' | 'lyokha';
+export type Hair = 'guy' | 'wife' | 'boy' | 'boss' | 'old' | 'lyokha' | 'sweep' | 'curly' | 'crew' | 'shaggy';
 export type CharProps = {
 	x: number;
 	y: number;
@@ -353,6 +353,25 @@ export const Char: React.FC<CharProps> = (p) => {
 							<path d="M -56 -122 L -48 -160 L -24 -134 L -6 -172 L 14 -136 L 40 -164 L 46 -128 L 66 -146 L 64 -114 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 							<path d="M -114 -2 C -126 -98 -62 -142 6 -138 C 80 -136 126 -90 114 -6 L 96 -34 L 84 -18 L 66 -52 L 46 -30 L 26 -60 L 4 -36 L -18 -62 L -38 -36 L -62 -58 L -78 -30 L -96 -46 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 						</g>
+					)}
+					{hair === 'sweep' && (
+						<path d="M -114 6 C -128 -100 -60 -144 10 -138 C 84 -134 126 -84 114 0 C 106 -40 90 -58 70 -66 C 30 -40 -40 -40 -100 -10 C -104 -2 -110 4 -114 6 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+					)}
+					{hair === 'curly' && (
+						<g fill={hairCol} stroke={OL} strokeWidth={OW}>
+							{[[-104, -20, 34], [-96, -70, 38], [-60, -108, 40], [-12, -126, 40], [38, -118, 40], [80, -90, 38], [104, -42, 34], [-40, -98, 30], [10, -104, 30], [56, -92, 28]].map(([cx, cy, r], i) => (
+								<circle key={i} cx={cx} cy={cy} r={r} />
+							))}
+						</g>
+					)}
+					{hair === 'crew' && (
+						<g>
+							<path d="M -112 -10 C -118 -96 -60 -136 0 -136 C 60 -136 118 -96 112 -10 C 100 -54 70 -78 0 -82 C -70 -78 -100 -54 -112 -10 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -60 -110 l 6 -10 M -20 -122 l 4 -10 M 20 -122 l 4 -10 M 60 -110 l 6 -10" stroke={OL} strokeWidth={5} strokeLinecap="round" />
+						</g>
+					)}
+					{hair === 'shaggy' && (
+						<path d="M -126 40 C -140 -90 -70 -146 0 -142 C 70 -146 140 -90 126 40 L 108 10 L 100 34 L 92 -30 L 70 -6 L 58 -56 L 34 -30 L 16 -66 L -6 -36 L -28 -66 L -46 -30 L -66 -58 L -80 -10 L -98 -32 L -102 30 L -114 4 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 					)}
 					{hair === 'boss' && <path d="M -112 -10 C -116 -70 -96 -110 -60 -118 C -50 -96 -90 -70 -108 -10 Z M 112 -10 C 116 -70 96 -110 60 -118 C 50 -96 90 -70 108 -10 Z" fill={hairCol} stroke={OL} strokeWidth={OW} />}
 					{/* cheeks */}
