@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {ShotCtx, hash} from '../lib';
 import {C, Char, CharProps, OL, OW} from '../cartoon/parts';
+import {Room} from './Keeper';
 
 // Лёха — главный герой канала «Вселенная Лёхи».
 // Вихор на макушке, веснушки, охристое худи с нашивкой-планетой, синие джинсы.
@@ -15,6 +16,9 @@ export const LYOKHA = {
 export const Lyokha: React.FC<Partial<CharProps> & {x: number; y: number; thinking?: boolean}> = ({thinking = false, face, armR, armL, ...rest}) => (
 	<Char
 		{...rest}
+		headS={0.82}
+		bodyS={1.14}
+		headDrop={18}
 		hair="lyokha"
 		hairColor={LYOKHA.hair}
 		freckles
@@ -23,7 +27,7 @@ export const Lyokha: React.FC<Partial<CharProps> & {x: number; y: number; thinki
 		jacket={LYOKHA.hoodie}
 		pants={LYOKHA.jeans}
 		face={face ?? (thinking ? 'think' : 'smile')}
-		armR={thinking ? [-76, 223] : armR}
+		armR={thinking ? [-46, 213] : armR}
 		foreR={1}
 		armL={thinking ? [18, -78] : armL}
 		armROver={thinking || rest.armROver}
@@ -66,9 +70,11 @@ export const LyokhaAvatar: React.FC = () => {
 		<ShotCtx.Provider value={{t, dur: 1, scatter: 0}}>
 			<AbsoluteFill>
 				<svg width={1080} height={1080} viewBox="0 0 1080 1080">
-					<Space t={t} w={1080} h={1080} />
-					<Lyokha x={470} y={1512} s={1.7} thinking />
-					<QMark x={790} y={400} s={0.85} t={t} />
+					<g transform="translate(0 -150)">
+						<Room t={t} />
+					</g>
+					<Lyokha x={460} y={1640} s={1.9} thinking />
+					<QMark x={770} y={470} s={0.8} t={t} />
 				</svg>
 			</AbsoluteFill>
 		</ShotCtx.Provider>
