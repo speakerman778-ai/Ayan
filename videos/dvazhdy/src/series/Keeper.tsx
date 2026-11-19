@@ -7,14 +7,18 @@ import {KaraokeLine, timeWords} from '../subs/Karaoke';
 const COAT = '#f2c230';
 
 /** Kitten "Kompas": chubby grey-blue cat, white chest, red sailor scarf. (x,y) = bottom centre. */
-export const Cat: React.FC<{x: number; y: number; s?: number; t: number; look?: number}> = ({x, y, s = 1, t, look = 0}) => {
+export const Cat: React.FC<{x: number; y: number; s?: number; t: number; look?: number; kitten?: boolean; wet?: boolean}> = ({x, y, s = 1, t, look = 0, kitten = false, wet = false}) => {
+	const bk = kitten ? 0.7 : 1; // kitten: small body, big head
+	const headY = kitten ? -195 : -250;
+	const shiver = wet ? Math.sin(t * 40) * 2 : 0;
 	const blink = (t % 3.1) > 2.95 ? 0.15 : 1;
 	const tail = Math.sin(t * 2.4) * 10;
 	const fur = '#8fa3bf';
 	const furDark = '#6f829e';
 	return (
-		<g transform={`translate(${x} ${y}) scale(${s})`}>
-			<ellipse cx={0} cy={6} rx={120} ry={16} fill="#000" opacity={0.13} />
+		<g transform={`translate(${x + shiver} ${y}) scale(${s})`}>
+			<ellipse cx={0} cy={6} rx={120 * bk} ry={16} fill="#000" opacity={0.13} />
+			<g transform={`scale(${bk})`}>
 			{/* tail */}
 			<g transform={`rotate(${tail} 70 -40)`}>
 				<path d="M 70 -40 C 170 -40 190 -150 140 -190" fill="none" stroke={OL} strokeWidth={46} strokeLinecap="round" />
@@ -27,11 +31,19 @@ export const Cat: React.FC<{x: number; y: number; s?: number; t: number; look?: 
 			{/* paws */}
 			<ellipse cx={-42} cy={-8} rx={30} ry={20} fill="#f6f2ea" stroke={OL} strokeWidth={OW} />
 			<ellipse cx={42} cy={-8} rx={30} ry={20} fill="#f6f2ea" stroke={OL} strokeWidth={OW} />
-			{/* scarf */}
-			<path d="M -70 -170 Q 0 -140 70 -170 L 62 -146 Q 0 -120 -62 -146 Z" fill={C.red} stroke={OL} strokeWidth={6} strokeLinejoin="round" />
-			<path d="M 10 -140 L 40 -95 L 0 -112 Z" fill={C.red} stroke={OL} strokeWidth={6} strokeLinejoin="round" />
+			{/* scarf (adult only) */}
+			{!kitten && (
+				<>
+					<path d="M -70 -170 Q 0 -140 70 -170 L 62 -146 Q 0 -120 -62 -146 Z" fill={C.red} stroke={OL} strokeWidth={6} strokeLinejoin="round" />
+					<path d="M 10 -140 L 40 -95 L 0 -112 Z" fill={C.red} stroke={OL} strokeWidth={6} strokeLinejoin="round" />
+				</>
+			)}
+			</g>
 			{/* head */}
-			<g transform={`translate(0 -250) rotate(${look * 6})`}>
+			<g transform={`translate(0 ${headY}) rotate(${look * 6})`}>
+				{wet && (
+					<path d="M -60 -78 L -48 -112 L -30 -86 L -14 -120 L 4 -88 L 22 -118 L 36 -86 L 56 -108 L 62 -74 Z" fill={fur} stroke={OL} strokeWidth={6} strokeLinejoin="round" />
+				)}
 				<path d="M -95 -40 L -100 -125 L -40 -82 Z" fill={fur} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 				<path d="M 95 -40 L 100 -125 L 40 -82 Z" fill={fur} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 				<path d="M -84 -60 L -86 -104 L -56 -82 Z M 84 -60 L 86 -104 L 56 -82 Z" fill="#f2a6a6" />
@@ -55,11 +67,16 @@ export const Cat: React.FC<{x: number; y: number; s?: number; t: number; look?: 
 					<line x1={60} y1={42} x2={138} y2={50} />
 				</g>
 			</g>
+			{wet &&
+				[[-90, -150, 0], [96, -120, 0.4], [-60, -40, 0.8], [70, -30, 0.2]].map(([dx, dy, ph], i) => {
+					const k = (t * 0.9 + ph) % 1;
+					return <path key={i} transform={`translate(${dx} ${dy + k * 60})`} opacity={1 - k} d="M 0 -16 Q 11 0 0 8 Q -11 0 0 -16 Z" fill="#9fd0e8" stroke={OL} strokeWidth={4} />;
+				})}
 		</g>
 	);
 };
 
-const Keeper: React.FC<{x: number; y: number; s?: number; armR?: [number, number]; armL?: [number, number]; face?: 'smile' | 'neutral' | 'think' | 'shock'}> = ({x, y, s = 1, armR, armL, face = 'smile'}) => (
+export const Keeper: React.FC<{x: number; y: number; s?: number; armR?: [number, number]; armL?: [number, number]; face?: 'smile' | 'neutral' | 'think' | 'shock'}> = ({x, y, s = 1, armR, armL, face = 'smile'}) => (
 	<Char x={x} y={y} s={s} headS={0.82} bodyS={1.14} headDrop={18} hair="old" beard nose hat="souwester" hatColor={COAT} jacket={COAT} pants="#3d4a66" face={face} armR={armR} armL={armL} />
 );
 
