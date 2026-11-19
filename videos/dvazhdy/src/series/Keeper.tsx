@@ -165,7 +165,7 @@ const Inside: React.FC<{t: number}> = ({t}) => (
 		</g>
 		<Cat x={860} y={1070} s={0.62} t={t} look={-1} />
 		<NameTag name="Дед Савелий" role="смотритель маяка" from={0} x={60} y={130} avatar={<Keeper x={0} y={236} s={0.42} />} />
-		<NameTag name="Компас" role="кот, старший помощник" from={0} x={60} y={300} avatar={<Cat x={0} y={88} s={0.36} t={t} />} />
+		<NameTag name="Барсик" role="кот, старший помощник" from={0} x={60} y={300} avatar={<Cat x={0} y={88} s={0.36} t={t} />} />
 	</>
 );
 
@@ -271,7 +271,7 @@ const Outside: React.FC<{t: number}> = ({t}) => (
 	</>
 );
 
-const S1 = timeWords('Это дед Савелий и его кот Компас.', 0.2, 1.0);
+const S1 = timeWords('Это дед Савелий и его кот Барсик.', 0.2, 1.0);
 const S2 = timeWords('Каждую ночь они зажигают маяк.', 1.2, 2.0);
 
 export const KeeperPreview: React.FC = () => {
