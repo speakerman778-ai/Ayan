@@ -102,17 +102,20 @@ const Eyes: React.FC<{face: Face; blink: number; look?: number}> = ({face, blink
 	return (
 		<g fill={OL}>
 			{[-1, 1].map((k) => (
-				<ellipse key={k} cx={k * ex + lx} cy={ey} rx={11} ry={15 * blink} />
+				<ellipse key={k} cx={k * ex + lx} cy={ey} rx={18} ry={24 * blink} />
 			))}
 			{[-1, 1].map((k) => (
-				<circle key={'h' + k} cx={k * ex + lx + 4} cy={ey - 5} r={3.5 * blink} fill="#fff" />
+				<circle key={'h' + k} cx={k * ex + lx + 6} cy={ey - 8} r={6.5 * blink} fill="#fff" />
+			))}
+			{[-1, 1].map((k) => (
+				<circle key={'h2' + k} cx={k * ex + lx - 6} cy={ey + 9} r={3 * blink} fill="#fff" />
 			))}
 		</g>
 	);
 };
 
 const Brows: React.FC<{face: Face}> = ({face}) => {
-	const by = -48;
+	const by = -60;
 	const p: Record<string, [number, number]> = {
 		neutral: [0, 0],
 		smile: [-4, 0],
