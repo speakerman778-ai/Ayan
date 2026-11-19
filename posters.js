@@ -31,6 +31,7 @@ window.POSTERS = {
   m8: "posters/m8.jpg",
   m9: "posters/m9.jpg",
   s1: "posters/s1.jpg",
+  s10: "posters/s10.jpg",
   s11: "posters/s11.jpg",
   s12: "posters/s12.jpg",
   s14: "posters/s14.jpg",
