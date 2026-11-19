@@ -43,8 +43,11 @@ window.POSTERS = {
   s20: "posters/s20.jpg",
   s22: "posters/s22.jpg",
   s23: "posters/s23.jpg",
+  s24: "posters/s24.jpg",
+  s3: "posters/s3.jpg",
   s4: "posters/s4.jpg",
   s5: "posters/s5.jpg",
   s6: "posters/s6.jpg",
   s7: "posters/s7.jpg",
+  s9: "posters/s9.jpg",
 };
