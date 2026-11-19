@@ -27,7 +27,9 @@
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const typeLabel = (t) => (t.type === "series" ? "Сериал" : "Фильм");
   const st = (id) => state[id] || {};
-  const useTmdb = () => !!tmdbKey;
+  // На страницах, где сторонние запросы запрещены, TMDB отключается флагом window.NO_TMDB
+  const TMDB_ALLOWED = !window.NO_TMDB;
+  const useTmdb = () => TMDB_ALLOWED && !!tmdbKey;
   const localAll = () => [...window.CATALOG, ...userTitles];
 
   function gradient(str) {
@@ -199,7 +201,7 @@
     b.innerHTML = html || "";
   }
   function defaultBanner() {
-    if (useTmdb()) banner("");
+    if (useTmdb() || !TMDB_ALLOWED) banner("");
     else banner(`<span>Сейчас показан встроенный каталог (${localAll().length}). Подключите TMDB, чтобы искать по всей базе фильмов и сериалов с постерами.</span><button class="btn primary" data-open-settings>Подключить</button>`);
   }
 
@@ -373,6 +375,7 @@
           <a class="btn" target="_blank" rel="noopener" href="https://www.kinopoisk.ru/index.php?kp_query=${qRu}">Кинопоиск</a>
           ${imdbOrTmdb}
           ${t.id.startsWith("u") ? `<button class="btn" data-act="delete">🗑 Удалить</button>` : ""}
+          ${t.id.startsWith("u") ? `<button class="btn primary" data-act="delete-yes" hidden>Точно удалить</button>` : ""}
         </div>
       </div>`;
   }
@@ -393,8 +396,12 @@
     if (act === "close" || !t) return d.close();
     if (act === "status") setState(t, { status: st(t.id).status === btn.dataset.v ? null : btn.dataset.v });
     if (act === "fav") setState(t, { fav: !st(t.id).fav });
-    if (act === "delete") {
-      if (!confirm("Удалить этот тайтл?")) return;
+    if (act === "delete") { // подтверждение второй кнопкой: confirm() работает не везде
+      btn.hidden = true;
+      d.querySelector('[data-act="delete-yes"]').hidden = false;
+      return;
+    }
+    if (act === "delete-yes") {
       userTitles = userTitles.filter((x) => x.id !== t.id);
       delete state[t.id];
       save(LS.user, userTitles); save(LS.state, state);
@@ -480,5 +487,6 @@
     }
   });
 
+  if (!TMDB_ALLOWED) $("#settingsBtn").hidden = true;
   refresh();
 })();
