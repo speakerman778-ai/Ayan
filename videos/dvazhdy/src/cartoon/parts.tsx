@@ -196,6 +196,7 @@ export type CharProps = {
 	headS?: number; // head size multiplier
 	bodyS?: number; // torso + legs length multiplier
 	headDrop?: number; // move head down toward shoulders
+	armROver?: boolean; // draw right arm in front of the head (hand on head)
 };
 
 export const Char: React.FC<CharProps> = (p) => {
@@ -232,6 +233,7 @@ export const Char: React.FC<CharProps> = (p) => {
 		headS = 1,
 		bodyS = 1,
 		headDrop = 0,
+		armROver = false,
 	} = p;
 	const breathe = Math.sin(t * 2.2 + blinkSeed) * 0.012;
 	const cyc = (t + blinkSeed * 1.7) % 3.4;
@@ -364,6 +366,7 @@ export const Char: React.FC<CharProps> = (p) => {
 						</g>
 					)}
 				</g>
+				{armROver && <Limb from={[shoulderX - 8, shY + 26]} a1={armR[0]} a2={armR[1]} l1={kid ? 80 : 110} l2={kid ? 70 : 100} w={kid ? 32 : 40} color={skirt ?? jacket} end="hand" />}
 			</g>
 		</g>
 	);

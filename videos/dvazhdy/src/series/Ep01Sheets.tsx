@@ -50,7 +50,7 @@ export const Ep01Characters: React.FC = () => {
 						['shock', 'удивлён'],
 					] as const).map(([f, l], i) => (
 						<g key={f}>
-							<Keeper x={590 + i * 170} y={1010} s={0.44} face={f} />
+							<Keeper x={590 + i * 170} y={1010} s={0.44} face={f} handOnHead={f === 'shock'} />
 							<text x={590 + i * 170} y={1060} textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={28} fill={OL}>
 								{l}
 							</text>
