@@ -41,32 +41,32 @@ const CAPTIONS: Word[][] = (() => {
 })();
 
 // ------------------------------------------------------------------ helpers
-const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
-const prog = (t: number, a: number, d: number) => clamp01((t - a) / d);
-const ease = (v: number) => Easing.inOut(Easing.cubic)(clamp01(v));
-const pop = (t: number, a: number) => Easing.out(Easing.back(2))(clamp01((t - a) / 0.35));
+export const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+export const prog = (t: number, a: number, d: number) => clamp01((t - a) / d);
+export const ease = (v: number) => Easing.inOut(Easing.cubic)(clamp01(v));
+export const pop = (t: number, a: number) => Easing.out(Easing.back(2))(clamp01((t - a) / 0.35));
 
-const Cam: React.FC<{z: number; cx: number; cy: number; children: React.ReactNode}> = ({z, cx, cy, children}) => (
+export const Cam: React.FC<{z: number; cx: number; cy: number; children: React.ReactNode}> = ({z, cx, cy, children}) => (
 	<g transform={`translate(${cx} ${cy}) scale(${z}) translate(${-cx} ${-cy})`}>{children}</g>
 );
 
-const KID = {
+export const KID = {
 	a: {hair: 'curly' as const, hairColor: '#2b211d', jacket: '#5b86c4', pants: '#3a3f55'},
 	b: {hair: 'capback' as const, hairColor: '#c98c55', jacket: '#d9483b', pants: '#4a4f5c'},
 	c: {hair: 'sweep' as const, hairColor: '#e8c070', jacket: '#7fae6a', pants: '#3d5a8a'},
 	d: {hair: 'buzz' as const, hairColor: '#4a3328', jacket: '#9b6fb0', pants: '#3a3f55'},
 	e: {hair: 'shaggy' as const, hairColor: '#2b211d', jacket: '#f2c230', pants: '#4a4f5c'},
 };
-type KidKey = keyof typeof KID;
-const Kid: React.FC<{k: KidKey; x: number; y: number; s?: number; face?: 'smile' | 'joy' | 'neutral' | 'think' | 'laugh'; legL?: number; legR?: number; armL?: [number, number]; armR?: [number, number]}> = ({k, ...p}) => (
+export type KidKey = keyof typeof KID;
+export const Kid: React.FC<{k: KidKey; x: number; y: number; s?: number; face?: 'smile' | 'joy' | 'neutral' | 'think' | 'laugh'; legL?: number; legR?: number; armL?: [number, number]; armR?: [number, number]}> = ({k, ...p}) => (
 	<Char {...KID[k]} {...p} headS={0.82} bodyS={1.0} headDrop={18} blinkSeed={k.charCodeAt(0)} />
 );
-const Dad: React.FC<{x: number; y: number; s?: number; face?: 'smile' | 'neutral' | 'think'; armR?: [number, number]; armL?: [number, number]}> = (p) => (
+export const Dad: React.FC<{x: number; y: number; s?: number; face?: 'smile' | 'neutral' | 'think'; armR?: [number, number]; armL?: [number, number]}> = (p) => (
 	<Char {...p} hair="guy" hairColor="#4a3328" mustache glasses jacket="#6d5a4a" pants="#3d4a66" headS={0.82} bodyS={1.14} headDrop={18} />
 );
 
 /** HUD: club counter in the top-right corner. */
-const Hud: React.FC<{rows: [string, string, string?][]; t: number}> = ({rows, t}) => {
+export const Hud: React.FC<{rows: [string, string, string?][]; t: number}> = ({rows, t}) => {
 	const a = ease(t / 0.4);
 	return (
 		<g transform={`translate(${540 + (1 - a) * 80} 70)`} opacity={a}>
@@ -90,8 +90,8 @@ const Hud: React.FC<{rows: [string, string, string?][]; t: number}> = ({rows, t}
 };
 
 // ------------------------------------------------------------------ props
-type Screen = 'off' | 'game' | 'blue' | 'black' | 'boot' | 'desktop';
-const Monitor: React.FC<{x: number; y: number; s?: number; screen: Screen; t: number}> = ({x, y, s = 1, screen, t}) => (
+export type Screen = 'off' | 'game' | 'blue' | 'black' | 'boot' | 'desktop';
+export const Monitor: React.FC<{x: number; y: number; s?: number; screen: Screen; t: number}> = ({x, y, s = 1, screen, t}) => (
 	<g transform={`translate(${x} ${y}) scale(${s})`}>
 		<rect x={-14} y={-20} width={28} height={40} fill="#3a3f55" stroke={OL} strokeWidth={6} />
 		<rect x={-60} y={14} width={120} height={16} rx={6} fill="#3a3f55" stroke={OL} strokeWidth={6} />
@@ -121,7 +121,7 @@ const Monitor: React.FC<{x: number; y: number; s?: number; screen: Screen; t: nu
 	</g>
 );
 
-const Tower: React.FC<{x: number; y: number; s?: number; on?: boolean; led?: string; t: number; open?: boolean}> = ({x, y, s = 1, on = false, led, t, open = false}) => (
+export const Tower: React.FC<{x: number; y: number; s?: number; on?: boolean; led?: string; t: number; open?: boolean}> = ({x, y, s = 1, on = false, led, t, open = false}) => (
 	<g transform={`translate(${x} ${y}) scale(${s})`}>
 		<rect x={-55} y={-200} width={110} height={200} rx={10} fill="#3a3f55" stroke={OL} strokeWidth={OW} />
 		{open ? (
@@ -148,7 +148,7 @@ const Tower: React.FC<{x: number; y: number; s?: number; on?: boolean; led?: str
 	</g>
 );
 
-const Desk: React.FC<{x: number; y: number; w?: number}> = ({x, y, w = 300}) => (
+export const Desk: React.FC<{x: number; y: number; w?: number}> = ({x, y, w = 300}) => (
 	<g>
 		<rect x={x - w / 2} y={y} width={w} height={26} rx={8} fill={C.wood} stroke={OL} strokeWidth={OW} />
 		<rect x={x - w / 2 + 16} y={y + 26} width={22} height={150} fill={C.woodDark} stroke={OL} strokeWidth={6} />
@@ -156,7 +156,7 @@ const Desk: React.FC<{x: number; y: number; w?: number}> = ({x, y, w = 300}) => 
 	</g>
 );
 
-const Box: React.FC<{x: number; y: number; w?: number; h?: number; label?: string}> = ({x, y, w = 160, h = 120, label}) => (
+export const Box: React.FC<{x: number; y: number; w?: number; h?: number; label?: string}> = ({x, y, w = 160, h = 120, label}) => (
 	<g transform={`translate(${x} ${y})`}>
 		<rect x={-w / 2} y={-h} width={w} height={h} fill="#c9a06a" stroke={OL} strokeWidth={OW} />
 		<rect x={-12} y={-h} width={24} height={h} fill="#e6c48e" stroke={OL} strokeWidth={4} />
@@ -168,7 +168,7 @@ const Box: React.FC<{x: number; y: number; w?: number; h?: number; label?: strin
 	</g>
 );
 
-const GPU: React.FC<{x: number; y: number; s?: number; rot?: number; t: number}> = ({x, y, s = 1, rot = 0, t}) => (
+export const GPU: React.FC<{x: number; y: number; s?: number; rot?: number; t: number}> = ({x, y, s = 1, rot = 0, t}) => (
 	<g transform={`translate(${x} ${y}) rotate(${rot}) scale(${s})`}>
 		<rect x={-130} y={-45} width={260} height={90} rx={12} fill="#3a3f55" stroke={OL} strokeWidth={OW} />
 		{[-60, 60].map((cx) => (
@@ -185,7 +185,7 @@ const GPU: React.FC<{x: number; y: number; s?: number; rot?: number; t: number}>
 	</g>
 );
 
-const Phone: React.FC<{x: number; y: number; s?: number; children?: React.ReactNode}> = ({x, y, s = 1, children}) => (
+export const Phone: React.FC<{x: number; y: number; s?: number; children?: React.ReactNode}> = ({x, y, s = 1, children}) => (
 	<g transform={`translate(${x} ${y}) scale(${s})`}>
 		<rect x={-110} y={-200} width={220} height={400} rx={30} fill="#2a2e3d" stroke={OL} strokeWidth={OW} />
 		<rect x={-94} y={-176} width={188} height={352} rx={14} fill="#fffaf0" />
@@ -193,7 +193,7 @@ const Phone: React.FC<{x: number; y: number; s?: number; children?: React.ReactN
 	</g>
 );
 
-const Badge: React.FC<{x: number; y: number; text: string; t: number; at: number; color?: string; size?: number}> = ({x, y, text, t, at, color = C.red, size = 64}) => {
+export const Badge: React.FC<{x: number; y: number; text: string; t: number; at: number; color?: string; size?: number}> = ({x, y, text, t, at, color = C.red, size = 64}) => {
 	const k = pop(t, at);
 	if (t < at) return null;
 	return (
@@ -205,7 +205,7 @@ const Badge: React.FC<{x: number; y: number; text: string; t: number; at: number
 	);
 };
 
-const QMark: React.FC<{x: number; y: number; s?: number; t: number; text?: string}> = ({x, y, s = 1, t, text = '?'}) => (
+export const QMark: React.FC<{x: number; y: number; s?: number; t: number; text?: string}> = ({x, y, s = 1, t, text = '?'}) => (
 	<g transform={`translate(${x} ${y + Math.sin(t * 2.2) * 8}) rotate(${10 + Math.sin(t * 1.6) * 5}) scale(${s})`}>
 		<text textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={200} fill={C.ochre} stroke={OL} strokeWidth={12} paintOrder="stroke" strokeLinejoin="round">
 			{text}
@@ -214,7 +214,7 @@ const QMark: React.FC<{x: number; y: number; s?: number; t: number; text?: strin
 );
 
 // ------------------------------------------------------------------ backgrounds
-const Wall: React.FC<{color?: string; stripe?: string}> = ({color = '#efe0c2', stripe = '#e6d3ae'}) => (
+export const Wall: React.FC<{color?: string; stripe?: string}> = ({color = '#efe0c2', stripe = '#e6d3ae'}) => (
 	<>
 		<rect width={1080} height={1920} fill={color} />
 		{Array.from({length: 14}).map((_, i) => (
@@ -222,7 +222,7 @@ const Wall: React.FC<{color?: string; stripe?: string}> = ({color = '#efe0c2', s
 		))}
 	</>
 );
-const Floor: React.FC<{y?: number; color?: string; line?: string}> = ({y = 1300, color = C.wood, line = '#a8713f'}) => (
+export const Floor: React.FC<{y?: number; color?: string; line?: string}> = ({y = 1300, color = C.wood, line = '#a8713f'}) => (
 	<>
 		<rect x={0} y={y} width={1080} height={1920 - y} fill={color} stroke={OL} strokeWidth={OW} />
 		{Array.from({length: 9}).map((_, i) => (
@@ -230,7 +230,7 @@ const Floor: React.FC<{y?: number; color?: string; line?: string}> = ({y = 1300,
 		))}
 	</>
 );
-const Window: React.FC<{x: number; y: number; w?: number; h?: number; night?: boolean; t: number}> = ({x, y, w = 300, h = 340, night = false, t}) => (
+export const Window: React.FC<{x: number; y: number; w?: number; h?: number; night?: boolean; t: number}> = ({x, y, w = 300, h = 340, night = false, t}) => (
 	<g>
 		<rect x={x - 14} y={y - 14} width={w + 28} height={h + 28} rx={10} fill={C.wood} stroke={OL} strokeWidth={OW} />
 		<rect x={x} y={y} width={w} height={h} fill={night ? '#1d2b4f' : '#9fd0e8'} stroke={OL} strokeWidth={6} />
@@ -249,7 +249,7 @@ const Window: React.FC<{x: number; y: number; w?: number; h?: number; night?: bo
 		<rect x={x - 30} y={y + h + 8} width={w + 60} height={22} rx={6} fill={C.wood} stroke={OL} strokeWidth={6} />
 	</g>
 );
-const Poster: React.FC<{x: number; y: number}> = ({x, y}) => (
+export const Poster: React.FC<{x: number; y: number}> = ({x, y}) => (
 	<g transform={`translate(${x} ${y})`}>
 		<rect x={-90} y={-120} width={180} height={240} fill="#1d2b4f" stroke={OL} strokeWidth={OW} />
 		<circle cx={0} cy={-10} r={46} fill={C.red} stroke={OL} strokeWidth={5} />
@@ -259,13 +259,13 @@ const Poster: React.FC<{x: number; y: number}> = ({x, y}) => (
 		</text>
 	</g>
 );
-const Rug: React.FC<{x: number; y: number; rx?: number}> = ({x, y, rx = 300}) => (
+export const Rug: React.FC<{x: number; y: number; rx?: number}> = ({x, y, rx = 300}) => (
 	<g>
 		<ellipse cx={x} cy={y} rx={rx} ry={46} fill="#3f6fb0" stroke={OL} strokeWidth={OW} />
 		<ellipse cx={x} cy={y} rx={rx * 0.8} ry={32} fill="none" stroke={C.ochre} strokeWidth={8} strokeDasharray="30 18" />
 	</g>
 );
-const Plant: React.FC<{x: number; y: number; t: number}> = ({x, y, t}) => (
+export const Plant: React.FC<{x: number; y: number; t: number}> = ({x, y, t}) => (
 	<g transform={`translate(${x} ${y})`}>
 		{[-30, 0, 30].map((a, i) => (
 			<path key={i} d="M 0 -60 Q -10 -130 0 -170 Q 14 -130 0 -60 Z" transform={`rotate(${a + Math.sin(t * 1.5 + i) * 3} 0 -60)`} fill="#5f9e55" stroke={OL} strokeWidth={5} />
@@ -273,7 +273,7 @@ const Plant: React.FC<{x: number; y: number; t: number}> = ({x, y, t}) => (
 		<path d="M -40 -60 L 40 -60 L 30 0 L -30 0 Z" fill={C.red} stroke={OL} strokeWidth={OW} />
 	</g>
 );
-const Bulb: React.FC<{x: number; y: number; t: number; dim?: boolean}> = ({x, y, t, dim}) => (
+export const Bulb: React.FC<{x: number; y: number; t: number; dim?: boolean}> = ({x, y, t, dim}) => (
 	<g>
 		<line x1={x} y1={0} x2={x} y2={y - 30} stroke={OL} strokeWidth={5} />
 		<circle cx={x} cy={y} r={160} fill="#ffe89a" opacity={dim ? 0.08 : 0.14 + 0.03 * Math.sin(t * 9)} />
@@ -419,7 +419,7 @@ const S4: React.FC<{t: number}> = ({t}) => {
 };
 
 // 5 · 29.55–39.25 premises, dad signs
-const Basement: React.FC<{t: number; dim?: boolean}> = ({t, dim}) => (
+export const Basement: React.FC<{t: number; dim?: boolean}> = ({t, dim}) => (
 	<>
 		<rect width={1080} height={1920} fill="#cfc6b6" />
 		{Array.from({length: 13}).map((_, r) =>
@@ -463,8 +463,8 @@ const S5: React.FC<{t: number}> = ({t}) => {
 };
 
 // 6 · 39.25–50.2 switching on
-const CLUB_X = [150, 330, 510, 690, 870];
-const Row: React.FC<{t: number; screens: Screen[]; ons: boolean[]; leds?: string[]}> = ({t, screens, ons, leds}) => (
+export const CLUB_X = [150, 330, 510, 690, 870];
+export const Row: React.FC<{t: number; screens: Screen[]; ons: boolean[]; leds?: string[]}> = ({t, screens, ons, leds}) => (
 	<>
 		<Desk x={540} y={1080} w={1000} />
 		{CLUB_X.map((x, i) => (
@@ -598,7 +598,7 @@ const S9: React.FC<{t: number}> = ({t}) => {
 };
 
 // 10 · 73.6–81.9 opening
-const ClubInside: React.FC<{t: number; glow?: number}> = ({t, glow = 1}) => (
+export const ClubInside: React.FC<{t: number; glow?: number}> = ({t, glow = 1}) => (
 	<>
 		<rect width={1080} height={1920} fill="#2a2e45" />
 		{Array.from({length: 13}).map((_, r) =>
