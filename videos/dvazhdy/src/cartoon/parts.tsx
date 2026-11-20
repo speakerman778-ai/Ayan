@@ -63,7 +63,7 @@ export const Limb: React.FC<{from: Pt; a1: number; a2: number; l1: number; l2: n
 };
 
 // ------------------------------------------------------------------ face
-export type Face = 'neutral' | 'smile' | 'shock' | 'laugh' | 'sad' | 'wince' | 'think' | 'closed' | 'determined';
+export type Face = 'neutral' | 'smile' | 'shock' | 'laugh' | 'sad' | 'wince' | 'think' | 'closed' | 'determined' | 'joy';
 
 const Eyes: React.FC<{face: Face; blink: number; look?: number}> = ({face, blink, look = 0}) => {
 	const ex = 44;
@@ -121,6 +121,7 @@ const Brows: React.FC<{face: Face}> = ({face}) => {
 		smile: [-4, 0],
 		shock: [-16, 0],
 		laugh: [-8, 0],
+		joy: [-14, 0],
 		sad: [0, 12],
 		wince: [6, -10],
 		think: [0, 0],
@@ -141,6 +142,7 @@ const Mouth: React.FC<{face: Face; talk?: number}> = ({face, talk = 0}) => {
 	switch (face) {
 		case 'smile':
 			return <path d={`M -30 ${my - 6} Q 0 ${my + 22} 30 ${my - 6}`} stroke={OL} strokeWidth={8} fill="none" strokeLinecap="round" />;
+		case 'joy':
 		case 'laugh':
 			return <path d={`M -42 ${my - 10} Q 0 ${my - 14} 42 ${my - 10} Q 36 ${my + 46} 0 ${my + 46} Q -36 ${my + 46} -42 ${my - 10} Z`} fill="#8c2f2a" stroke={OL} strokeWidth={7} />;
 		case 'shock':

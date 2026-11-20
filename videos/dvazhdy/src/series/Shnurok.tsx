@@ -85,7 +85,7 @@ export const ShnurokAvatar: React.FC = () => {
 export const ShnurokSheet: React.FC = () => {
 	const t = useCurrentFrame() / 30;
 	const faces: [CharProps['face'], string][] = [
-		['smile', 'рад'],
+		['joy', 'рад'],
 		['think', 'думает'],
 		['shock', 'удивлён'],
 		['laugh', 'смеётся'],
@@ -122,7 +122,7 @@ export const ShnurokSheet: React.FC = () => {
 					<rect x={40} y={1720} width={1000} height={26} rx={13} fill={C.wood} stroke={OL} strokeWidth={6} />
 					{faces.map(([f, l], i) => (
 						<g key={l}>
-							<Shnurok x={170 + i * 245} y={1720} s={0.55} face={f} />
+							<Shnurok x={170 + i * 245} y={1720} s={0.55} face={f} armL={f === 'joy' ? [150, 20] : undefined} armR={f === 'joy' ? [150, 20] : undefined} />
 							<text x={170 + i * 245} y={1790} textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={32} fill={OL}>
 								{l}
 							</text>
