@@ -7,6 +7,7 @@ import {SubsDemo} from './subs/Karaoke';
 import {KeeperPreview} from './series/Keeper';
 import {Ep01Characters, Ep01Props} from './series/Ep01Sheets';
 import {Ep01, EP01_DURATION} from './series/Ep01';
+import {PcClub, PCCLUB_DURATION} from './series/PcClub';
 import {ShnurokAvatar, ShnurokHairOptions, ShnurokSheet} from './series/Shnurok';
 import timeline from '../public/timeline.json';
 
@@ -19,6 +20,7 @@ export const Root: React.FC = () => (
 	<Composition id="ShnurokAvatar" component={ShnurokAvatar} width={1080} height={1080} fps={30} durationInFrames={90} />
 	<Composition id="ShnurokHairOptions" component={ShnurokHairOptions} width={1080} height={1920} fps={30} durationInFrames={30} />
 	<Composition id="ShnurokSheet" component={ShnurokSheet} width={1080} height={1920} fps={30} durationInFrames={90} />
+	<Composition id="PcClub" component={PcClub} width={1080} height={1920} fps={30} durationInFrames={Math.round(PCCLUB_DURATION * 30)} defaultProps={{audio: 'shnurok/ep01-mix.wav'}} />
 	<Composition id="Ep01Characters" component={Ep01Characters} width={1080} height={1920} fps={30} durationInFrames={120} />
 	<Composition id="Ep01Props" component={Ep01Props} width={1080} height={1920} fps={30} durationInFrames={120} />
 	<Composition id="Sheet" component={Sheet} width={1080} height={1920} fps={30} durationInFrames={30} />

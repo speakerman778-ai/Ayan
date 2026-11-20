@@ -13,7 +13,7 @@ export const SHNUROK = {
 	jeans: '#3d5a8a',
 };
 
-export const Shnurok: React.FC<Partial<CharProps> & {x: number; y: number; thinking?: boolean}> = ({thinking = false, face, armR, armL, ...rest}) => (
+export const Shnurok: React.FC<Partial<CharProps> & {x: number; y: number; thinking?: boolean; handOnHead?: boolean}> = ({thinking = false, handOnHead = false, face, armR, armL, ...rest}) => (
 	<Char
 		{...rest}
 		headS={0.82}
@@ -27,10 +27,10 @@ export const Shnurok: React.FC<Partial<CharProps> & {x: number; y: number; think
 		jacket={SHNUROK.hoodie}
 		pants={SHNUROK.jeans}
 		face={face ?? (thinking ? 'think' : 'smile')}
-		armR={thinking ? [-46, 213] : armR}
+		armR={thinking ? [-46, 213] : handOnHead ? [150, 72] : armR}
 		foreR={1}
 		armL={thinking ? [18, -78] : armL}
-		armROver={thinking || rest.armROver}
+		armROver={thinking || handOnHead || rest.armROver}
 		look={thinking ? 0.6 : rest.look}
 	/>
 );
