@@ -207,7 +207,7 @@ const S1: React.FC<{t: number}> = ({t}) => (
 			<Shnurok x={220} y={1420} s={0.9} thinking />
 			<Label x={250} y={640} text="?" size={160} color={C.ochre} t={t} from={3.5} />
 		</Cam>
-		<NameTag name="Шнурок" role="вселенная Лёхи" from={0.3} x={60} y={120} avatar={<Shnurok x={0} y={250} s={0.42} />} />
+		<NameTag name="Шнурок" role="Вселенная Шнурка" from={0.3} x={60} y={120} avatar={<Shnurok x={0} y={250} s={0.42} />} />
 	</>
 );
 
