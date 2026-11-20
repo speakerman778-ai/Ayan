@@ -42,7 +42,7 @@ const at = (w: string, from = 0): number => {
 	const i = WORDS.findIndex((x, k) => k >= from && x.text.replace(/[^\p{L}\p{N}-]/gu, '').toLowerCase().startsWith(w.toLowerCase()));
 	return i >= 0 ? WORDS[i].start : 0;
 };
-const idx = (w: string, from = 0) => WORDS.findIndex((x, k) => k >= from && x.text.replace(/[^\p{L}\p{N}-]/gu, '').toLowerCase().startsWith(w.toLowerCase()));
+const idx = (w: string, from = 0) => WORDS.findIndex((x, k) => k >= from && x.text.replace(/[^\p{L}\p{N}-]/gu, '').toLowerCase() === w.toLowerCase());
 
 // scene boundaries = first word of each paragraph
 const B = (() => {

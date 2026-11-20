@@ -21,7 +21,7 @@ export const Root: React.FC = () => (
 	<Composition id="ShnurokAvatar" component={ShnurokAvatar} width={1080} height={1080} fps={30} durationInFrames={90} />
 	<Composition id="ShnurokHairOptions" component={ShnurokHairOptions} width={1080} height={1920} fps={30} durationInFrames={30} />
 	<Composition id="ShnurokSheet" component={ShnurokSheet} width={1080} height={1920} fps={30} durationInFrames={90} />
-	<Composition id="Kypshak" component={Kypshak} width={1080} height={1920} fps={30} durationInFrames={KYPSHAK_DURATION * 30} defaultProps={{audio: ''}} />
+	<Composition id="Kypshak" component={Kypshak} width={1080} height={1920} fps={30} durationInFrames={KYPSHAK_DURATION * 30} defaultProps={{audio: 'kypshak/mix.wav'}} />
 	<Composition id="PcClub" component={PcClub} width={1080} height={1920} fps={30} durationInFrames={Math.round(PCCLUB_DURATION * 30)} defaultProps={{audio: 'shnurok/ep01-mix.wav'}} />
 	<Composition id="Ep01Characters" component={Ep01Characters} width={1080} height={1920} fps={30} durationInFrames={120} />
 	<Composition id="Ep01Props" component={Ep01Props} width={1080} height={1920} fps={30} durationInFrames={120} />
