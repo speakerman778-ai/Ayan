@@ -64,7 +64,7 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 	const legL = 72;
 	const hip = -legL * 2 + bob;
 	const sh = hip - 125;
-	const headCY = sh - 62;
+	const headCY = sh - 50;
 	const turn = side ? 1 : 0;
 
 	const eyes = () => {
@@ -110,7 +110,7 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 			)}
 			<path d={`M ${-bodyW / 2 + 8} ${sh + 8} Q 0 ${sh - 10} ${bodyW / 2 - 8} ${sh + 8}`} fill={shade(top, 0.9)} stroke={FL.ol} strokeWidth={FL.w} />
 			{/* head */}
-			<g transform={`translate(${side ? 4 : 0} ${headCY + bob * 0.3}) scale(0.7)`}>
+			<g transform={`translate(${side ? 4 : 0} ${headCY + bob * 0.3}) scale(0.56)`}>
 				<rect x={-28} y={78} width={56} height={30} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />
 				{!side && <ellipse cx={98} cy={20} rx={12} ry={17} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />}
 				<ellipse cx={side ? -80 : -98} cy={20} rx={12} ry={17} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />
