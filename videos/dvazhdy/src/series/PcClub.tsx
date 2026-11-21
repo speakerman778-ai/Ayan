@@ -369,7 +369,7 @@ const S3: React.FC<{t: number}> = ({t}) => {
 };
 
 // 4 · 23.05–29.55 night kitchen assembly
-const Kitchen: React.FC<{t: number}> = ({t}) => (
+export const Kitchen: React.FC<{t: number}> = ({t}) => (
 	<>
 		<rect width={1080} height={1920} fill="#d8e6e0" />
 		{Array.from({length: 12}).map((_, r) =>

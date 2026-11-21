@@ -9,6 +9,7 @@ import {Ep01Characters, Ep01Props} from './series/Ep01Sheets';
 import {Ep01, EP01_DURATION} from './series/Ep01';
 import {PcClub, PCCLUB_DURATION} from './series/PcClub';
 import {PcClub2, PCCLUB2_DURATION} from './series/PcClub2';
+import {Muravei, MURAVEI_DURATION} from './series/Muravei';
 import {Kypshak, KYPSHAK_DURATION} from './series/Kypshak';
 import {ShnurokAvatar, ShnurokHairOptions, ShnurokSheet} from './series/Shnurok';
 import timeline from '../public/timeline.json';
@@ -23,6 +24,7 @@ export const Root: React.FC = () => (
 	<Composition id="ShnurokHairOptions" component={ShnurokHairOptions} width={1080} height={1920} fps={30} durationInFrames={30} />
 	<Composition id="ShnurokSheet" component={ShnurokSheet} width={1080} height={1920} fps={30} durationInFrames={90} />
 	<Composition id="Kypshak" component={Kypshak} width={1080} height={1920} fps={30} durationInFrames={KYPSHAK_DURATION * 30} defaultProps={{audio: 'kypshak/mix.wav'}} />
+	<Composition id="Muravei" component={Muravei} width={1080} height={1920} fps={30} durationInFrames={MURAVEI_DURATION * 30} defaultProps={{audio: 'shnurok/ep03-mix.wav'}} />
 	<Composition id="PcClub2" component={PcClub2} width={1080} height={1920} fps={30} durationInFrames={PCCLUB2_DURATION * 30} defaultProps={{audio: 'shnurok/ep02-mix.wav'}} />
 	<Composition id="PcClub" component={PcClub} width={1080} height={1920} fps={30} durationInFrames={Math.round(PCCLUB_DURATION * 30)} defaultProps={{audio: 'shnurok/ep01-mix.wav'}} />
 	<Composition id="Ep01Characters" component={Ep01Characters} width={1080} height={1920} fps={30} durationInFrames={120} />
