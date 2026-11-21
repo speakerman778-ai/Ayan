@@ -12,7 +12,7 @@ import rawWords from '../../public/shnurok/ep05-words.json';
 
 const FPS = 30;
 const O = OL;
-const W = OW;
+const W = 5;
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const ease = (v: number) => Easing.inOut(Easing.cubic)(clamp01(v));
 const back = (v: number) => Easing.out(Easing.back(1.8))(clamp01(v));
@@ -74,7 +74,7 @@ const Snow: React.FC<{t: number; n?: number; wind?: number; op?: number}> = ({t,
 			const sp = 0.25 + hash(i + 3) * 0.35;
 			const k = (t * sp + hash(i)) % 1;
 			const x = ((hash(i + 7) * 1400 + k * 500 * wind + Math.sin(t * 2 + i) * 20) % 1400) - 160;
-			return <circle key={i} cx={x} cy={k * 2000 - 40} r={2.5 + hash(i + 11) * 5} fill="#fff" opacity={op * (0.5 + hash(i + 5) * 0.5)} />;
+			return <circle key={i} cx={x} cy={k * 2000 - 40} r={2 + hash(i + 11) * 3} fill="#fff" opacity={op * 0.55 * (0.5 + hash(i + 5) * 0.5)} />;
 		})}
 	</>
 );
@@ -131,7 +131,7 @@ const Phone: React.FC<{t: number; msgs: {at: number; from: string; text: string;
 			return (
 				<g key={i} transform={`translate(${m.me ? 40 : -250} ${y}) scale(${k})`}>
 					<rect x={0} y={0} width={460} height={h} rx={24} fill={m.me ? '#cfe8c8' : '#fffaf0'} stroke={O} strokeWidth={4} />
-					<text x={22} y={36} fontFamily="Inter" fontWeight={900} fontSize={26} fill="#d9483b">
+					<text x={22} y={36} fontFamily="Inter" fontWeight={900} fontSize={26} fill="#c8675b">
 						{m.from}
 					</text>
 					{lines.map((l, j) => (
@@ -145,12 +145,12 @@ const Phone: React.FC<{t: number; msgs: {at: number; from: string; text: string;
 	</g>
 );
 
-const Flicker = (t: number, k = 1) => (Math.sin(t * 23) > 0.92 || Math.sin(t * 7.3 + 1) > 0.97 ? 0.55 * k : 0);
+const Flicker = (t: number, k = 1) => Math.pow(0.5 + 0.5 * Math.sin(t * 1.6), 6) * 0.16 * k;
 
 const Big: React.FC<{text: string; t: number; at: number; y?: number; size?: number; color?: string}> = ({text, t, at, y = 820, size = 260, color = '#eef4ff'}) =>
 	t < at ? null : (
 		<g transform={`translate(540 ${y}) scale(${back((t - at) / 0.3)})`} opacity={clamp01(1.4 - (t - at) * 0.6)}>
-			<text textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={size} fill={color} stroke={O} strokeWidth={14} paintOrder="stroke" strokeLinejoin="round">
+			<text textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={size} fill={color} stroke={O} strokeWidth={10} paintOrder="stroke" strokeLinejoin="round">
 				{text}
 			</text>
 		</g>
@@ -159,27 +159,17 @@ const Big: React.FC<{text: string; t: number; at: number; y?: number; size?: num
 // interiors ----------------------------------------------------------------
 const Flat: React.FC<{t: number; dark?: number}> = ({t, dark = 0.45}) => (
 	<>
-		<rect width={1080} height={1920} fill="#5d6f8f" />
-		{Array.from({length: 14}).map((_, i) => (
-			<rect key={i} x={i * 80} y={0} width={26} height={1300} fill="#66799a" />
-		))}
+		<rect width={1080} height={1920} fill="#56627a" />
 		<rect x={80} y={340} width={170} height={210} fill="#1d2b4f" stroke={O} strokeWidth={W} />
-		<circle cx={165} cy={445} r={36} fill="#d9483b" stroke={O} strokeWidth={4} />
-		<rect x={60} y={640} width={360} height={18} fill="#9c6338" stroke={O} strokeWidth={W} />
-		{['#d9483b', '#5b86c4', '#7fae6a', '#e8a93a'].map((c, i) => (
-			<rect key={c} x={80 + i * 34} y={570} width={28} height={70} fill={c} stroke={O} strokeWidth={3} />
-		))}
+		<circle cx={165} cy={445} r={36} fill="#c8675b" stroke={O} strokeWidth={4} />
 		{/* radiator with frost */}
 		<rect x={140} y={1100} width={260} height={150} rx={10} fill="#d9d4c8" stroke={O} strokeWidth={W} />
 		{Array.from({length: 7}).map((_, i) => (
 			<line key={i} x1={170 + i * 34} y1={1110} x2={170 + i * 34} y2={1240} stroke="#b8b2a6" strokeWidth={6} />
 		))}
-		{Array.from({length: 9}).map((_, i) => (
-			<circle key={i} cx={150 + hash(i) * 240} cy={1100 + hash(i + 2) * 30} r={6} fill="#eef4ff" />
-		))}
 		<rect x={0} y={1300} width={1080} height={620} fill="#6b5446" stroke={O} strokeWidth={W} />
-		{Array.from({length: 10}).map((_, i) => (
-			<line key={i} x1={0} y1={1340 + i * 60} x2={1080} y2={1340 + i * 60} stroke="#5a463a" strokeWidth={4} />
+		{Array.from({length: 4}).map((_, i) => (
+			<line key={i} x1={0} y1={1360 + i * 140} x2={1080} y2={1340 + i * 60} stroke="#62503f" strokeWidth={3} />
 		))}
 		<rect width={1080} height={1920} fill="#0b1226" opacity={dark} />
 	</>
@@ -191,12 +181,12 @@ const FrostWindow: React.FC<{t: number; x?: number; y?: number; face?: number; h
 		<clipPath id={`fw${x}`}><rect x={x} y={y} width={420} height={580} /></clipPath>
 		<g clipPath={`url(#fw${x})`}>
 			<rect x={x} y={y} width={420} height={580} fill="#14203d" />
-			<Snow t={t} n={40} wind={1.6} />
+			<Snow t={t} n={18} wind={1.2} />
 			{/* frost patterns */}
-			{Array.from({length: 14}).map((_, i) => {
+			{Array.from({length: 6}).map((_, i) => {
 				const cx = x + (i % 2 ? 420 : 0);
 				const cy = y + hash(i) * 580;
-				return <path key={i} d={`M ${cx} ${cy} q ${(i % 2 ? -1 : 1) * 60} -30 ${(i % 2 ? -1 : 1) * 120} 0 m ${(i % 2 ? 1 : -1) * 60} 0 q ${(i % 2 ? -1 : 1) * 20} 30 ${(i % 2 ? -1 : 1) * 70} 40`} stroke="#dfe9ff" strokeWidth={5} fill="none" opacity={0.7} />;
+				return <path key={i} d={`M ${cx} ${cy} q ${(i % 2 ? -1 : 1) * 60} -30 ${(i % 2 ? -1 : 1) * 120} 0 m ${(i % 2 ? 1 : -1) * 60} 0 q ${(i % 2 ? -1 : 1) * 20} 30 ${(i % 2 ? -1 : 1) * 70} 40`} stroke="#dfe9ff" strokeWidth={3} fill="none" opacity={0.3} />;
 			})}
 			{face > 0 && (
 				<g opacity={face * (0.55 + 0.1 * Math.sin(t * 3))} transform={`translate(${x + 270} ${y + 260})`}>
@@ -246,10 +236,7 @@ const Stairwell: React.FC<{t: number; floor: string}> = ({t, floor}) => (
 		<rect x={0} y={690} width={1080} height={14} fill="#3a3f55" />
 		<path d="M 0 1300 L 1080 1300" stroke={O} strokeWidth={W} />
 		<rect x={0} y={1300} width={1080} height={620} fill="#7a7a80" />
-		{Array.from({length: 6}).map((_, i) => (
-			<rect key={i} x={0} y={1300 + i * 100} width={1080} height={20} fill="#6a6a70" />
-		))}
-		<text x={120} y={560} fontFamily="Inter" fontWeight={900} fontSize={200} fill="#d9483b" opacity={0.85}>
+		<text x={120} y={560} fontFamily="Inter" fontWeight={900} fontSize={200} fill="#c8675b" opacity={0.45}>
 			{floor}
 		</text>
 		{/* lamp */}
@@ -257,9 +244,8 @@ const Stairwell: React.FC<{t: number; floor: string}> = ({t, floor}) => (
 		<circle cx={540} cy={170} r={34} fill="#fff6c8" stroke={O} strokeWidth={5} />
 		<circle cx={540} cy={170} r={220} fill="#fff6c8" opacity={0.12} />
 		{/* cracks + frost */}
-		<path d="M 900 300 l 30 60 l -20 40 l 40 70" stroke="#8f8a80" strokeWidth={5} fill="none" />
-		{Array.from({length: 18}).map((_, i) => (
-			<circle key={i} cx={hash(i) * 1080} cy={680 + hash(i + 2) * 30} r={6 + hash(i + 4) * 8} fill="#eef4ff" opacity={0.8} />
+		{Array.from({length: 6}).map((_, i) => (
+			<circle key={i} cx={hash(i) * 1080} cy={680 + hash(i + 2) * 30} r={6 + hash(i + 4) * 8} fill="#eef4ff" opacity={0.5} />
 		))}
 		<rect width={1080} height={1920} fill="#000" opacity={Flicker(t)} />
 	</>
@@ -293,7 +279,7 @@ const S1: React.FC<{t: number}> = ({t}) => {
 				})}
 				<circle cx={540} cy={-160 + 3 * 105 + 30} r={90} fill="#ffd36a" opacity={0.15 + 0.05 * Math.sin(t * 3)} />
 			</g>
-			<Snow t={t} n={140} wind={2.2} />
+			<Snow t={t} n={50} wind={1.4} />
 			<g transform={`translate(860 300) scale(${back(t / 0.4)})`}>
 				<rect x={-36} y={-220} width={72} height={360} rx={36} fill="#fffaf0" stroke={O} strokeWidth={W} />
 				<rect x={-14} y={-190 + 200 * ease(t / 3)} width={28} height={290 - 200 * ease(t / 3)} rx={14} fill="#5b86c4" />
@@ -351,7 +337,7 @@ const S4: React.FC<{t: number}> = ({t}) => {
 			<ShnurokSide x={420} y={1600} s={0.9} face={hand > 0.5 ? 'shock' : 'neutral'} armFront={[150, -20]} />
 			{t > six && (
 				<g transform="translate(888 600)">
-					<circle r={60} fill="none" stroke="#d9483b" strokeWidth={10} opacity={0.6 + 0.4 * Math.sin(t * 8)} />
+					<circle r={60} fill="none" stroke="#c8675b" strokeWidth={10} opacity={0.6 + 0.15 * Math.sin(t * 3)} />
 				</g>
 			)}
 		</g>
@@ -452,7 +438,7 @@ const S6: React.FC<{t: number}> = ({t}) => {
 	const dizzy = clamp01((t - (T('заболела') - A)) / 2);
 	const sleepS = T('посплю') - A;
 	return (
-		<g transform={`translate(${Math.sin(t * 2) * 14 * dizzy} 0) skewX(${Math.sin(t * 1.7) * 4 * dizzy})`}>
+		<g transform={`translate(${Math.sin(t * 1.2) * 6 * dizzy} 0) skewX(${Math.sin(t * 1.0) * 1.5 * dizzy})`}>
 			<VeraFlat t={t} gas={0.4 + dizzy * 0.6} />
 			<Vera x={560} y={1640} s={0.78} dir={-1} face="neutral" />
 			<ShnurokSide x={980} y={1660} s={0.9} dir={-1} face={dizzy > 0.2 ? 'closed' : 'neutral'} armFront={dizzy > 0.2 ? [150, 60] : undefined} />
@@ -477,7 +463,7 @@ const S7: React.FC<{t: number}> = ({t}) => {
 				<g transform={`translate(540 950) scale(${back((t - call) / 0.3)})`}>
 					<rect x={-220} y={-380} width={440} height={760} rx={50} fill="#1b1e2b" stroke={O} strokeWidth={W} />
 					<rect x={-195} y={-345} width={390} height={690} rx={26} fill="#e9ecf2" />
-					<text textAnchor="middle" y={-180} fontFamily="Inter" fontWeight={900} fontSize={120} fill="#d9483b">112</text>
+					<text textAnchor="middle" y={-180} fontFamily="Inter" fontWeight={900} fontSize={120} fill="#c8675b">112</text>
 					<circle cy={120} r={70} fill="#5f9e55" stroke={O} strokeWidth={5} />
 					<path d="M -24 100 q 24 -30 48 0 q -10 30 -24 40 q -14 -10 -24 -40" fill="#fff" />
 				</g>
@@ -557,7 +543,7 @@ const S9: React.FC<{t: number}> = ({t}) => {
 			</g>
 			{t >= n14 && t < n15 && <Big text="14" t={t} at={n14} y={500} />}
 			{t >= n15 && t < n16 && <Big text="15" t={t} at={n15} y={500} />}
-			{t >= n16 && <Big text="16" t={t} at={n16} y={500} color="#d9483b" />}
+			{t >= n16 && <Big text="16" t={t} at={n16} y={500} color="#c8675b" />}
 			<rect width={1080} height={1920} fill="#000" opacity={Flicker(t) * 0.8} />
 		</>
 	);
@@ -577,8 +563,8 @@ const S10: React.FC<{t: number}> = ({t}) => {
 			{t > notice && [[270, 1130], [370, 1390], [540, 1180]].map(([bx, by], i) => <Breath key={i} x={bx} y={by} t={t} ph={i * 0.5} />)}
 			{t > no && (
 				<g transform={`translate(${850 - 45} ${1700 - 0.9 * 540})`}>
-					<circle r={90} fill="none" stroke="#d9483b" strokeWidth={10} opacity={0.6 + 0.4 * Math.sin(t * 8)} />
-					<text y={-110} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={44} fill="#d9483b" stroke={O} strokeWidth={4} paintOrder="stroke">нет пара</text>
+					<circle r={90} fill="none" stroke="#c8675b" strokeWidth={10} opacity={0.6 + 0.4 * Math.sin(t * 8)} />
+					<text y={-110} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={44} fill="#c8675b" stroke={O} strokeWidth={4} paintOrder="stroke">нет пара</text>
 				</g>
 			)}
 			<Pill text="«спускайтесь в котельную»" t={t - 0.6} y={200} />
@@ -622,8 +608,6 @@ const S13: React.FC<{t: number}> = ({t}) => (
 	<>
 		<Stairwell t={t} floor="17" />
 		<g transform={`translate(0 ${Math.sin(t * 2) * 4})`}>
-			<path d="M 0 1920 L 540 1920 L 540 960 Z" fill="#d9483b" opacity={0.12} />
-			<path d="M 540 0 L 1080 0 L 1080 960 Z" fill="#5b86c4" opacity={0.12} />
 		</g>
 		<Mikhalych x={180} y={1820} s={0.7} dir={1} t={t} />
 		<ShnurokSide x={540} y={1700} s={0.9} face="think" />
@@ -632,7 +616,7 @@ const S13: React.FC<{t: number}> = ({t}) => (
 		<g transform={`translate(840 520) rotate(8) scale(${back((t - 0.3) / 0.4)})`}>
 			<rect x={-110} y={-180} width={220} height={360} rx={26} fill="#1b1e2b" stroke={O} strokeWidth={W} />
 			<rect x={-94} y={-160} width={188} height={320} rx={12} fill="#e9ecf2" />
-			<text textAnchor="middle" y={-20} fontFamily="Inter" fontWeight={900} fontSize={44} fill="#d9483b">кв. 190</text>
+			<text textAnchor="middle" y={-20} fontFamily="Inter" fontWeight={900} fontSize={44} fill="#c8675b">кв. 190</text>
 		</g>
 		<Big text="?" t={t} at={T('кому', B[12] ? 0 : 0) - B[12]} y={720} size={240} color="#f5c542" />
 	</>
@@ -644,7 +628,7 @@ const S14: React.FC<{t: number}> = ({t}) => (
 		<rect width={1080} height={1920} fill="#0b1226" opacity={0.35} />
 		<Shnurok x={540} y={1780} s={1.0} face="shock" />
 		<g transform={`translate(270 760) scale(${back((t - 0.2) / 0.4)})`}>
-			<circle r={130} fill="#d9483b" stroke={O} strokeWidth={W} />
+			<circle r={130} fill="#c8675b" stroke={O} strokeWidth={W} />
 			<text textAnchor="middle" y={50} fontFamily="Inter" fontWeight={900} fontSize={150} fill="#fff">1</text>
 			<text textAnchor="middle" y={200} fontFamily="Inter" fontWeight={900} fontSize={40} fill="#fff" stroke={O} strokeWidth={5} paintOrder="stroke">вниз</text>
 		</g>
@@ -674,11 +658,10 @@ const Layer: React.FC<{lead: number; dur: number; first: boolean; C: React.FC<{t
 					<defs>
 						<radialGradient id="vig" cx="50%" cy="50%" r="70%">
 							<stop offset="60%" stopColor="#0b1226" stopOpacity={0} />
-							<stop offset="100%" stopColor="#0b1226" stopOpacity={0.75} />
+							<stop offset="100%" stopColor="#0b1226" stopOpacity={0.4} />
 						</radialGradient>
 					</defs>
 					<rect width={1080} height={1920} fill="url(#vig)" />
-					<Snow t={t + 7} n={25} wind={1} op={0.35} />
 				</svg>
 			</AbsoluteFill>
 		</ShotCtx.Provider>
