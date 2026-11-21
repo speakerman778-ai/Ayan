@@ -200,7 +200,8 @@ export type CharProps = {
 	headDrop?: number; // move head down toward shoulders
 	armROver?: boolean; // draw right arm in front of the head (hand on head)
 	hairColor?: string;
-	headOnly?: boolean; // draw only the head (used by side-view bodies)
+	headOnly?: boolean;
+	turn?: number; // 0 = face to camera, 1 = head turned 3/4 to the right (features shift, near ear hidden) // draw only the head (used by side-view bodies)
 	acc?: 'phones' | 'phonesNeck' | 'goggles' | 'bow' | 'tipped' | 'pencil' | 'star' | 'bandaid';
 	foreR?: number; // right forearm length multiplier
 	freckles?: boolean;
@@ -245,6 +246,7 @@ export const Char: React.FC<CharProps> = (p) => {
 		armROver = false,
 		hairColor,
 		headOnly = false,
+		turn = 0,
 		acc,
 		foreR = 1,
 		freckles = false,
@@ -349,8 +351,8 @@ export const Char: React.FC<CharProps> = (p) => {
 					{/* hair back (bun) */}
 					{hair === 'wife' && <circle cx={0} cy={-128} r={46} fill={hairCol} stroke={OL} strokeWidth={OW} />}
 					{/* ears */}
-					<ellipse cx={-112} cy={6} rx={20} ry={28} fill={skin} stroke={OL} strokeWidth={OW} />
-					<ellipse cx={112} cy={6} rx={20} ry={28} fill={skin} stroke={OL} strokeWidth={OW} />
+					<ellipse cx={-112 + turn * 40} cy={6} rx={20} ry={28} fill={skin} stroke={OL} strokeWidth={OW} />
+					{turn < 0.5 && <ellipse cx={112} cy={6} rx={20} ry={28} fill={skin} stroke={OL} strokeWidth={OW} />}
 					{/* head: egg shape */}
 					<path d="M 0 -128 C 78 -128 112 -70 112 0 C 112 82 66 128 0 128 C -66 128 -112 82 -112 0 C -112 -70 -78 -128 0 -128 Z" fill={skin} stroke={OL} strokeWidth={OW} />
 					{/* hair */}
@@ -511,6 +513,7 @@ export const Char: React.FC<CharProps> = (p) => {
 							))}
 						</g>
 					)}
+					<g transform={`translate(${turn * 42} 0) scale(${1 - turn * 0.22} 1)`}>
 					{/* cheeks */}
 					<ellipse cx={-62} cy={34} rx={18} ry={11} fill={C.cheek} opacity={0.55} />
 					<ellipse cx={62} cy={34} rx={18} ry={11} fill={C.cheek} opacity={0.55} />
@@ -547,6 +550,7 @@ export const Char: React.FC<CharProps> = (p) => {
 					)}
 					{mustache && <path d="M -46 40 Q -20 24 0 36 Q 20 24 46 40 Q 24 50 0 44 Q -24 50 -46 40 Z" fill={C.gray} stroke={OL} strokeWidth={5} />}
 					{(!beard || face === 'shock' || talk > 0) && <Mouth face={face} talk={talk} />}
+					</g>
 					{hair === 'old' && (
 						<g stroke={OL} strokeWidth={4} opacity={0.5} fill="none">
 							<path d="M -80 18 q 8 6 16 0" />
