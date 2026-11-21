@@ -14,7 +14,7 @@ const H = 1920;
 const FOV = 54;
 const ease = (v: number) => Easing.inOut(Easing.cubic)(Math.max(0, Math.min(1, v)));
 
-const camAt = (t: number) => {
+export const camAt = (t: number) => {
 	const k = ease(t / 8);
 	return {
 		pos: new THREE.Vector3(-0.8 + 0.7 * k, 1.25 - 0.05 * k, 4.6 - 0.6 * k),
@@ -22,7 +22,7 @@ const camAt = (t: number) => {
 	};
 };
 
-const makeCam = (t: number) => {
+export const makeCam = (t: number) => {
 	const c = new THREE.PerspectiveCamera(FOV, W / H, 0.1, 100);
 	const {pos, look} = camAt(t);
 	c.position.copy(pos);
@@ -32,7 +32,7 @@ const makeCam = (t: number) => {
 	return c;
 };
 
-const project = (cam: THREE.PerspectiveCamera, x: number, y: number, z: number) => {
+export const project = (cam: THREE.PerspectiveCamera, x: number, y: number, z: number) => {
 	const v = new THREE.Vector3(x, y, z).project(cam);
 	return [(v.x * 0.5 + 0.5) * W, (-v.y * 0.5 + 0.5) * H] as const;
 };
@@ -48,8 +48,8 @@ const CamRig: React.FC<{t: number}> = ({t}) => {
 };
 
 // ---------------------------------------------------------------- materials
-const mat = (color: string, extra: Partial<THREE.MeshStandardMaterialParameters> = {}) => new THREE.MeshStandardMaterial({color, roughness: 0.85, metalness: 0, ...extra});
-const M = {
+export const mat = (color: string, extra: Partial<THREE.MeshStandardMaterialParameters> = {}) => new THREE.MeshStandardMaterial({color, roughness: 0.85, metalness: 0, ...extra});
+export const M = {
 	wall: mat('#f1e4cc'),
 	wall2: mat('#e9d8bb'),
 	floor: mat('#c98c55'),
@@ -322,7 +322,7 @@ const World: React.FC<{t: number}> = ({t}) => (
 );
 
 // ---------------------------------------------------------------- 2D heroes placed on the 3D floor
-const PX_PER_M = 640 / 1.75; // SideChar at s=1 is ~640 px tall ≈ 1.75 m
+export const PX_PER_M = 640 / 1.75; // SideChar at s=1 is ~640 px tall ≈ 1.75 m
 
 const Flat2D: React.FC<{cam: THREE.PerspectiveCamera; x: number; z: number; children: (sx: number, sy: number, s: number) => React.ReactNode}> = ({cam, x, z, children}) => {
 	const [fx, fy] = project(cam, x, 0, z);
