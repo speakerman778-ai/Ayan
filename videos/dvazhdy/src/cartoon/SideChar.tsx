@@ -1,6 +1,6 @@
 import React from 'react';
 import {useShot} from '../lib';
-import {C, Limb, OL, OW} from './parts';
+import {C, Char, Face, Hair, Limb, OL, OW} from './parts';
 
 /**
  * Side-view (profile) character in the channel style. Faces right; dir=-1 mirrors.
@@ -30,6 +30,14 @@ export type SideProps = {
 	armFront?: [number, number]; // override near arm [shoulder, elbow]
 	phase?: number;
 	talk?: number;
+	/** Body sideways, face to the camera (default). false = full profile head. */
+	frontFace?: boolean;
+	frontHair?: Hair;
+	mustache?: boolean;
+	glasses?: boolean;
+	nose?: boolean;
+	hatFront?: 'souwester';
+	look?: number;
 };
 
 const shade = (hex: string, k: number) => {
@@ -62,6 +70,13 @@ export const SideChar: React.FC<SideProps> = (p) => {
 		armFront,
 		phase = 0,
 		talk = 0,
+		frontFace = true,
+		frontHair,
+		mustache = false,
+		glasses = false,
+		nose = false,
+		hatFront,
+		look = 0.6,
 	} = p;
 	const ph = (t * speed + phase) * Math.PI * 2;
 	const sw = Math.sin(ph) * 28 * walk; // leg swing
@@ -103,6 +118,9 @@ export const SideChar: React.FC<SideProps> = (p) => {
 			)}
 			{/* neck + head */}
 			<rect x={-14} y={shY - 40} width={36} height={46} fill={C.skin} stroke={OL} strokeWidth={OW} />
+			{frontFace ? (
+				<Char x={8} y={headY + 574.2 - 140 * headS + 140 * 0.82 - (headY - (shY - 118 * headS + 10))} s={1} headOnly headS={headS} bodyS={1.14} headDrop={18 + (headY - (shY - 118 * headS + 10)) + ((shY - 118 * headS + 10) - (-477.4 - 140 * headS + 18)) - (shY - (-477.4))} hair={frontHair ?? (hair === 'old' ? 'old' : hair === 'lyokha' ? 'lyokha' : hair === 'curly' ? 'curly' : 'guy')} hairColor={hairColor} freckles={freckles} beard={beard} nose={nose} mustache={mustache} glasses={glasses} hat={hatFront ?? (hat ? 'souwester' : undefined)} hatColor={hatColor} face={(face === 'joy' ? 'laugh' : face) as Face} look={look} talk={talk} />
+			) : (
 			<g transform={`translate(10 ${headY}) scale(${headS})`}>
 				{hair === 'curly' && <circle cx={-40} cy={-60} r={90} fill={hairColor} stroke={OL} strokeWidth={OW} />}
 				{hair === 'bun' && <circle cx={-80} cy={-110} r={42} fill={hairColor} stroke={OL} strokeWidth={OW} />}
@@ -167,6 +185,7 @@ export const SideChar: React.FC<SideProps> = (p) => {
 					</g>
 				)}
 			</g>
+			)}
 			{/* near arm on top */}
 			{arm(armA[0], armA[1], false)}
 		</g>

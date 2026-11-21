@@ -200,6 +200,7 @@ export type CharProps = {
 	headDrop?: number; // move head down toward shoulders
 	armROver?: boolean; // draw right arm in front of the head (hand on head)
 	hairColor?: string;
+	headOnly?: boolean; // draw only the head (used by side-view bodies)
 	acc?: 'phones' | 'phonesNeck' | 'goggles' | 'bow' | 'tipped' | 'pencil' | 'star' | 'bandaid';
 	foreR?: number; // right forearm length multiplier
 	freckles?: boolean;
@@ -243,6 +244,7 @@ export const Char: React.FC<CharProps> = (p) => {
 		headDrop = 0,
 		armROver = false,
 		hairColor,
+		headOnly = false,
 		acc,
 		foreR = 1,
 		freckles = false,
@@ -261,6 +263,7 @@ export const Char: React.FC<CharProps> = (p) => {
 	const skin = C.skin;
 	const body = (
 		<g>
+			{!headOnly && (<>
 			{/* legs */}
 			{skirt ? (
 				<>
@@ -273,7 +276,9 @@ export const Char: React.FC<CharProps> = (p) => {
 					<Limb from={[38, hipY]} a1={-legR} a2={0} l1={legLen} l2={legLen} w={kid ? 38 : 48} color={pants} end="shoe" />
 				</>
 			)}
+			</>)}
 			<g transform={`rotate(${stoop * 14} 0 ${hipY})`}>
+				{!headOnly && (<>
 				{/* torso */}
 				{skirt ? (
 					<path
@@ -337,8 +342,9 @@ export const Char: React.FC<CharProps> = (p) => {
 						<ellipse cx={shoulderX + 12} cy={shY + 150} rx={14} ry={10} />
 					</g>
 				)}
+				</>)}
 				{/* neck + head */}
-				<rect x={-22} y={headY + 100 * headS} width={44} height={shY - headY - 90 * headS} fill={skin} stroke={OL} strokeWidth={OW} />
+				{!headOnly && <rect x={-22} y={headY + 100 * headS} width={44} height={shY - headY - 90 * headS} fill={skin} stroke={OL} strokeWidth={OW} />}
 				<g transform={`translate(0 ${headY}) rotate(${headTilt}) scale(${(kid ? 0.82 : 1) * headS})`}>
 					{/* hair back (bun) */}
 					{hair === 'wife' && <circle cx={0} cy={-128} r={46} fill={hairCol} stroke={OL} strokeWidth={OW} />}
@@ -569,7 +575,7 @@ export const Char: React.FC<CharProps> = (p) => {
 	);
 	return (
 		<g transform={`translate(${x} ${y}) scale(${s} ${s * (1 + breathe)})`}>
-			<ellipse cx={0} cy={6} rx={kid ? 70 : 110} ry={16} fill="#000" opacity={0.13} />
+			{!headOnly && <ellipse cx={0} cy={6} rx={kid ? 70 : 110} ry={16} fill="#000" opacity={0.13} />}
 			{body}
 			{tone > 0 && <g opacity={tone}>{/* silhouette darkening handled by parent */}</g>}
 		</g>
