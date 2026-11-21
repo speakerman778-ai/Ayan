@@ -165,7 +165,7 @@ const Mouth: React.FC<{face: Face; talk?: number}> = ({face, talk = 0}) => {
 };
 
 // ------------------------------------------------------------------ character
-export type Hair = 'guy' | 'wife' | 'boy' | 'boss' | 'old' | 'lyokha' | 'sweep' | 'curly' | 'crew' | 'shaggy' | 'quiff' | 'middle' | 'buzz' | 'beanie' | 'goggles' | 'capback' | 'phones' | 'tips';
+export type Hair = 'guy' | 'wife' | 'boy' | 'boss' | 'old' | 'lyokha' | 'sweep' | 'curly' | 'crew' | 'shaggy' | 'quiff' | 'middle' | 'buzz' | 'beanie' | 'goggles' | 'capback' | 'phones' | 'tips' | 'long' | 'pigtails';
 export type CharProps = {
 	x: number;
 	y: number;
@@ -350,6 +350,15 @@ export const Char: React.FC<CharProps> = (p) => {
 				<g transform={`translate(0 ${headY}) rotate(${headTilt}) scale(${(kid ? 0.82 : 1) * headS})`}>
 					{/* hair back (bun) */}
 					{hair === 'wife' && <circle cx={0} cy={-128} r={46} fill={hairCol} stroke={OL} strokeWidth={OW} />}
+					{hair === 'long' && <path d="M -120 -40 C -136 60 -130 170 -118 230 Q 0 250 118 230 C 130 170 136 60 120 -40 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />}
+					{hair === 'pigtails' && (
+						<g fill={hairCol} stroke={OL} strokeWidth={OW}>
+							<path d="M -112 -10 C -170 0 -190 80 -160 150 C -130 120 -120 60 -100 20 Z" />
+							<path d="M 112 -10 C 170 0 190 80 160 150 C 130 120 120 60 100 20 Z" />
+							<circle cx={-108} cy={-6} r={14} fill="#d9483b" />
+							<circle cx={108} cy={-6} r={14} fill="#d9483b" />
+						</g>
+					)}
 					{/* ears */}
 					<ellipse cx={-112 + turn * 40} cy={6} rx={20} ry={28} fill={skin} stroke={OL} strokeWidth={OW} />
 					{turn < 0.5 && <ellipse cx={112} cy={6} rx={20} ry={28} fill={skin} stroke={OL} strokeWidth={OW} />}
@@ -359,6 +368,9 @@ export const Char: React.FC<CharProps> = (p) => {
 					{hair === 'guy' && <path d="M -112 -6 C -122 -96 -60 -140 8 -136 C 80 -134 122 -86 112 -10 C 96 -50 72 -70 40 -80 C 20 -60 -20 -64 -52 -82 C -74 -66 -96 -42 -112 -6 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />}
 					{hair === 'old' && <path d="M -112 -2 C -118 -80 -70 -128 4 -130 C 76 -128 118 -84 112 -6 C 100 -40 80 -60 50 -70 C 30 -56 -20 -60 -54 -74 C -78 -58 -98 -36 -112 -2 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />}
 					{hair === 'wife' && <path d="M -114 20 C -126 -90 -60 -136 0 -134 C 64 -136 126 -90 114 20 C 104 -30 70 -78 0 -86 C -70 -78 -104 -30 -114 20 Z" fill={hairCol} stroke={OL} strokeWidth={OW} />}
+					{(hair === 'long' || hair === 'pigtails') && (
+						<path d="M -116 30 C -128 -90 -60 -138 0 -136 C 64 -138 128 -90 116 30 C 108 -10 96 -40 70 -56 C 40 -40 10 -60 -10 -76 C -40 -50 -80 -50 -100 -30 C -108 -10 -112 10 -116 30 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+					)}
 					{hair === 'boy' && <path d="M -114 -4 C -124 -96 -64 -138 0 -136 C 64 -138 124 -96 114 -4 L 80 -40 L 50 -20 L 20 -44 L -14 -22 L -44 -44 L -76 -22 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />}
 					{hair === 'lyokha' && (
 						<g>

@@ -92,10 +92,10 @@ const Breath: React.FC<{x: number; y: number; t: number; dir?: 1 | -1; ph?: numb
 };
 
 const Sonya: React.FC<{x: number; y: number; s?: number; dir?: 1 | -1; face?: 'smile' | 'neutral' | 'shock' | 'closed' | 'joy' | 'think'; armFront?: [number, number]}> = ({x, y, s = 0.55, dir = 1, face = 'neutral', armFront}) => (
-	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="bun" hairColor="#7a4a2a" jacket="#f2a6c0" pants="#f2a6c0" shoes="#f4f1ea" headS={0.98} bodyS={0.78} armFront={armFront} phase={1.3} freckles />
+	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="pigtails" hairColor="#7a4a2a" jacket="#f2a6c0" pants="#f2a6c0" shoes="#f4f1ea" headS={0.98} bodyS={0.78} headLower={30} armFront={armFront} phase={1.3} freckles />
 );
 const Vera: React.FC<{x: number; y: number; s?: number; dir?: 1 | -1; face?: 'smile' | 'neutral' | 'shock' | 'closed' | 'joy' | 'think'}> = ({x, y, s = 0.78, dir = 1, face = 'neutral'}) => (
-	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="bun" hairColor="#2b211d" jacket="#5b86c4" pants="#3a3f55" phase={2.1} />
+	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="long" hairColor="#2b211d" jacket="#5b86c4" pants="#3a3f55" phase={2.1} />
 );
 const Mikhalych: React.FC<{x: number; y: number; s?: number; dir?: 1 | -1; t: number}> = ({x, y, s = 0.85, dir = -1, t}) => (
 	<g>
@@ -217,9 +217,25 @@ const FrostWindow: React.FC<{t: number; x?: number; y?: number; face?: number; h
 			)}
 		</g>
 		<line x1={x + 210} y1={y} x2={x + 210} y2={y + 580} stroke="#c9c4bd" strokeWidth={14} />
-		{/* curtain */}
-		<rect x={x - 40} y={y - 40} width={500} height={20} rx={8} fill="#9c6338" stroke={O} strokeWidth={W} />
-		<path d={`M ${x - 30} ${y - 20} L ${x - 30 + curtain * 460} ${y - 20} Q ${x - 10 + curtain * 450} ${y + 300} ${x - 30 + curtain * 470} ${y + 620} L ${x - 30} ${y + 620} Z`} fill="#7a3a3a" stroke={O} strokeWidth={W} />
+		{/* curtains: two panels with folds, «curtain» = how far the left panel is pulled across */}
+		<rect x={x - 50} y={y - 46} width={520} height={22} rx={10} fill="#9c6338" stroke={O} strokeWidth={W} />
+		{[0, 1].map((side) => {
+			const w0 = side === 0 ? 70 + curtain * 330 : 70;
+			const x0 = side === 0 ? x - 40 : x + 420 + 40 - w0;
+			const sway = Math.sin(t * 1.4 + side) * 6;
+			const folds = 4;
+			return (
+				<g key={side}>
+					<path d={`M ${x0} ${y - 30} L ${x0 + w0} ${y - 30} Q ${x0 + w0 + sway} ${y + 300} ${x0 + w0 + sway * 1.5} ${y + 620} ` + Array.from({length: folds}).map((_, i) => `Q ${x0 + w0 - (i + 0.5) * (w0 / folds)} ${y + 640} ${x0 + w0 - (i + 1) * (w0 / folds)} ${y + 620}`).join(' ') + ` Z`} fill="#8a3e3e" stroke={O} strokeWidth={W} strokeLinejoin="round" />
+					{Array.from({length: folds - 1}).map((_, i) => (
+						<path key={i} d={`M ${x0 + (i + 1) * (w0 / folds)} ${y - 20} Q ${x0 + (i + 1) * (w0 / folds) + sway * 0.6} ${y + 300} ${x0 + (i + 1) * (w0 / folds) + sway} ${y + 610}`} stroke="#6e2e2e" strokeWidth={5} fill="none" />
+					))}
+					{Array.from({length: 5}).map((_, i) => (
+						<circle key={i} cx={x0 + 10 + i * ((w0 - 20) / 4)} cy={y - 36} r={8} fill="#e8a93a" stroke={O} strokeWidth={3} />
+					))}
+				</g>
+			);
+		})}
 	</g>
 );
 
