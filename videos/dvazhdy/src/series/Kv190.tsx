@@ -92,7 +92,7 @@ const Breath: React.FC<{x: number; y: number; t: number; dir?: 1 | -1; ph?: numb
 };
 
 const Sonya: React.FC<{x: number; y: number; s?: number; dir?: 1 | -1; face?: 'smile' | 'neutral' | 'shock' | 'closed' | 'joy' | 'think'; armFront?: [number, number]}> = ({x, y, s = 0.55, dir = 1, face = 'neutral', armFront}) => (
-	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="pigtails" hairColor="#7a4a2a" jacket="#f2a6c0" pants="#f2a6c0" shoes="#f4f1ea" headS={0.98} bodyS={0.78} headLower={30} armFront={armFront} phase={1.3} freckles />
+	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="pigtails" hairColor="#7a4a2a" jacket="#f2a6c0" pants="#f2a6c0" shoes="#f4f1ea" headS={0.8} bodyS={0.78} headLower={22} armFront={armFront} phase={1.3} freckles />
 );
 const Vera: React.FC<{x: number; y: number; s?: number; dir?: 1 | -1; face?: 'smile' | 'neutral' | 'shock' | 'closed' | 'joy' | 'think'}> = ({x, y, s = 0.78, dir = 1, face = 'neutral'}) => (
 	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="long" hairColor="#2b211d" jacket="#5b86c4" pants="#3a3f55" phase={2.1} />
@@ -198,10 +198,25 @@ const FrostWindow: React.FC<{t: number; x?: number; y?: number; face?: number; h
 				</g>
 			)}
 			{hand > 0 && (
-				<g transform={`translate(${x + 320} ${y + 300}) scale(${0.6 + 0.4 * hand})`} opacity={hand}>
-					<ellipse rx={60} ry={70} fill="#eef4ff" />
-					{[-60, -32, -4, 24, 52, 78].map((fx, i) => (
-						<rect key={i} x={fx - 12} y={-160 + Math.abs(i - 2.5) * 12} width={24} height={110} rx={12} fill="#eef4ff" />
+				<g transform={`translate(${x + 260} ${y + 330}) scale(${0.7 + 0.3 * hand})`} opacity={hand * 0.92}>
+					{/* frosted palm print: thumb + 4 fingers + one extra */}
+					{[
+						[-34, -28, -12, 74],
+						[-12, -34, -4, 92],
+						[12, -34, 3, 96],
+						[36, -30, 10, 86],
+						[58, -18, 24, 66],
+						[-56, 30, -58, 62],
+					].map(([bx, by, a, len], i) => (
+						<g key={i} transform={`translate(${bx} ${by}) rotate(${a})`}>
+							<rect x={-12} y={-len} width={24} height={len + 20} rx={12} fill="#e6eefc" stroke="#b7c9e6" strokeWidth={4} />
+							<ellipse cx={0} cy={-len + 16} rx={6} ry={8} fill="#f7faff" />
+						</g>
+					))}
+					<path d="M -64 -26 Q -70 60 -30 92 Q 8 112 46 92 Q 74 66 70 -22 Q 4 -44 -64 -26 Z" fill="#e6eefc" stroke="#b7c9e6" strokeWidth={4} />
+					<path d="M -40 20 Q -6 44 30 28 M -30 52 Q 4 64 34 54" stroke="#c9d7ee" strokeWidth={4} fill="none" strokeLinecap="round" />
+					{[[-80, -90], [90, -110], [100, 60], [-90, 100], [20, -150]].map(([cx, cy], i) => (
+						<circle key={i} cx={cx} cy={cy} r={4} fill="#f7faff" opacity={0.6 + 0.4 * Math.sin(t * 2 + i)} />
 					))}
 				</g>
 			)}
@@ -336,22 +351,46 @@ const S4: React.FC<{t: number}> = ({t}) => {
 			<FrostWindow t={t} hand={hand} curtain={cur} />
 			<ShnurokSide x={420} y={1600} s={0.9} face={hand > 0.5 ? 'shock' : 'neutral'} armFront={[150, -20]} />
 			{t > six && (
-				<g transform="translate(888 600)">
-					<circle r={60} fill="none" stroke="#c8675b" strokeWidth={10} opacity={0.6 + 0.15 * Math.sin(t * 3)} />
+				<g transform="translate(906 612)">
+					<circle r={46} fill="none" stroke="#e0897c" strokeWidth={5} strokeDasharray="14 10" opacity={0.55 + 0.2 * Math.sin(t * 3)} transform={`rotate(${t * 20})`} />
 				</g>
 			)}
 		</g>
 	);
 };
 
-const Door: React.FC<{open: number}> = ({open}) => (
-	<g>
-		<rect x={300} y={500} width={480} height={820} fill="#2a2e3d" stroke={O} strokeWidth={W} />
-		<path d={`M 300 500 L ${300 + 480 * (1 - open * 0.8)} ${500 + open * 40} L ${300 + 480 * (1 - open * 0.8)} ${1320 - open * 40} L 300 1320 Z`} fill="#8a5a3a" stroke={O} strokeWidth={W} />
-		<circle cx={300 + 440 * (1 - open * 0.8)} cy={920} r={14} fill="#e8a93a" stroke={O} strokeWidth={4} />
-		<circle cx={300 + 240 * (1 - open * 0.8)} cy={700} r={10} fill="#14161f" />
-	</g>
-);
+const Door: React.FC<{open: number}> = ({open}) => {
+	// door swings toward the viewer on the left hinge: free edge moves left and grows
+	const fx = 780 - 400 * open;
+	const g = 30 * open;
+	return (
+		<g>
+			{/* doorway: warm lit hall of Vera's flat */}
+			<rect x={300} y={480} width={480} height={840} fill="#e8c890" />
+			<rect x={300} y={1180} width={480} height={140} fill="#b98a5c" />
+			<rect x={600} y={560} width={120} height={160} rx={8} fill="#f3dcae" stroke={O} strokeWidth={4} opacity={0.8} />
+			<rect x={300} y={480} width={480} height={840} fill="#2a1d12" opacity={0.25 * (1 - open)} />
+			{/* frame */}
+			<path d="M 270 1320 L 270 450 L 810 450 L 810 1320" fill="none" stroke="#e9e2d4" strokeWidth={30} />
+			<path d="M 255 1320 L 255 435 L 825 435 L 825 1320" fill="none" stroke={O} strokeWidth={W} />
+			<path d="M 285 1320 L 285 465 L 795 465 L 795 1320" fill="none" stroke={O} strokeWidth={4} />
+			{/* door leaf */}
+			<path d={`M 300 480 L ${fx} ${480 - g} L ${fx} ${1320 + g} L 300 1320 Z`} fill="#8a5a3a" stroke={O} strokeWidth={W} strokeLinejoin="round" />
+			{[0, 1].map((k) => {
+				const y0 = k ? 920 : 560;
+				const h = k ? 340 : 300;
+				const l = 300 + (fx - 300) * 0.14;
+				const r = 300 + (fx - 300) * 0.86;
+				return <path key={k} d={`M ${l} ${y0 - g * 0.6} L ${r} ${y0 - g * 0.9} L ${r} ${y0 + h + g * 0.2} L ${l} ${y0 + h} Z`} fill="none" stroke="#6e4428" strokeWidth={6} strokeLinejoin="round" />;
+			})}
+			<circle cx={300 + (fx - 300) * 0.88} cy={900} r={13} fill="#e8a93a" stroke={O} strokeWidth={4} />
+			{open < 0.2 && <circle cx={540} cy={640} r={9} fill="#14161f" />}
+			{open < 0.2 && <rect x={500} y={480 + 40} width={80} height={36} rx={6} fill="#e8a93a" stroke={O} strokeWidth={3} />}
+			{/* threshold */}
+			<rect x={260} y={1310} width={560} height={14} fill="#9c6338" stroke={O} strokeWidth={3} />
+		</g>
+	);
+};
 
 const S5: React.FC<{t: number}> = ({t}) => {
 	const A = B[4];
@@ -491,11 +530,15 @@ const S7: React.FC<{t: number}> = ({t}) => {
 
 const Lift: React.FC<{t: number; open: number; btn: number}> = ({t, open, btn}) => (
 	<g>
-		<rect x={300} y={560} width={480} height={760} fill="#8f8f95" stroke={O} strokeWidth={W} />
+		<rect x={290} y={550} width={500} height={770} rx={6} fill="#a7a7ad" stroke={O} strokeWidth={W} />
+		<rect x={360} y={570} width={360} height={18} rx={4} fill="#3a3f55" />
 		<rect x={330} y={600} width={420} height={720} fill="#fff6c8" />
 		<rect x={330} y={600} width={420} height={720} fill="#000" opacity={Flicker(t + 3, 0.6)} />
-		<rect x={330} y={600} width={210 * (1 - open)} height={720} fill="#b8b2a6" stroke={O} strokeWidth={5} />
-		<rect x={540 + 210 * open} y={600} width={210 * (1 - open)} height={720} fill="#b8b2a6" stroke={O} strokeWidth={5} />
+		<rect x={330} y={1300} width={420} height={20} fill="#6a6a70" />
+		{open < 1 && <rect x={330} y={600} width={210 * (1 - open)} height={720} fill="#c4c0b8" stroke={O} strokeWidth={4} />}
+		{open < 1 && <rect x={540 + 210 * open} y={600} width={210 * (1 - open)} height={720} fill="#c4c0b8" stroke={O} strokeWidth={4} />}
+		{open < 1 && <line x1={330 + 210 * (1 - open) - 14} y1={620} x2={330 + 210 * (1 - open) - 14} y2={1300} stroke="#a9a59d" strokeWidth={4} />}
+		{open < 1 && <line x1={540 + 210 * open + 14} y1={620} x2={540 + 210 * open + 14} y2={1300} stroke="#a9a59d" strokeWidth={4} />}
 		<g transform="translate(830 900)">
 			<rect x={-40} y={-120} width={80} height={240} rx={12} fill="#3a3f55" stroke={O} strokeWidth={5} />
 			{[0, 1, 2, 3].map((i) => (
