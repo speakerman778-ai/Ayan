@@ -6,6 +6,19 @@ import {DvazhdyCartoon} from './cartoon/Cartoon';
 import {SubsDemo} from './subs/Karaoke';
 import {KeeperPreview} from './series/Keeper';
 import {ZombiePreview} from './zombie/ZombiePreview';
+import {Ep01Characters, Ep01Props} from './series/Ep01Sheets';
+import {Ep01, EP01_DURATION} from './series/Ep01';
+import {PcClub, PCCLUB_DURATION} from './series/PcClub';
+import {PcClub2, PCCLUB2_DURATION} from './series/PcClub2';
+import {Muravei, MURAVEI_DURATION} from './series/Muravei';
+import {SideSheet, SideWalk} from './series/SideDemo';
+import {FlatSheet, FlatWalk} from './series/FlatDemo';
+import {FlatStyleDemo} from './series/FlatStyleDemo';
+import {Prygnuli, PRYG_DURATION} from './series/Prygnuli';
+import {Kv190, KV190_DURATION} from './series/Kv190';
+import {Style3D, STYLE3D_DURATION} from './series/Style3D';
+import {Kypshak, KYPSHAK_DURATION} from './series/Kypshak';
+import {ShnurokAvatar, ShnurokHairOptions, ShnurokSheet} from './series/Shnurok';
 import timeline from '../public/timeline.json';
 
 export const Root: React.FC = () => (
@@ -14,6 +27,24 @@ export const Root: React.FC = () => (
 	<Composition id="SubsDemo" component={SubsDemo} width={1080} height={1920} fps={30} durationInFrames={180} />
 	<Composition id="KeeperPreview" component={KeeperPreview} width={1080} height={1920} fps={30} durationInFrames={72} />
 	<Composition id="ZombiePreview" component={ZombiePreview} width={1080} height={1920} fps={30} durationInFrames={120} />
+	<Composition id="Ep01" component={Ep01} width={1080} height={1920} fps={30} durationInFrames={Math.round(EP01_DURATION * 30)} defaultProps={{audio: 'keeper/ep01-mix.wav'}} />
+	<Composition id="ShnurokAvatar" component={ShnurokAvatar} width={1080} height={1080} fps={30} durationInFrames={90} />
+	<Composition id="ShnurokHairOptions" component={ShnurokHairOptions} width={1080} height={1920} fps={30} durationInFrames={30} />
+	<Composition id="ShnurokSheet" component={ShnurokSheet} width={1080} height={1920} fps={30} durationInFrames={90} />
+	<Composition id="Kypshak" component={Kypshak} width={1080} height={1920} fps={30} durationInFrames={KYPSHAK_DURATION * 30} defaultProps={{audio: 'kypshak/mix.wav'}} />
+	<Composition id="Style3D" component={Style3D} width={1080} height={1920} fps={30} durationInFrames={STYLE3D_DURATION * 30} />
+	<Composition id="Kv190" component={Kv190} width={1080} height={1920} fps={30} durationInFrames={KV190_DURATION * 30} defaultProps={{audio: 'shnurok/ep05-mix.wav'}} />
+	<Composition id="Prygnuli" component={Prygnuli} width={1080} height={1920} fps={30} durationInFrames={PRYG_DURATION * 30} defaultProps={{audio: 'shnurok/ep04-mix.wav'}} />
+	<Composition id="FlatStyleDemo" component={FlatStyleDemo} width={1080} height={1920} fps={30} durationInFrames={480} />
+	<Composition id="FlatSheet" component={FlatSheet} width={1080} height={1920} fps={30} durationInFrames={30} />
+	<Composition id="FlatWalk" component={FlatWalk} width={1080} height={1920} fps={30} durationInFrames={180} />
+	<Composition id="SideSheet" component={SideSheet} width={1080} height={1920} fps={30} durationInFrames={30} />
+	<Composition id="SideWalk" component={SideWalk} width={1080} height={1920} fps={30} durationInFrames={180} />
+	<Composition id="Muravei" component={Muravei} width={1080} height={1920} fps={30} durationInFrames={MURAVEI_DURATION * 30} defaultProps={{audio: 'shnurok/ep03-mix.wav'}} />
+	<Composition id="PcClub2" component={PcClub2} width={1080} height={1920} fps={30} durationInFrames={PCCLUB2_DURATION * 30} defaultProps={{audio: 'shnurok/ep02-mix.wav'}} />
+	<Composition id="PcClub" component={PcClub} width={1080} height={1920} fps={30} durationInFrames={Math.round(PCCLUB_DURATION * 30)} defaultProps={{audio: 'shnurok/ep01-mix.wav'}} />
+	<Composition id="Ep01Characters" component={Ep01Characters} width={1080} height={1920} fps={30} durationInFrames={120} />
+	<Composition id="Ep01Props" component={Ep01Props} width={1080} height={1920} fps={30} durationInFrames={120} />
 	<Composition id="Sheet" component={Sheet} width={1080} height={1920} fps={30} durationInFrames={30} />
 	<Composition
 		id="Dvazhdy"
