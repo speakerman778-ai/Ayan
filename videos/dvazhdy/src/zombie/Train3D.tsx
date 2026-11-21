@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react';
 import {useThree} from '@react-three/fiber';
 import * as THREE from 'three';
+import {RoundedBoxGeometry} from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 
 // Toon 3D set for the "zombie train" episode.
 // Flat 3-step shading + inverted-hull outlines in the channel outline colour,
@@ -29,49 +30,39 @@ export const P = {
 	ochre: '#e8a93a',
 };
 
-let gradCache: THREE.DataTexture | null = null;
-const toonGrad = () => {
-	if (gradCache) return gradCache;
-	const tex = new THREE.DataTexture(new Uint8Array([110, 190, 255]), 3, 1, THREE.RedFormat);
-	tex.minFilter = THREE.NearestFilter;
-	tex.magFilter = THREE.NearestFilter;
-	tex.generateMipmaps = false;
-	tex.needsUpdate = true;
-	gradCache = tex;
-	return tex;
+const matCache = new Map<string, THREE.MeshStandardMaterial>();
+/** Matte "clay" material (approved 3D look), cached per colour. */
+export const clay = (c: string, emissive = 0) => {
+	const k = c + ':' + emissive;
+	let m = matCache.get(k);
+	if (!m) {
+		m = new THREE.MeshStandardMaterial({color: c, roughness: 0.85, metalness: 0, ...(emissive ? {emissive: c, emissiveIntensity: emissive} : {})});
+		matCache.set(k, m);
+	}
+	return m;
+};
+const geoCache = new Map<string, THREE.BufferGeometry>();
+const rbox = (sx: number, sy: number, sz: number, r: number) => {
+	const k = [sx, sy, sz, r].map((v) => v.toFixed(3)).join(',');
+	let g = geoCache.get(k);
+	if (!g) {
+		g = new RoundedBoxGeometry(sx, sy, sz, 3, Math.max(0.001, Math.min(r, Math.min(sx, sy, sz) / 2 - 0.001)));
+		geoCache.set(k, g);
+	}
+	return g;
 };
 
 type V3 = [number, number, number];
 
-/** Box with toon shading and a dark outline shell. p = centre, s = size. */
-export const B: React.FC<{p: V3; s: V3; c: string; o?: number; r?: V3; basic?: boolean}> = ({p, s, c, o = 0.022, r, basic}) => (
-	<group position={p} rotation={r}>
-		<mesh>
-			<boxGeometry args={s} />
-			{basic ? <meshBasicMaterial color={c} /> : <meshToonMaterial color={c} gradientMap={toonGrad()} />}
-		</mesh>
-		{o > 0 && (
-			<mesh>
-				<boxGeometry args={[s[0] + o * 2, s[1] + o * 2, s[2] + o * 2]} />
-				<meshBasicMaterial color={OL3} side={THREE.BackSide} />
-			</mesh>
-		)}
-	</group>
+/** Rounded clay box. p = centre, s = size. `o` sets the corner radius (kept for old call sites). */
+export const B: React.FC<{p: V3; s: V3; c: string; o?: number; r?: V3; basic?: boolean; glow?: number; m?: THREE.Material}> = ({p, s, c, o = 0.022, r, basic, glow = 0, m}) => (
+	<mesh position={p} rotation={r} geometry={rbox(s[0], s[1], s[2], Math.max(0.008, o * 1.4))} material={m ?? (basic ? clay(c, 0.9) : clay(c, glow))} castShadow={!basic} receiveShadow />
 );
 
-export const Cyl: React.FC<{p: V3; r: number; h: number; c: string; o?: number; rot?: V3; seg?: number; basic?: boolean}> = ({p, r, h, c, o = 0.012, rot, seg = 18, basic}) => (
-	<group position={p} rotation={rot}>
-		<mesh>
-			<cylinderGeometry args={[r, r, h, seg]} />
-			{basic ? <meshBasicMaterial color={c} /> : <meshToonMaterial color={c} gradientMap={toonGrad()} />}
-		</mesh>
-		{o > 0 && (
-			<mesh>
-				<cylinderGeometry args={[r + o, r + o, h + o * 2, seg]} />
-				<meshBasicMaterial color={OL3} side={THREE.BackSide} />
-			</mesh>
-		)}
-	</group>
+export const Cyl: React.FC<{p: V3; r: number; h: number; c: string; o?: number; rot?: V3; seg?: number; basic?: boolean}> = ({p, r, h, c, rot, seg = 18, basic}) => (
+	<mesh position={p} rotation={rot} material={basic ? clay(c, 0.9) : clay(c)} castShadow receiveShadow>
+		<cylinderGeometry args={[r, r, h, seg]} />
+	</mesh>
 );
 
 export const Cam: React.FC<{pos: V3; look: V3; fov: number}> = ({pos, look, fov}) => {

@@ -6,6 +6,7 @@ import {DvazhdyCartoon} from './cartoon/Cartoon';
 import {SubsDemo} from './subs/Karaoke';
 import {KeeperPreview} from './series/Keeper';
 import {ZombiePreview} from './zombie/ZombiePreview';
+import {ZombieEp01, ZOMBIE01_DURATION} from './zombie/ZombieEp01';
 import {Ep01Characters, Ep01Props} from './series/Ep01Sheets';
 import {Ep01, EP01_DURATION} from './series/Ep01';
 import {PcClub, PCCLUB_DURATION} from './series/PcClub';
@@ -26,6 +27,7 @@ export const Root: React.FC = () => (
 	<Composition id="DvazhdyCartoon" component={DvazhdyCartoon} width={1080} height={1920} fps={30} durationInFrames={Math.ceil(timeline.total * 30)} />
 	<Composition id="SubsDemo" component={SubsDemo} width={1080} height={1920} fps={30} durationInFrames={180} />
 	<Composition id="KeeperPreview" component={KeeperPreview} width={1080} height={1920} fps={30} durationInFrames={72} />
+	<Composition id="ZombieEp01" component={ZombieEp01} width={1080} height={1920} fps={30} durationInFrames={ZOMBIE01_DURATION * 30} defaultProps={{audio: 'zombie/ep01-mix.wav'}} />
 	<Composition id="ZombiePreview" component={ZombiePreview} width={1080} height={1920} fps={30} durationInFrames={120} />
 	<Composition id="Ep01" component={Ep01} width={1080} height={1920} fps={30} durationInFrames={Math.round(EP01_DURATION * 30)} defaultProps={{audio: 'keeper/ep01-mix.wav'}} />
 	<Composition id="ShnurokAvatar" component={ShnurokAvatar} width={1080} height={1080} fps={30} durationInFrames={90} />

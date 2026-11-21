@@ -43,7 +43,7 @@ const SceneA: React.FC<{t: number}> = ({t}) => {
 	const lampsOn = (i: number) => (i === 1 ? on : 0.15);
 	return (
 		<AbsoluteFill style={{background: '#1d2b4f'}}>
-			<ThreeCanvas width={W} height={H} flat gl={{antialias: true}}>
+			<ThreeCanvas width={W} height={H} shadows gl={{antialias: true}}>
 				<Cam pos={[0.85, 1.85, -1.9 - 0.95]} look={[-1.5, 1.05, -1.9 - 0.95]} fov={78} />
 				<fog attach="fog" args={['#1d2b4f', 5, 18]} />
 				<Lights t={t} bays={4} lampsOn={lampsOn} />
@@ -80,7 +80,7 @@ const SceneB: React.FC<{t: number}> = ({t}) => {
 	const sway = Math.sin(t * 3) * 4;
 	return (
 		<AbsoluteFill style={{background: '#1d2b4f'}}>
-			<ThreeCanvas width={W} height={H} flat gl={{antialias: true}}>
+			<ThreeCanvas width={W} height={H} shadows gl={{antialias: true}}>
 				<Cam pos={[0.66, 1.5, 0.6]} look={[0.62, 1.25, -12]} fov={72} />
 				<fog attach="fog" args={['#0f1730', 3, 12]} />
 				<Lights t={t} bays={6} lampsOn={lampsOn} amb={0.45} />
