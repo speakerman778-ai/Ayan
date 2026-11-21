@@ -63,7 +63,7 @@ export const Limb: React.FC<{from: Pt; a1: number; a2: number; l1: number; l2: n
 };
 
 // ------------------------------------------------------------------ face
-export type Face = 'neutral' | 'smile' | 'shock' | 'laugh' | 'sad' | 'wince' | 'think' | 'closed' | 'determined';
+export type Face = 'neutral' | 'smile' | 'shock' | 'laugh' | 'sad' | 'wince' | 'think' | 'closed' | 'determined' | 'zombie';
 
 const Eyes: React.FC<{face: Face; blink: number; look?: number}> = ({face, blink, look = 0}) => {
 	const ex = 44;
@@ -84,6 +84,19 @@ const Eyes: React.FC<{face: Face; blink: number; look?: number}> = ({face, blink
 			<g stroke={OL} strokeWidth={8} fill="none" strokeLinecap="round">
 				<path d={`M ${-ex - 18} ${ey - 14} L ${-ex + 14} ${ey} L ${-ex - 18} ${ey + 14}`} />
 				<path d={`M ${ex + 18} ${ey - 14} L ${ex - 14} ${ey} L ${ex + 18} ${ey + 14}`} />
+			</g>
+		);
+	}
+	if (face === 'zombie') {
+		return (
+			<g>
+				{[-1, 1].map((k) => (
+					<g key={k}>
+						<path d={`M ${k * ex - 28} ${ey + 30} Q ${k * ex} ${ey + 44} ${k * ex + 28} ${ey + 30}`} stroke="#6b5a7a" strokeWidth={7} fill="none" strokeLinecap="round" opacity={0.7} />
+						<ellipse cx={k * ex} cy={ey} rx={25} ry={23 * blink} fill="#f3f0d8" stroke={OL} strokeWidth={6} />
+						<circle cx={k * ex + (k < 0 ? -9 : 7)} cy={ey + (k < 0 ? 4 : -5)} r={4.5 * Math.max(0.3, blink)} fill={OL} />
+					</g>
+				))}
 			</g>
 		);
 	}
@@ -126,6 +139,7 @@ const Brows: React.FC<{face: Face}> = ({face}) => {
 		think: [0, 0],
 		closed: [0, 0],
 		determined: [6, -12],
+		zombie: [10, 8],
 	};
 	const [lift, tilt] = p[face];
 	return (
@@ -151,6 +165,13 @@ const Mouth: React.FC<{face: Face; talk?: number}> = ({face, talk = 0}) => {
 			return <path d={`M -30 ${my} L -15 ${my - 8} L 0 ${my} L 15 ${my - 8} L 30 ${my}`} stroke={OL} strokeWidth={7} fill="none" strokeLinecap="round" strokeLinejoin="round" />;
 		case 'think':
 			return <path d={`M -10 ${my + 4} L 26 ${my - 4}`} stroke={OL} strokeWidth={8} strokeLinecap="round" />;
+		case 'zombie':
+			return (
+				<g>
+					<path d={`M -26 ${my - 4} Q -4 ${my - 12} 24 ${my - 2} Q 30 ${my + 40} 4 ${my + 46} Q -28 ${my + 44} -26 ${my - 4} Z`} fill="#3a1f24" stroke={OL} strokeWidth={6} strokeLinejoin="round" />
+					<path d={`M -14 ${my - 6} l 4 10 l 5 -9 M 8 ${my - 5} l 4 9 l 5 -8`} fill="#f3f0d8" stroke={OL} strokeWidth={3} strokeLinejoin="round" />
+				</g>
+			);
 		case 'determined':
 			return <path d={`M -24 ${my + 2} L 24 ${my + 2}`} stroke={OL} strokeWidth={8} strokeLinecap="round" />;
 		default:
@@ -190,7 +211,9 @@ export type CharProps = {
 	kid?: boolean;
 	tone?: number; // 0..1 darken (silhouette)
 	beard?: boolean;
-	hat?: 'souwester';
+	hat?: 'souwester' | 'beanie' | 'cap';
+	skin?: string;
+	scarf?: string;
 	hatColor?: string;
 	nose?: boolean;
 	headS?: number; // head size multiplier
@@ -232,6 +255,7 @@ export const Char: React.FC<CharProps> = (p) => {
 		headS = 1,
 		bodyS = 1,
 		headDrop = 0,
+		scarf,
 	} = p;
 	const breathe = Math.sin(t * 2.2 + blinkSeed) * 0.012;
 	const cyc = (t + blinkSeed * 1.7) % 3.4;
@@ -242,7 +266,7 @@ export const Char: React.FC<CharProps> = (p) => {
 	const headY = shY - (kid ? 120 : 140) * headS + headDrop;
 	const shoulderX = kid ? 62 : 84;
 	const hairCol = hair === 'old' || hair === 'boss' ? C.gray : C.hair;
-	const skin = C.skin;
+	const skin = p.skin ?? C.skin;
 	const body = (
 		<g>
 			{/* legs */}
@@ -305,6 +329,14 @@ export const Char: React.FC<CharProps> = (p) => {
 				)}
 				{/* neck + head */}
 				<rect x={-22} y={headY + 100 * headS} width={44} height={shY - headY - 90 * headS} fill={skin} stroke={OL} strokeWidth={OW} />
+				{scarf && (
+					<g>
+						<path d={`M 10 ${shY + 4} L 4 ${shY + 120} L 50 ${shY + 116} L 46 ${shY + 4} Z`} fill={scarf} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+						<path d={`M 10 ${shY + 100} L 50 ${shY + 96}`} stroke={OL} strokeWidth={4} opacity={0.5} />
+						<rect x={-74} y={shY - 34} width={148} height={50} rx={25} fill={scarf} stroke={OL} strokeWidth={OW} />
+						<path d={`M -40 ${shY - 30} l 0 40 M 0 ${shY - 32} l 0 44 M 40 ${shY - 30} l 0 40`} stroke={OL} strokeWidth={4} opacity={0.35} />
+					</g>
+				)}
 				<g transform={`translate(0 ${headY}) rotate(${headTilt}) scale(${(kid ? 0.82 : 1) * headS})`}>
 					{/* hair back (bun) */}
 					{hair === 'wife' && <circle cx={0} cy={-128} r={46} fill={hairCol} stroke={OL} strokeWidth={OW} />}
@@ -320,8 +352,8 @@ export const Char: React.FC<CharProps> = (p) => {
 					{hair === 'boy' && <path d="M -114 -4 C -124 -96 -64 -138 0 -136 C 64 -138 124 -96 114 -4 L 80 -40 L 50 -20 L 20 -44 L -14 -22 L -44 -44 L -76 -22 Z" fill={hairCol} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />}
 					{hair === 'boss' && <path d="M -112 -10 C -116 -70 -96 -110 -60 -118 C -50 -96 -90 -70 -108 -10 Z M 112 -10 C 116 -70 96 -110 60 -118 C 50 -96 90 -70 108 -10 Z" fill={hairCol} stroke={OL} strokeWidth={OW} />}
 					{/* cheeks */}
-					<ellipse cx={-62} cy={34} rx={18} ry={11} fill={C.cheek} opacity={0.55} />
-					<ellipse cx={62} cy={34} rx={18} ry={11} fill={C.cheek} opacity={0.55} />
+					{face !== 'zombie' && <ellipse cx={-62} cy={34} rx={18} ry={11} fill={C.cheek} opacity={0.55} />}
+					{face !== 'zombie' && <ellipse cx={62} cy={34} rx={18} ry={11} fill={C.cheek} opacity={0.55} />}
 					<Brows face={face} />
 					<Eyes face={face} blink={blink} look={look} />
 					{glasses && (
@@ -354,6 +386,21 @@ export const Char: React.FC<CharProps> = (p) => {
 							<path d="M -170 -40 Q 0 -90 170 -40 Q 150 0 120 -10 Q 0 -50 -120 -10 Q -150 0 -170 -40 Z" fill={hatColor} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 							<path d="M -112 -50 C -116 -150 -50 -176 0 -176 C 50 -176 116 -150 112 -50 Q 0 -80 -112 -50 Z" fill={hatColor} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 							<path d="M -60 -150 Q 0 -165 60 -150" fill="none" stroke={OL} strokeWidth={4} opacity={0.5} />
+						</g>
+					)}
+					{hat === 'beanie' && (
+						<g>
+							<path d="M -116 -30 C -122 -136 -60 -172 0 -172 C 60 -172 122 -136 116 -30 Z" fill={hatColor} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -40 -160 L -44 -40 M 0 -168 L 0 -40 M 40 -160 L 44 -40" stroke={OL} strokeWidth={4} opacity={0.3} />
+							<rect x={-126} y={-62} width={252} height={48} rx={22} fill={C.red} stroke={OL} strokeWidth={OW} />
+							<circle cx={0} cy={-180} r={34} fill={C.red} stroke={OL} strokeWidth={OW} />
+						</g>
+					)}
+					{hat === 'cap' && (
+						<g>
+							<path d="M -104 -66 C -116 -120 -70 -150 0 -152 C 70 -150 116 -120 104 -66 Q 0 -90 -104 -66 Z" fill={hatColor} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -108 -70 Q 0 -96 108 -70 Q 90 -46 0 -54 Q -90 -46 -108 -70 Z" fill="#1d2438" stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<circle cx={0} cy={-104} r={16} fill={C.ochre} stroke={OL} strokeWidth={5} />
 						</g>
 					)}
 					{bandage && (
