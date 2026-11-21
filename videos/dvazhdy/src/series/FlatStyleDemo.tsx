@@ -15,7 +15,7 @@ const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const ease = (v: number) => Easing.inOut(Easing.cubic)(clamp01(v));
 const back = (v: number) => Easing.out(Easing.back(1.8))(clamp01(v));
 
-const Pill: React.FC<{text: string; t: number; y?: number}> = ({text, t, y = 250}) => {
+export const Pill: React.FC<{text: string; t: number; y?: number}> = ({text, t, y = 250}) => {
 	const k = back(t / 0.35);
 	const w = text.length * 30 + 80;
 	return (
@@ -28,7 +28,7 @@ const Pill: React.FC<{text: string; t: number; y?: number}> = ({text, t, y = 250
 	);
 };
 
-const Odometer: React.FC<{t: number; to: number; x: number; y: number}> = ({t, to, x, y}) => {
+export const Odometer: React.FC<{t: number; to: number; x: number; y: number}> = ({t, to, x, y}) => {
 	const v = Math.floor(to * ease(t / 2.4));
 	const s = v.toString().padStart(to.toString().length, '0').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 	return (
@@ -41,7 +41,7 @@ const Odometer: React.FC<{t: number; to: number; x: number; y: number}> = ({t, t
 	);
 };
 
-const Title: React.FC<{lines: [string, string, string]; t: number}> = ({lines, t}) => (
+export const Title: React.FC<{lines: [string, string, string]; t: number}> = ({lines, t}) => (
 	<g>
 		{lines.map((l, i) => (
 			<text
@@ -118,7 +118,7 @@ const Street: React.FC<{t: number}> = ({t}) => {
 	);
 };
 
-const Bedroom: React.FC<{t: number; zoom?: boolean; empty?: boolean}> = ({t, zoom, empty}) => {
+export const Bedroom: React.FC<{t: number; zoom?: boolean; empty?: boolean}> = ({t, zoom, empty}) => {
 	const z = zoom ? 1 + 1.3 * ease(t / 0.8) : 1;
 	const ring = t > (zoom ? 0 : 1.2);
 	const shake = ring ? Math.sin(t * 60) * 5 : 0;
@@ -199,7 +199,7 @@ const Thought: React.FC<{t: number}> = ({t}) => {
 	);
 };
 
-const Hall: React.FC<{t: number}> = ({t}) => (
+export const Hall: React.FC<{t: number}> = ({t}) => (
 	<>
 		<rect width={1080} height={1920} fill="#9fb3c8" />
 		<rect x={0} y={760} width={1080} height={520} fill="#f4f1ea" />
