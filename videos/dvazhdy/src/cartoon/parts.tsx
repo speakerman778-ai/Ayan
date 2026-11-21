@@ -139,6 +139,21 @@ const Brows: React.FC<{face: Face}> = ({face}) => {
 
 const Mouth: React.FC<{face: Face; talk?: number}> = ({face, talk = 0}) => {
 	const my = 52;
+	if (talk > 0.04 && face !== 'shock' && face !== 'joy' && face !== 'laugh') {
+		const ry = 3 + talk * 17;
+		const rx = 15 + talk * 5;
+		return (
+			<g>
+				<clipPath id="tmclip"><ellipse cx={0} cy={my + 4} rx={rx} ry={ry} /></clipPath>
+				<ellipse cx={0} cy={my + 4} rx={rx} ry={ry} fill="#7a2622" />
+				<g clipPath="url(#tmclip)">
+					{talk > 0.25 && <rect x={-rx} y={my + 4 - ry} width={rx * 2} height={ry * 0.35} fill="#fff" />}
+					<ellipse cx={0} cy={my + 4 + ry} rx={rx * 0.7} ry={ry * 0.55} fill="#e0707a" />
+				</g>
+				<ellipse cx={0} cy={my + 4} rx={rx} ry={ry} fill="none" stroke={OL} strokeWidth={6} />
+			</g>
+		);
+	}
 	switch (face) {
 		case 'smile':
 			return <path d={`M -30 ${my - 6} Q 0 ${my + 22} 30 ${my - 6}`} stroke={OL} strokeWidth={8} fill="none" strokeLinecap="round" />;

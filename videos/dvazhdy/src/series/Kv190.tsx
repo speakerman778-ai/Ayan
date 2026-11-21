@@ -7,6 +7,7 @@ import {KaraokeLine, Word} from '../subs/Karaoke';
 import {Shnurok} from './Shnurok';
 import {Pill} from './FlatStyleDemo';
 import rawWords from '../../public/shnurok/ep05-words.json';
+import envRaw from '../../public/shnurok/ep05-env.json';
 
 // «Квартира 190» — страшная история: аномальная зима, двадцатиэтажка, угарный газ, непонятные союзники.
 
@@ -91,15 +92,54 @@ const Breath: React.FC<{x: number; y: number; t: number; dir?: 1 | -1; ph?: numb
 	);
 };
 
+// ---------------------------------------------------------------- lip sync
+type Who = 'shnurok' | 'sonya' | 'vera' | 'mikh';
+const QUOTE_WHO: (Who | null)[] = ['shnurok', 'sonya', null, 'vera', 'sonya', 'vera', 'mikh', 'mikh', null, null, 'sonya', 'sonya'];
+const SPEAK: {who: Who; start: number; end: number}[] = (() => {
+	const out: {who: Who; start: number; end: number}[] = [];
+	let q = -1;
+	let st = 0;
+	WORDS.forEach((w) => {
+		if (w.text.includes('«')) {
+			q++;
+			st = w.start;
+		}
+		if (w.text.includes('»')) {
+			const who = QUOTE_WHO[q];
+			if (who) out.push({who, start: st, end: w.end});
+		}
+	});
+	return out;
+})();
+const ENV = envRaw as number[];
+const AbsCtx = React.createContext(0);
+const talkAt = (who: Who, abs: number) => {
+	const seg = SPEAK.find((sg) => sg.who === who && abs >= sg.start - 0.03 && abs <= sg.end + 0.05);
+	if (!seg) return 0;
+	const v = ENV[Math.round(abs * FPS)] ?? 0;
+	return clamp01((v - 0.12) * 1.5);
+};
+const useTalk = (who: Who) => talkAt(who, React.useContext(AbsCtx));
+// how strongly the camera should focus on someone speaking around abs time
+const speakFocus = (abs: number) => {
+	let best: {who: Who; f: number} | null = null;
+	for (const sg of SPEAK) {
+		const f = Math.min(ease((abs - (sg.start - 0.45)) / 0.45), 1 - ease((abs - (sg.end + 0.25)) / 0.5));
+		if (f > 0 && (!best || f > best.f)) best = {who: sg.who, f};
+	}
+	return best;
+};
+const Shn: React.FC<React.ComponentProps<typeof ShnurokSide>> = (p) => <ShnurokSide {...p} talk={useTalk('shnurok')} />;
+
 const Sonya: React.FC<{x: number; y: number; s?: number; dir?: 1 | -1; face?: 'smile' | 'neutral' | 'shock' | 'closed' | 'joy' | 'think'; armFront?: [number, number]}> = ({x, y, s = 0.55, dir = 1, face = 'neutral', armFront}) => (
-	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="pigtails" hairColor="#7a4a2a" jacket="#f2a6c0" pants="#f2a6c0" shoes="#f4f1ea" headS={0.8} bodyS={0.78} headLower={-14} armFront={armFront} phase={1.3} freckles />
+	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="pigtails" hairColor="#7a4a2a" jacket="#f2a6c0" pants="#f2a6c0" shoes="#f4f1ea" headS={0.8} bodyS={0.78} headLower={-14} armFront={armFront} phase={1.3} freckles talk={useTalk('sonya')} />
 );
 const Vera: React.FC<{x: number; y: number; s?: number; dir?: 1 | -1; face?: 'smile' | 'neutral' | 'shock' | 'closed' | 'joy' | 'think'}> = ({x, y, s = 0.78, dir = 1, face = 'neutral'}) => (
-	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="long" hairColor="#2b211d" jacket="#5b86c4" pants="#3a3f55" phase={2.1} />
+	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="long" hairColor="#2b211d" jacket="#5b86c4" pants="#3a3f55" phase={2.1} talk={useTalk('vera')} />
 );
 const Mikhalych: React.FC<{x: number; y: number; s?: number; dir?: 1 | -1; t: number}> = ({x, y, s = 0.85, dir = -1, t}) => (
 	<g>
-		<SideChar x={x} y={y} s={s} dir={dir} face="neutral" hair="old" beard jacket="#e8742a" pants="#3a3f55" phase={0.4} armFront={[70, -40]} />
+		<SideChar x={x} y={y} s={s} dir={dir} face="neutral" hair="old" beard jacket="#e8742a" pants="#3a3f55" phase={0.4} armFront={[70, -40]} talk={useTalk('mikh')} />
 		{/* lantern */}
 		<g transform={`translate(${x + dir * 95 * s} ${y - 330 * s + Math.sin(t * 2) * 4})`}>
 			<circle r={110} fill="#ffd36a" opacity={0.25 + 0.05 * Math.sin(t * 9)} />
@@ -310,11 +350,11 @@ const S1: React.FC<{t: number}> = ({t}) => {
 					<g transform={`translate(540 1500) scale(${1 + 0.06 * ease((t - intro) / 5)}) translate(-540 -1500)`}>
 						<Flat t={t} dark={0.3} />
 						<FrostWindow t={t} />
-						<ShnurokSide x={400} y={1640} s={1.0} face="neutral" dir={1} />
+						<Shn x={400} y={1640} s={1.0} face="neutral" dir={1} />
 						<Sonya x={600} y={1640} s={0.6} dir={-1} face={t > soneyT ? 'smile' : 'neutral'} />
 						<Breath x={470} y={1080} t={t} dir={1} />
 					</g>
-					<NameTag name="Шнурок" role="главный герой" from={intro + 0.2} x={60} y={150} avatar={<ShnurokSide x={-6} y={215} s={0.4} face="neutral" />} />
+					<NameTag name="Шнурок" role="главный герой" from={intro + 0.2} x={60} y={150} avatar={<Shn x={-6} y={215} s={0.4} face="neutral" />} />
 					{t > soneyT && <NameTag name="Соня" role="младшая сестра, 5 лет" from={soneyT} x={60} y={320} avatar={<Sonya x={-4} y={190} s={0.42} />} />}
 					<Pill text="17 этаж" t={t - floorT} y={540} />
 				</g>
@@ -330,9 +370,9 @@ const S2: React.FC<{t: number}> = ({t}) => {
 		<>
 			<Flat t={t} />
 			<FrostWindow t={t} face={ghost} />
-			<Sonya x={640} y={1440} s={0.6} face={ghost > 0 ? 'smile' : 'neutral'} armFront={[160, 10 + Math.sin(t * 3) * 10]} />
+			<Sonya x={640} y={1440} s={0.6} face={ghost > 0 ? 'smile' : 'neutral'} armFront={[110, 40 + Math.sin(t * 3) * 8]} />
 			<Breath x={690} y={1210} t={t} />
-			<ShnurokSide x={260} y={1600} s={0.9} face={ghost > 0.3 ? 'shock' : 'neutral'} armFront={[60, -60]} />
+			<Shn x={260} y={1600} s={0.9} face={ghost > 0.3 ? 'shock' : 'neutral'} armFront={[60, -60]} />
 			<Breath x={330} y={1100} t={t} ph={1} />
 			<Pill text="17 этаж" t={t - (T('семнадцатый', idx('тётей')) - A)} y={200} />
 		</>
@@ -367,7 +407,7 @@ const S4: React.FC<{t: number}> = ({t}) => {
 		<g transform={`translate(880 640) scale(${z}) translate(-880 -640)`}>
 			<Flat t={t} />
 			<FrostWindow t={t} hand={hand} curtain={cur} />
-			<ShnurokSide x={420} y={1600} s={0.9} face={hand > 0.5 ? 'shock' : 'neutral'} armFront={[150, -20]} />
+			<Shn x={420} y={1600} s={0.9} face={hand > 0.5 ? 'shock' : 'neutral'} armFront={[150, -20]} />
 			{t > six && (
 				<g transform="translate(906 612)">
 					<circle r={46} fill="none" stroke="#e0897c" strokeWidth={5} strokeDasharray="14 10" opacity={0.55 + 0.2 * Math.sin(t * 3)} transform={`rotate(${t * 20})`} />
@@ -422,12 +462,12 @@ const S5: React.FC<{t: number}> = ({t}) => {
 			{open > 0.3 && <Breath x={470} y={1000} t={t} dir={-1} />}
 			{t < carry ? (
 				<>
-					<ShnurokSide x={180} y={1600} s={0.9} face="neutral" />
+					<Shn x={180} y={1600} s={0.9} face="neutral" />
 					<Sonya x={330} y={1600} s={0.55} face="neutral" />
 				</>
 			) : (
 				<g>
-					<ShnurokSide x={200} y={1600} s={0.9} face="think" armFront={[95, -70]} />
+					<Shn x={200} y={1600} s={0.9} face="think" armFront={[95, -70]} />
 					<g transform="translate(280 1210) rotate(-15)">
 						<Sonya x={0} y={0} s={0.45} face="closed" />
 					</g>
@@ -498,7 +538,7 @@ const S6: React.FC<{t: number}> = ({t}) => {
 		<g transform={`translate(${Math.sin(t * 1.2) * 6 * dizzy} 0) skewX(${Math.sin(t * 1.0) * 1.5 * dizzy})`}>
 			<VeraFlat t={t} gas={0.4 + dizzy * 0.6} />
 			<Vera x={560} y={1640} s={0.78} dir={-1} face="neutral" />
-			<ShnurokSide x={980} y={1660} s={0.9} dir={-1} face={dizzy > 0.2 ? 'closed' : 'neutral'} armFront={dizzy > 0.2 ? [150, 60] : undefined} />
+			<Shn x={980} y={1660} s={0.9} dir={-1} face={dizzy > 0.2 ? 'closed' : 'neutral'} armFront={dizzy > 0.2 ? [150, 60] : undefined} />
 			<Sonya x={830} y={1680} s={0.5} dir={-1} face={t > sleepS ? 'closed' : 'neutral'} />
 			{t > sleepS && [0, 1, 2].map((i) => <text key={i} x={790 - i * 20} y={1200 - ((t - sleepS) * 40 + i * 30) % 100} fontFamily="Inter" fontWeight={900} fontSize={40} fill="#eef4ff" opacity={0.8}>z</text>)}
 			<Pill text="все конфорки включены" t={t - 0.4} y={200} />
@@ -530,7 +570,7 @@ const S7: React.FC<{t: number}> = ({t}) => {
 		return (
 			<>
 				<Stairwell t={t} floor="16" />
-				<ShnurokSide x={260} y={1680} s={0.9} face="shock" />
+				<Shn x={260} y={1680} s={0.9} face="shock" />
 				<Sonya x={420} y={1680} s={0.55} face={t > wake ? 'neutral' : 'closed'} />
 				<Vera x={760} y={1680} s={0.8} dir={-1} face="think" />
 				{[[330, 1150], [490, 1380], [690, 1170]].map(([bx, by], i) => <Breath key={i} x={bx} y={by} t={t} ph={i * 0.7} dir={i === 2 ? -1 : 1} />)}
@@ -540,7 +580,7 @@ const S7: React.FC<{t: number}> = ({t}) => {
 	return (
 		<>
 			<VeraFlat t={t} gas={t < off ? 1 : 0} open={open} />
-			<ShnurokSide x={620} y={1660} s={0.9} dir={1} face="shock" armFront={[100, -10]} />
+			<Shn x={620} y={1660} s={0.9} dir={1} face="shock" armFront={[100, -10]} />
 			<Pill text="угарный газ: не видно, не слышно" t={t - 0.3} y={200} />
 		</>
 	);
@@ -578,7 +618,7 @@ const S8: React.FC<{t: number}> = ({t}) => {
 			<Stairwell t={t} floor="17" />
 			<Lift t={t} open={open} btn={t > btn - 0.3 ? 1 : 0} />
 			{t > arrive && t < arrive + 0.6 && <text x={540} y={520} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={70} fill="#eef4ff" stroke={O} strokeWidth={6} paintOrder="stroke">ДЗЫНЬ</text>}
-			<ShnurokSide x={140} y={1700} s={0.85} face="shock" />
+			<Shn x={140} y={1700} s={0.85} face="shock" />
 			<Sonya x={260} y={1700} s={0.5} face="neutral" />
 		</g>
 	);
@@ -618,7 +658,7 @@ const S10: React.FC<{t: number}> = ({t}) => {
 		<>
 			<Stairwell t={t} floor="17" />
 			<Mikhalych x={850} y={1700} s={0.9} dir={-1} t={t} />
-			<ShnurokSide x={200} y={1700} s={0.85} face="neutral" />
+			<Shn x={200} y={1700} s={0.85} face="neutral" />
 			<Sonya x={330} y={1700} s={0.5} face="neutral" />
 			<Vera x={480} y={1700} s={0.75} face="neutral" />
 			{t > notice && [[270, 1130], [370, 1390], [540, 1180]].map(([bx, by], i) => <Breath key={i} x={bx} y={by} t={t} ph={i * 0.5} />)}
@@ -657,7 +697,7 @@ const S12: React.FC<{t: number}> = ({t}) => {
 	return (
 		<g transform={`translate(400 1500) scale(${1.15 + 0.08 * ease(t / 6)}) translate(-400 -1500)`}>
 			<Stairwell t={t} floor="17" />
-			<ShnurokSide x={300} y={1720} s={0.9} face={t > tetya ? 'shock' : 'neutral'} dir={1} />
+			<Shn x={300} y={1720} s={0.9} face={t > tetya ? 'shock' : 'neutral'} dir={1} />
 			<Sonya x={470} y={1720} s={0.55} dir={-1} face="neutral" armFront={[150, 30]} />
 			{t > good && <Pill text="«Михалыч хороший»" t={t - good} y={260} />}
 			{t > tetya && <Pill text="«тётя из окна — это 190-я»" t={t - tetya} y={380} />}
@@ -671,7 +711,7 @@ const S13: React.FC<{t: number}> = ({t}) => (
 		<g transform={`translate(0 ${Math.sin(t * 2) * 4})`}>
 		</g>
 		<Mikhalych x={180} y={1820} s={0.7} dir={1} t={t} />
-		<ShnurokSide x={540} y={1700} s={0.9} face="think" />
+		<Shn x={540} y={1700} s={0.9} face="think" />
 		<Sonya x={660} y={1700} s={0.5} face="neutral" />
 		<Vera x={820} y={1700} s={0.75} dir={-1} face="neutral" />
 		<g transform={`translate(840 520) rotate(8) scale(${back((t - 0.3) / 0.4)})`}>
@@ -704,27 +744,61 @@ const S14: React.FC<{t: number}> = ({t}) => (
 const SCENES = [S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14];
 
 const FADE = 0.35;
-const Layer: React.FC<{lead: number; dur: number; first: boolean; C: React.FC<{t: number}>}> = ({lead, dur, first, C: Scene}) => {
+const HEADS: Partial<Record<number, Partial<Record<Who, [number, number]>>>> = {
+	1: {shnurok: [260, 1100], sonya: [640, 1180]},
+	4: {vera: [560, 900]},
+	5: {sonya: [830, 1465]},
+	6: {vera: [760, 1235], sonya: [420, 1440]},
+	9: {mikh: [850, 1200]},
+	11: {sonya: [484, 1478]},
+};
+const Layer: React.FC<{idx: number; from: number; lead: number; dur: number; first: boolean; C: React.FC<{t: number}>}> = ({idx, from, lead, dur, first, C: Scene}) => {
 	const t = useCurrentFrame() / FPS - lead;
+	const abs = t + from;
 	const a = first ? 1 : clamp01((t + lead) / FADE);
-	const z = 1.0 + 0.05 * ease(t / Math.max(1, dur));
+	// zoom-through transition: enter from a close-up, leave by pushing in
+	const enter = first ? 0 : 1 - Easing.out(Easing.cubic)(clamp01((t + lead) / 0.6));
+	const exit = Easing.in(Easing.cubic)(clamp01((t - (dur - FADE)) / FADE));
+	// slow drift, alternating direction per scene
+	const dir = idx % 2 ? -1 : 1;
+	const drift = ease(t / Math.max(1, dur));
+	let z = 1.04 + 0.1 * (dir > 0 ? drift : 1 - drift) + 0.22 * enter + 0.25 * exit;
+	let px = 540 + dir * 120 * (drift - 0.5);
+	let py = 1000;
+	// punch in on whoever is speaking
+	const sp = speakFocus(abs);
+	const head = sp && HEADS[idx]?.[sp.who];
+	let tx = 0;
+	let ty = 0;
+	if (sp && head) {
+		const f = sp.f;
+		z += 0.38 * f;
+		px = px + (head[0] - px) * f;
+		py = py + (head[1] - py) * f;
+		tx = (540 - head[0]) * 0.55 * f;
+		ty = (820 - head[1]) * 0.45 * f;
+	}
+	// never reveal outside the frame
+	tx = Math.min(-px * (1 - z), Math.max(1080 - px - (1080 - px) * z, tx));
+	ty = Math.min(-py * (1 - z), Math.max(1920 - py - (1920 - py) * z, ty));
 	return (
 		<ShotCtx.Provider value={{t, dur: 1, scatter: 0}}>
-			<AbsoluteFill style={{opacity: a}}>
-				<svg width={1080} height={1920} viewBox="0 0 1080 1920">
-					<g transform={`translate(540 1000) scale(${z}) translate(-540 -1000)`}>
-						<Scene t={t} />
-					</g>
-					{/* cold vignette */}
-					<defs>
-						<radialGradient id="vig" cx="50%" cy="50%" r="70%">
-							<stop offset="60%" stopColor="#0b1226" stopOpacity={0} />
-							<stop offset="100%" stopColor="#0b1226" stopOpacity={0.4} />
-						</radialGradient>
-					</defs>
-					<rect width={1080} height={1920} fill="url(#vig)" />
-				</svg>
-			</AbsoluteFill>
+			<AbsCtx.Provider value={abs}>
+				<AbsoluteFill style={{opacity: a}}>
+					<svg width={1080} height={1920} viewBox="0 0 1080 1920">
+						<g transform={`translate(${tx} ${ty}) translate(${px} ${py}) scale(${z}) translate(${-px} ${-py})`}>
+							<Scene t={t} />
+						</g>
+						<defs>
+							<radialGradient id="vig" cx="50%" cy="50%" r="70%">
+								<stop offset="60%" stopColor="#0b1226" stopOpacity={0} />
+								<stop offset="100%" stopColor="#0b1226" stopOpacity={0.4} />
+							</radialGradient>
+						</defs>
+						<rect width={1080} height={1920} fill="url(#vig)" />
+					</svg>
+				</AbsoluteFill>
+			</AbsCtx.Provider>
 		</ShotCtx.Provider>
 	);
 };
@@ -744,7 +818,7 @@ export const Kv190: React.FC<{audio?: string}> = ({audio = ''}) => {
 				const start = Math.max(0, Math.round((from - (i ? FADE : 0)) * FPS));
 				return (
 					<Sequence key={i} from={start} durationInFrames={Math.max(1, Math.round(to * FPS) - start)}>
-						<Layer lead={from - start / FPS} dur={to - from} first={i === 0} C={Sc} />
+						<Layer idx={i} from={from} lead={from - start / FPS} dur={to - from} first={i === 0} C={Sc} />
 					</Sequence>
 				);
 			})}
