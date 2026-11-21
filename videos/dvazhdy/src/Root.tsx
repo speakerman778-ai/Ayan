@@ -11,6 +11,7 @@ import {PcClub, PCCLUB_DURATION} from './series/PcClub';
 import {PcClub2, PCCLUB2_DURATION} from './series/PcClub2';
 import {Muravei, MURAVEI_DURATION} from './series/Muravei';
 import {SideSheet, SideWalk} from './series/SideDemo';
+import {FlatSheet, FlatWalk} from './series/FlatDemo';
 import {Kypshak, KYPSHAK_DURATION} from './series/Kypshak';
 import {ShnurokAvatar, ShnurokHairOptions, ShnurokSheet} from './series/Shnurok';
 import timeline from '../public/timeline.json';
@@ -25,6 +26,8 @@ export const Root: React.FC = () => (
 	<Composition id="ShnurokHairOptions" component={ShnurokHairOptions} width={1080} height={1920} fps={30} durationInFrames={30} />
 	<Composition id="ShnurokSheet" component={ShnurokSheet} width={1080} height={1920} fps={30} durationInFrames={90} />
 	<Composition id="Kypshak" component={Kypshak} width={1080} height={1920} fps={30} durationInFrames={KYPSHAK_DURATION * 30} defaultProps={{audio: 'kypshak/mix.wav'}} />
+	<Composition id="FlatSheet" component={FlatSheet} width={1080} height={1920} fps={30} durationInFrames={30} />
+	<Composition id="FlatWalk" component={FlatWalk} width={1080} height={1920} fps={30} durationInFrames={180} />
 	<Composition id="SideSheet" component={SideSheet} width={1080} height={1920} fps={30} durationInFrames={30} />
 	<Composition id="SideWalk" component={SideWalk} width={1080} height={1920} fps={30} durationInFrames={180} />
 	<Composition id="Muravei" component={Muravei} width={1080} height={1920} fps={30} durationInFrames={MURAVEI_DURATION * 30} defaultProps={{audio: 'shnurok/ep03-mix.wav'}} />
