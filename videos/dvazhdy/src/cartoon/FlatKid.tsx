@@ -64,7 +64,7 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 	const legL = 72;
 	const hip = -legL * 2 + bob;
 	const sh = hip - 125;
-	const headCY = sh - 50;
+	const headCY = sh - 45;
 	const turn = side ? 1 : 0;
 
 	const eyes = () => {
@@ -110,7 +110,7 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 			)}
 			<path d={`M ${-bodyW / 2 + 8} ${sh + 8} Q 0 ${sh - 10} ${bodyW / 2 - 8} ${sh + 8}`} fill={shade(top, 0.9)} stroke={FL.ol} strokeWidth={FL.w} />
 			{/* head */}
-			<g transform={`translate(${side ? 4 : 0} ${headCY + bob * 0.3}) scale(0.56)`}>
+			<g transform={`translate(${side ? 4 : 0} ${headCY + bob * 0.3}) scale(0.5)`}>
 				<rect x={-28} y={78} width={56} height={30} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />
 				{!side && <ellipse cx={98} cy={20} rx={12} ry={17} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />}
 				<ellipse cx={side ? -80 : -98} cy={20} rx={12} ry={17} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />
@@ -118,7 +118,7 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 				{/* hair cap + fringe + tuft (Shnurok) */}
 				<g transform="translate(0 10) scale(1.24 0.92)">
 					<path d={`M -88 -6 C -96 -86 -50 -104 0 -104 C 54 -104 96 -86 88 -10 L 78 -30 L 66 -14 L 54 -40 L 38 -18 L 22 -44 L 6 -22 L -12 -46 L -28 -22 L -46 -44 L -60 -18 L -74 -36 Z`} fill={hairColor} stroke={FL.ol} strokeWidth={FL.w} strokeLinejoin="round" />
-					{tuft && <path d="M 0 -102 C -8 -150 24 -168 46 -154 C 30 -150 22 -138 30 -122 C 40 -140 64 -140 70 -124 C 52 -124 44 -112 42 -100 Z" fill={hairColor} stroke={FL.ol} strokeWidth={FL.w} strokeLinejoin="round" />}
+					{tuft && <g transform="translate(30 -100) scale(0.7) translate(-30 100)"> <path d="M 0 -102 C -8 -150 24 -168 46 -154 C 30 -150 22 -138 30 -122 C 40 -140 64 -140 70 -124 C 52 -124 44 -112 42 -100 Z" fill={hairColor} stroke={FL.ol} strokeWidth={FL.w} strokeLinejoin="round" /></g>}
 				</g>
 				{/* face */}
 				<g transform="translate(0 16)">
