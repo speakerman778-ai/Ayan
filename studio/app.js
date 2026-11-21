@@ -65,7 +65,10 @@
         .catch(function () { note.textContent = "Не получилось отправить. Напишите нам напрямую, кнопки слева."; });
       return;
     }
-    if (C.telegram) {
+    if (C.whatsapp) {
+      window.open("https://wa.me/" + C.whatsapp + "?text=" + encodeURIComponent(text), "_blank");
+      note.textContent = "Открываем WhatsApp с готовым текстом заявки…";
+    } else if (C.telegram) {
       try { navigator.clipboard.writeText(text); } catch (_) {}
       note.textContent = "Текст заявки скопирован. Вставьте его в открывшийся чат Telegram.";
       window.open("https://t.me/" + C.telegram, "_blank");
