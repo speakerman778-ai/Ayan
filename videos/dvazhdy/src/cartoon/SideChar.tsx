@@ -119,7 +119,9 @@ export const SideChar: React.FC<SideProps> = (p) => {
 			{/* neck + head */}
 			<rect x={-14} y={shY - 40} width={36} height={46} fill={C.skin} stroke={OL} strokeWidth={OW} />
 			{frontFace ? (
+				<g transform="translate(0 -18)">
 				<Char x={8} y={headY + 574.2 - 140 * headS + 140 * 0.82 - (headY - (shY - 118 * headS + 10))} s={1} headOnly headS={headS} bodyS={1.14} headDrop={18 + (headY - (shY - 118 * headS + 10)) + ((shY - 118 * headS + 10) - (-477.4 - 140 * headS + 18)) - (shY - (-477.4))} hair={frontHair ?? (hair === 'old' ? 'old' : hair === 'lyokha' ? 'lyokha' : hair === 'curly' ? 'curly' : 'guy')} hairColor={hairColor} freckles={freckles} beard={beard} nose={nose} mustache={mustache} glasses={glasses} hat={hatFront ?? (hat ? 'souwester' : undefined)} hatColor={hatColor} face={(face === 'joy' ? 'laugh' : face) as Face} look={look} talk={talk} turn={1} />
+				</g>
 			) : (
 			<g transform={`translate(10 ${headY}) scale(${headS})`}>
 				{hair === 'curly' && <circle cx={-40} cy={-60} r={90} fill={hairColor} stroke={OL} strokeWidth={OW} />}
