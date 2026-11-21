@@ -139,17 +139,27 @@ const S1: React.FC<{t: number}> = ({t}) => {
 				<Cam z={1.03} cx={540} cy={1100}>
 					<Kitchen t={t} />
 					<rect x={160} y={1080} width={760} height={26} rx={8} fill={C.wood} stroke={OL} strokeWidth={OW} />
-					<g transform={`translate(560 ${1080 - 0}) scale(${1 - k * 0.9})`}>
-						<Shnurok x={0} y={250} s={0.95} face={t > shrink ? 'shock' : 'smile'} armR={t < shrink ? [140, 70] : [150, 20]} armL={t > shrink ? [150, 20] : undefined} />
+					<g transform={`translate(560 1080) scale(${1 - k * 0.9})`}>
+						{t < shrink ? (
+							<>
+								{/* drinking: glass in the right hand at the mouth, head tipped back */}
+								<Shnurok x={0} y={250} s={0.95} face="closed" armR={[-46, 213]} armROver headTilt={-10} look={0.5} legL={10} legR={-4} />
+								<g transform={`translate(34 -218) rotate(${-25 - 15 * clamp01(t / Math.max(0.1, shrink))})`}>
+									<clipPath id="lemon"><rect x={-26} y={-70} width={52} height={78} rx={8} /></clipPath>
+									<rect x={-30} y={-74} width={60} height={86} rx={10} fill="#e8f6f8" stroke={OL} strokeWidth={6} opacity={0.95} />
+									<g clipPath="url(#lemon)">
+										<rect x={-40} y={-66 + 70 * clamp01(t / Math.max(0.1, shrink))} width={80} height={90} fill="#9be86a" />
+										{[0, 1, 2].map((i) => (
+											<circle key={i} cx={-12 + i * 12} cy={-((t * 50 + i * 22) % 60)} r={4} fill="#fff" opacity={0.85} />
+										))}
+									</g>
+									<circle cx={0} cy={-30} r={60} fill="#bff59a" opacity={0.18 + 0.08 * Math.sin(t * 10)} />
+								</g>
+							</>
+						) : (
+							<Shnurok x={0} y={250} s={0.95} face="shock" armR={[150, 20]} armL={[150, 20]} />
+						)}
 					</g>
-					{t < shrink && (
-						<g transform="translate(690 850)">
-							<rect x={-36} y={-80} width={72} height={100} rx={10} fill="#bff59a" stroke={OL} strokeWidth={6} opacity={0.9} />
-							{[0, 1, 2].map((i) => (
-								<circle key={i} cx={-14 + i * 14} cy={-20 - ((t * 40 + i * 20) % 60)} r={5} fill="#fff" opacity={0.8} />
-							))}
-						</g>
-					)}
 				</Cam>
 			) : (
 				<Cam z={1} cx={540} cy={1100}>
