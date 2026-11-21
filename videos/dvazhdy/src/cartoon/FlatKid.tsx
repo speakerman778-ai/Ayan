@@ -64,7 +64,7 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 	const legL = 72;
 	const hip = -legL * 2 + bob;
 	const sh = hip - 140;
-	const headCY = sh - 112;
+	const headCY = sh - 76;
 	const turn = side ? 1 : 0;
 
 	const eyes = () => {
@@ -96,7 +96,7 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 		<g transform={`translate(${x} ${y}) scale(${s * dir} ${s})`}>
 			<ellipse cx={0} cy={4} rx={70} ry={10} fill="#000" opacity={0.12} />
 			{/* far arm + legs */}
-			{limb(side ? -4 : -bodyW + 12, sh + 20, side ? armFar[0] : -armFar[0], side ? armFar[1] : -armFar[1], 74, 68, 26, shade(top, 0.85), 'hand', shade(FL.skin, 0.93))}
+			{side ? limb(-4, sh + 20, armFar[0], armFar[1], 74, 68, 26, shade(top, 0.85), 'hand', shade(FL.skin, 0.93)) : limb(-bodyW / 2 + 4, sh + 22, -10, -6, 74, 68, 26, top, 'hand', FL.skin)}
 			{limb(side ? 0 : -20, hip, side ? -sw : 2, side ? -bend(-1) : 0, legL, legL, 32, shade(pants, 0.85), 'shoe', shade(shoes, 0.9))}
 			{limb(side ? 0 : 20, hip, side ? sw : -2, side ? -bend(1) : 0, legL, legL, 32, pants, 'shoe', shoes)}
 			{/* torso */}
@@ -110,7 +110,7 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 			)}
 			<path d={`M ${-bodyW / 2 - (side ? 4 : 0) + 8} ${sh + 8} Q 0 ${sh - 12} ${bodyW / 2 - (side ? 4 : 0) - 8} ${sh + 8}`} fill={shade(top, 0.9)} stroke={FL.ol} strokeWidth={FL.w} />
 			{/* head */}
-			<g transform={`translate(${side ? 6 : 0} ${headCY + bob * 0.3})`}>
+			<g transform={`translate(${side ? 6 : 0} ${headCY + bob * 0.3}) scale(0.68)`}>
 				<rect x={-12} y={84} width={24} height={30} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />
 				{!side && <ellipse cx={86} cy={8} rx={12} ry={17} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />}
 				<ellipse cx={side ? -70 : -86} cy={8} rx={12} ry={17} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />
@@ -128,7 +128,7 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 				{mouth()}
 			</g>
 			{/* near arm */}
-			{limb(side ? 10 : bodyW - 12, sh + 20, armNear[0], armNear[1], 74, 68, 26, top, 'hand', FL.skin)}
+			{side ? limb(10, sh + 20, armNear[0], armNear[1], 74, 68, 26, top, 'hand', FL.skin) : limb(bodyW / 2 - 4, sh + 22, armUp ? 160 : 10, armUp ? 20 : 6, 74, 68, 26, top, 'hand', FL.skin)}
 		</g>
 	);
 };
