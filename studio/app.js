@@ -43,39 +43,29 @@
   if (C.email) links.push('<a class="btn btn-ghost" href="mailto:' + C.email + '">' + C.email + "</a>");
   document.getElementById("contacts").innerHTML = links.join("");
 
-  // ---- Отправка заявки ----
+  // ---- Отправка заявки: кнопка-ссылка в WhatsApp с готовым текстом ----
   var note = document.getElementById("formNote");
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+  var send = document.getElementById("send");
+  function message() {
+    return "Здравствуйте! Заявка с сайта\nИмя: " + form.name.value + "\nКонтакт: " + form.contact.value +
+      "\nЧто нужно: " + form.plan.value + "\nО задаче: " + form.about.value;
+  }
+  function update() {
+    if (C.whatsapp) send.href = "https://wa.me/" + C.whatsapp + "?text=" + encodeURIComponent(message());
+    else if (C.telegram) send.href = "https://t.me/" + C.telegram;
+    else if (C.email) send.href = "mailto:" + C.email + "?subject=" + encodeURIComponent("Заявка на ролик") + "&body=" + encodeURIComponent(message());
+  }
+  form.addEventListener("input", update);
+  form.addEventListener("change", update);
+  update();
+  send.addEventListener("click", function (e) {
     if (!form.name.value.trim() || !form.contact.value.trim()) {
+      e.preventDefault();
       note.textContent = "Укажите имя и как с вами связаться.";
       return;
     }
-    var text = "Заявка с сайта\nИмя: " + form.name.value + "\nКонтакт: " + form.contact.value +
-      "\nЧто нужно: " + form.plan.value + "\nО задаче: " + form.about.value;
-
-    if (C.formEndpoint) {
-      note.textContent = "Отправляем…";
-      fetch(C.formEndpoint, { method: "POST", headers: { Accept: "application/json" }, body: new FormData(form) })
-        .then(function (r) {
-          if (!r.ok) throw 0;
-          form.reset();
-          note.textContent = "Спасибо! Заявка у нас, ответим в течение дня.";
-        })
-        .catch(function () { note.textContent = "Не получилось отправить. Напишите нам напрямую, кнопки слева."; });
-      return;
-    }
-    if (C.whatsapp) {
-      window.open("https://wa.me/" + C.whatsapp + "?text=" + encodeURIComponent(text), "_blank");
-      note.textContent = "Открываем WhatsApp с готовым текстом заявки…";
-    } else if (C.telegram) {
-      try { navigator.clipboard.writeText(text); } catch (_) {}
-      note.textContent = "Текст заявки скопирован. Вставьте его в открывшийся чат Telegram.";
-      window.open("https://t.me/" + C.telegram, "_blank");
-    } else if (C.email) {
-      location.href = "mailto:" + C.email + "?subject=" + encodeURIComponent("Заявка на ролик") + "&body=" + encodeURIComponent(text);
-    } else {
-      note.textContent = "Контакты студии ещё не настроены (файл config.js).";
-    }
+    update();
+    note.textContent = "Открываем WhatsApp. Там останется нажать «Отправить».";
   });
+  form.addEventListener("submit", function (e) { e.preventDefault(); send.click(); });
 })();
