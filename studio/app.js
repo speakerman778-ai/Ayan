@@ -4,18 +4,27 @@
 
   // ---- Галерея стилей ----
   var works = [
-    { img: "savely-outside", t: "Смотритель", s: "Плоский мультфильм", f: "warm" },
+    { img: "savely-outside", t: "Фирменный мультфильм", s: "Наш основной стиль", f: "warm" },
     { img: "savely-inside", t: "Знакомство с героями", s: "Плашки с именами", f: "warm" },
-    { img: "paper", t: "Аппликация", s: "Вырезано из бумаги", f: "warm" },
-    { img: "toy", t: "Игрушечный 3D", s: "Мягкий пластилин", f: "warm" },
-    { img: "lowpoly", t: "Low-poly", s: "Гранёный 3D", f: "warm" },
-    { img: "neon", t: "Неон", s: "Светящиеся линии", f: "bold" },
-    { img: "comic", t: "Комикс", s: "Поп-арт, точки, «БАХ!»", f: "bold" },
-    { img: "blueprint", t: "Чертёж", s: "Для техники и обучения", f: "bold" },
-    { img: "pixel", t: "Пиксель-арт", s: "Как в старой игре", f: "retro" },
-    { img: "chalk", t: "Мел на доске", s: "Объясняем сложное", f: "retro" },
-    { img: "woodblock", t: "Плакат", s: "Советская графика", f: "retro" },
-    { img: "newspaper", t: "Газета", s: "Архивный детектив", f: "retro" }
+    { img: "s-watercolor", t: "Акварель", s: "Мягкие размытые краски", f: "warm" },
+    { img: "s-sunset", t: "Закат", s: "Тёплый вечерний свет", f: "warm" },
+    { img: "s-winter", t: "Зимняя сказка", s: "Снег и холодные тона", f: "warm" },
+    { img: "s-candy", t: "Пастель", s: "Нежные конфетные цвета", f: "warm" },
+    { img: "s-crayon", t: "Мелки", s: "Пастель на тёмной бумаге", f: "warm" },
+    { img: "s-kids", t: "Детский рисунок", s: "Фломастеры в тетради", f: "warm" },
+    { img: "s-diorama", t: "Диорама", s: "Игрушечный 3D-островок", f: "warm" },
+    { img: "s-comic", t: "Комикс", s: "Поп-арт и растр", f: "bold" },
+    { img: "s-neon", t: "Неон", s: "Светящиеся линии", f: "bold" },
+    { img: "s-glass", t: "Витраж", s: "Цветное стекло", f: "bold" },
+    { img: "s-pixel", t: "Пиксель-арт", s: "Как в старой игре", f: "bold" },
+    { img: "s-lowpoly", t: "Low-poly", s: "Гранёный 3D", f: "bold" },
+    { img: "s-poster", t: "Ретро-плакат", s: "Афиша 50-х", f: "retro" },
+    { img: "s-film", t: "Старая плёнка", s: "Сепия и зерно", f: "retro" },
+    { img: "s-lino", t: "Гравюра", s: "Линогравюра со штрихом", f: "retro" },
+    { img: "s-ink", t: "Тушь", s: "Японская живопись", f: "retro" },
+    { img: "s-chalk", t: "Мел на доске", s: "Объясняем сложное", f: "retro" },
+    { img: "s-blueprint", t: "Чертёж", s: "Для техники и обучения", f: "retro" },
+    { img: "s-shadow", t: "Театр теней", s: "Силуэты в лунном свете", f: "retro" }
   ];
   var g = document.getElementById("gallery");
   g.innerHTML = works.map(function (w) {

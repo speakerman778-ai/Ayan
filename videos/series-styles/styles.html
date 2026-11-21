@@ -102,6 +102,74 @@ poster: {
   overlay: '<rect width="1080" height="1920" fill="url(#dots)"/>' + grainRect + '<rect x="30" y="30" width="1020" height="1860" fill="none" stroke="#f4e3b6" stroke-width="12"/><text x="540" y="160" text-anchor="middle" font-family="DejaVu Serif" font-weight="700" font-size="46" fill="#f4e3b6" letter-spacing="14">НОВЫЙ СЕРИАЛ</text>',
   caption: `<g transform="translate(540 1440)"><rect x="-340" y="-78" width="680" height="156" fill="#c7323a"/><text y="32" text-anchor="middle" font-family="DejaVu Serif" font-weight="700" font-size="66" fill="#f4e3b6" letter-spacing="4">${T}</text></g>`,
 },
+// ---------------------------------------------------------------- pop-art comic
+comic: {
+  defs: `<pattern id="ht" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="8" cy="8" r="4" fill="#000" opacity=".22"/></pattern>`,
+  stroke: '#111', sw: 10, beamOp: 0.8, waveW: 10, lineColor: {wave: '#111'},
+  palette: {star: '#fff', moon: '#ffe500', moonShade: '#ffb800', beam: '#fff36a', sea: '#00a8e8', wave: '#111', rock: '#5a2a8a', cliff: '#ff6a3a', cliffShade: '#d94a2a', grass: '#3ad15a', tower: '#ffffff', stripe: '#e8202a', door: '#5a2a8a', window: '#ffe500', gallery: '#111', lampRoom: '#ffe500', lamp: '#fff', roof: '#e8202a', coat: '#ffe500', boots: '#111', skin: '#ffc89a', beard: '#fff', hat: '#ffe500', glow: '#fff36a', lanternBody: '#111', cat: '#8fa3bf'},
+  bg: '<rect width="1080" height="1920" fill="#2a3cd9"/>' + Array.from({length: 24}, (_, i) => `<path d="M 840 260 L ${840 + Math.cos(i / 24 * 6.283) * 1600} ${260 + Math.sin(i / 24 * 6.283) * 1600} L ${840 + Math.cos((i + .5) / 24 * 6.283) * 1600} ${260 + Math.sin((i + .5) / 24 * 6.283) * 1600} Z" fill="#3f55ff"/>`).join(''),
+  overlay: '<rect width="1080" height="1920" fill="url(#ht)"/><rect x="14" y="14" width="1052" height="1892" fill="none" stroke="#111" stroke-width="20"/>',
+  caption: '',
+},
+// ---------------------------------------------------------------- warm sunset
+sunset: {
+  defs: `<linearGradient id="sun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b2a6a"/><stop offset=".45" stop-color="#e8605a"/><stop offset=".8" stop-color="#ffb35a"/><stop offset="1" stop-color="#ffd98a"/></linearGradient>`,
+  stroke: '#3b2a22', sw: 7, beamOp: 0.25, waveW: 7, lineColor: {wave: '#ffb36a'},
+  palette: {star: 'none', moon: '#fff0b0', moonShade: '#ffd36a', beam: '#fff0b0', sea: '#5a3a7a', wave: '#ffb36a', rock: '#3a2a4a', cliff: '#9a5a4a', cliffShade: '#7a4a3a', grass: '#7aa35a', tower: '#fff4e2', stripe: '#d9483b', door: '#6a3a2a', window: '#ffd36a', gallery: '#3a2a4a', lampRoom: '#ffe08a', lamp: '#fff6c8', roof: '#d9483b', coat: '#f2c230', boots: '#3a2a22', skin: '#f6c9a0', beard: '#fff', hat: '#f2c230', glow: '#ffd36a', lanternBody: '#3a2a4a', cat: '#8fa3bf'},
+  bg: '<rect width="1080" height="1920" fill="url(#sun)"/><g fill="#fff" opacity=".55"><ellipse cx="200" cy="300" rx="120" ry="26"/><ellipse cx="640" cy="180" rx="160" ry="30"/><ellipse cx="900" cy="520" rx="110" ry="22"/></g>',
+  caption: '',
+},
+// ---------------------------------------------------------------- winter
+winter: {
+  defs: `<linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a5a8a"/><stop offset="1" stop-color="#a9c4e0"/></linearGradient>`,
+  stroke: '#2a3550', sw: 6, beamOp: 0.35, waveW: 6, lineColor: {wave: '#d8e8f8'},
+  palette: {star: '#fff', moon: '#f4f8ff', moonShade: '#d8e4f4', beam: '#ffffff', sea: '#4a6a9a', wave: '#d8e8f8', rock: '#e8f0fa', cliff: '#f4f8fc', cliffShade: '#d8e4f0', grass: '#ffffff', tower: '#ffffff', stripe: '#c8384a', door: '#6a4a3a', window: '#ffd36a', gallery: '#2a3550', lampRoom: '#ffe08a', lamp: '#fff6c8', roof: '#c8384a', coat: '#f2c230', boots: '#2a3550', skin: '#f6c9a0', beard: '#fff', hat: '#c8384a', glow: '#ffd36a', lanternBody: '#2a3550', cat: '#8fa3bf'},
+  bg: '<rect width="1080" height="1920" fill="url(#win)"/>',
+  overlay: Array.from({length: 160}, (_, i) => `<circle cx="${rnd(i + 50) * 1080}" cy="${rnd(i + 300) * 1920}" r="${3 + rnd(i + 7) * 7}" fill="#fff" opacity="${.5 + rnd(i) * .5}"/>`).join(''),
+  caption: '',
+},
+// ---------------------------------------------------------------- ink (sumi-e)
+ink: {
+  defs: `${grain(0.18, 12)}<filter id="inkf"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" seed="2"/><feDisplacementMap in="SourceGraphic" scale="9"/></filter>`,
+  filter: 'inkf', beamOp: 0.12, glowOp: 0.15, waveW: 5,
+  palette: {default: '#1a1a1a', star: 'none', moon: '#c8302a', moonShade: 'none', beam: '#1a1a1a', sea: '#e9e2d0', wave: '#3a3a3a', rock: '#2a2a2a', cliff: '#3a3a3a', cliffShade: '#2a2a2a', grass: '#1a1a1a', tower: '#efe8d6', stripe: '#1a1a1a', window: '#efe8d6', lampRoom: '#efe8d6', lamp: '#c8302a', coat: '#4a4a4a', skin: '#efe8d6', beard: '#efe8d6', glow: '#1a1a1a', hat: '#1a1a1a', cat: '#5a5a5a'},
+  stroke: '#1a1a1a', sw: 5,
+  bg: '<rect width="1080" height="1920" fill="#efe8d6"/>',
+  overlay: grainRect + '<g transform="translate(940 1700)"><rect x="-60" y="-80" width="120" height="160" rx="10" fill="#c8302a"/><text y="-12" text-anchor="middle" font-family="DejaVu Serif" font-weight="700" font-size="54" fill="#efe8d6">МА</text><text y="48" text-anchor="middle" font-family="DejaVu Serif" font-weight="700" font-size="54" fill="#efe8d6">ЯК</text></g>',
+  caption: '',
+},
+// ---------------------------------------------------------------- chalk
+chalk: {
+  defs: `<filter id="ch" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="5" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -0.7 1.15" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter>`,
+  outlineOnly: true, olw: 6, filter: 'ch', beamOp: 0.15, glowOp: 0.2, waveW: 5,
+  palette: {default: '#f4f4ee', star: '#f4f4ee', moon: '#fff3a0', moonShade: 'none', beam: '#f4f4ee', sea: 'none', wave: '#9fd0f0', rock: '#f4f4ee', cliff: '#e8d0a0', cliffShade: 'none', grass: '#a8e0a0', stripe: '#ff9a8a', roof: '#ff9a8a', window: '#fff3a0', lamp: '#fff3a0', glow: '#fff3a0', coat: '#fff3a0', hat: '#fff3a0', cat: '#a8c0e8'},
+  bg: '<rect width="1080" height="1920" fill="#2f4a3a"/><rect x="0" y="1830" width="1080" height="90" fill="#8a5a32"/><g fill="#f4f4ee" opacity=".9"><rect x="120" y="1846" width="90" height="16" rx="8"/><rect x="260" y="1850" width="60" height="14" rx="7" fill="#ff9a8a"/></g>',
+  caption: '',
+},
+// ---------------------------------------------------------------- kids drawing
+kids: {
+  defs: `<filter id="kd"><feTurbulence baseFrequency="0.03" numOctaves="2" seed="11"/><feDisplacementMap in="SourceGraphic" scale="16"/></filter>`,
+  filter: 'kd', stroke: '#222', sw: 6, beamOp: 0.5, waveW: 8,
+  palette: {star: '#ffcc00', moon: '#ffcc00', moonShade: 'none', beam: '#ffe066', sea: '#3a8ae8', wave: '#1a5ac8', rock: '#8a8a8a', cliff: '#a0703a', cliffShade: '#80582a', grass: '#3ac83a', tower: '#ffffff', stripe: '#ff3a3a', door: '#8a4a1a', window: '#ffcc00', gallery: '#222', lampRoom: '#ffcc00', lamp: '#fff', roof: '#ff3a3a', coat: '#ffcc00', boots: '#222', skin: '#ffc8a0', beard: '#fff', hat: '#ffcc00', glow: '#ffe066', lanternBody: '#222', cat: '#8fa3bf'},
+  bg: '<rect width="1080" height="1920" fill="#fdfcf6"/><g stroke="#c8d8f0" stroke-width="3">' + Array.from({length: 40}, (_, i) => `<line x1="0" y1="${60 + i * 48}" x2="1080" y2="${60 + i * 48}"/>`).join('') + '</g><line x1="110" y1="0" x2="110" y2="1920" stroke="#f0a0a0" stroke-width="4"/><g filter="url(#kd)"><rect x="0" y="0" width="1080" height="700" fill="#9fd4ff" opacity=".7"/></g>',
+  caption: '',
+},
+// ---------------------------------------------------------------- old film / sepia
+film: {
+  defs: `${grain(0.35, 21)}<radialGradient id="vig" cx="50%" cy="45%" r="75%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient>`,
+  stroke: '#2a1e14', sw: 6, beamOp: 0.35, waveW: 6, lineColor: {wave: '#c8a878'},
+  palette: {star: '#f0e0c0', moon: '#f6e8c8', moonShade: '#d8c098', beam: '#f6e8c8', sea: '#5a4632', wave: '#c8a878', rock: '#3a2e22', cliff: '#7a6248', cliffShade: '#5a4632', grass: '#9a8458', tower: '#efe0c4', stripe: '#8a5a3a', door: '#4a3424', window: '#e8c888', gallery: '#3a2e22', lampRoom: '#f0d8a0', lamp: '#fff4d8', roof: '#8a5a3a', coat: '#c8a060', boots: '#2a1e14', skin: '#e0c0a0', beard: '#f4ead8', hat: '#c8a060', glow: '#f0d8a0', lanternBody: '#3a2e22', cat: '#9a8a78'},
+  bg: '<rect width="1080" height="1920" fill="#3a2e22"/>',
+  overlay: grainRect + '<rect width="1080" height="1920" fill="url(#vig)"/><g stroke="#f0e0c0" stroke-opacity=".35" stroke-width="2"><line x1="230" y1="0" x2="236" y2="1920"/><line x1="780" y1="0" x2="772" y2="1920"/></g><rect x="0" y="0" width="1080" height="1920" fill="none" stroke="#120c08" stroke-width="40"/>',
+  caption: '',
+},
+// ---------------------------------------------------------------- candy pastel
+candy: {
+  stroke: '#6a4a7a', sw: 6, beamOp: 0.5, waveW: 7, lineColor: {wave: '#ffffff'},
+  palette: {star: '#ffffff', moon: '#fff6c8', moonShade: '#ffe0f0', beam: '#ffffff', sea: '#9fd8f0', wave: '#ffffff', rock: '#c8a8e8', cliff: '#f0b8d0', cliffShade: '#e0a0c0', grass: '#a8e8c0', tower: '#ffffff', stripe: '#ff8ab8', door: '#b88ad8', window: '#fff0a0', gallery: '#b88ad8', lampRoom: '#fff0a0', lamp: '#fff', roof: '#ff8ab8', coat: '#ffe07a', boots: '#6a4a7a', skin: '#ffd8c0', beard: '#fff', hat: '#ffe07a', glow: '#fff0a0', lanternBody: '#b88ad8', cat: '#a8b8e8'},
+  bg: '<rect width="1080" height="1920" fill="#d8c8f8"/><g fill="#fff" opacity=".6"><circle cx="160" cy="260" r="60"/><circle cx="230" cy="250" r="80"/><circle cx="310" cy="270" r="55"/><circle cx="640" cy="560" r="50"/><circle cx="710" cy="540" r="70"/><circle cx="780" cy="565" r="45"/></g>',
+  caption: '',
+},
 };
 const name = new URLSearchParams(location.search).get('s');
 const qs=new URLSearchParams(location.search);const st=STYLES[name];if(qs.get('nocap'))st.caption='';document.getElementById('root').innerHTML = renderScene(st);

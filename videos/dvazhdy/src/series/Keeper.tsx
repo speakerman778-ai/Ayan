@@ -289,3 +289,19 @@ export const KeeperPreview: React.FC = () => {
 		</ShotCtx.Provider>
 	);
 };
+
+/** Portfolio loop for the studio site: 4 s inside, 4 s outside, no subtitles (no voiceover). */
+export const KeeperLoop: React.FC = () => {
+	const frame = useCurrentFrame();
+	const t = frame / 30;
+	const inside = frame < 120;
+	return (
+		<ShotCtx.Provider value={{t, dur: 4, scatter: 0}}>
+			<AbsoluteFill>
+				<svg width={1080} height={1920} viewBox="0 0 1080 1920">
+					{inside ? <Inside t={t} /> : <Outside t={t} />}
+				</svg>
+			</AbsoluteFill>
+		</ShotCtx.Provider>
+	);
+};
