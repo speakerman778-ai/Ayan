@@ -57,7 +57,7 @@ const B = [
 	S(idx('чате') - 1),
 	S(idx('задёрнул') - 1),
 	S(idx('постучала') - 2),
-	S(idx('горели') - 2),
+	S(idx('шнурок', idx('тепло'))),
 	S(idx('угарный')),
 	S(idx('замигал') - 3),
 	S(idx('снизу')),
@@ -534,6 +534,21 @@ const S6: React.FC<{t: number}> = ({t}) => {
 	const A = B[5];
 	const dizzy = clamp01((t - (T('заболела') - A)) / 2);
 	const sleepS = T('посплю') - A;
+	const settle = T('горели') - A - 0.3;
+	if (t < settle)
+		return (
+			<g transform={`translate(${-80 * ease(t / 2.5)} 0)`}>
+				<VeraFlat t={t} gas={0.4} />
+				<Vera x={300} y={1640} s={0.78} dir={1} face="smile" />
+				<g transform={`translate(${-60 * ease(t / 2)} 0)`}>
+					<Shn x={860} y={1660} s={0.9} dir={-1} face="think" armFront={[95, -70]} />
+					<g transform="translate(800 1320) rotate(-72)">
+						<Sonya x={0} y={0} s={0.45} dir={-1} face="closed" />
+					</g>
+				</g>
+				<Pill text="квартира Веры, 16 этаж" t={t - 0.3} y={300} />
+			</g>
+		);
 	return (
 		<g transform={`translate(${Math.sin(t * 1.2) * 6 * dizzy} 0) skewX(${Math.sin(t * 1.0) * 1.5 * dizzy})`}>
 			<VeraFlat t={t} gas={0.4 + dizzy * 0.6} />
@@ -541,7 +556,7 @@ const S6: React.FC<{t: number}> = ({t}) => {
 			<Shn x={980} y={1660} s={0.9} dir={-1} face={dizzy > 0.2 ? 'closed' : 'neutral'} armFront={dizzy > 0.2 ? [150, 60] : undefined} />
 			<Sonya x={830} y={1680} s={0.5} dir={-1} face={t > sleepS ? 'closed' : 'neutral'} />
 			{t > sleepS && [0, 1, 2].map((i) => <text key={i} x={790 - i * 20} y={1200 - ((t - sleepS) * 40 + i * 30) % 100} fontFamily="Inter" fontWeight={900} fontSize={40} fill="#eef4ff" opacity={0.8}>z</text>)}
-			<Pill text="все конфорки включены" t={t - 0.4} y={200} />
+			<Pill text="все конфорки включены" t={t - 0.4} y={300} />
 		</g>
 	);
 };
