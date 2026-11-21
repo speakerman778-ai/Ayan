@@ -92,7 +92,7 @@ const Breath: React.FC<{x: number; y: number; t: number; dir?: 1 | -1; ph?: numb
 };
 
 const Sonya: React.FC<{x: number; y: number; s?: number; dir?: 1 | -1; face?: 'smile' | 'neutral' | 'shock' | 'closed' | 'joy' | 'think'; armFront?: [number, number]}> = ({x, y, s = 0.55, dir = 1, face = 'neutral', armFront}) => (
-	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="pigtails" hairColor="#7a4a2a" jacket="#f2a6c0" pants="#f2a6c0" shoes="#f4f1ea" headS={0.8} bodyS={0.78} headLower={22} armFront={armFront} phase={1.3} freckles />
+	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="pigtails" hairColor="#7a4a2a" jacket="#f2a6c0" pants="#f2a6c0" shoes="#f4f1ea" headS={0.8} bodyS={0.78} headLower={-14} armFront={armFront} phase={1.3} freckles />
 );
 const Vera: React.FC<{x: number; y: number; s?: number; dir?: 1 | -1; face?: 'smile' | 'neutral' | 'shock' | 'closed' | 'joy' | 'think'}> = ({x, y, s = 0.78, dir = 1, face = 'neutral'}) => (
 	<SideChar x={x} y={y} s={s} dir={dir} face={face} hair="long" hairColor="#2b211d" jacket="#5b86c4" pants="#3a3f55" phase={2.1} />
