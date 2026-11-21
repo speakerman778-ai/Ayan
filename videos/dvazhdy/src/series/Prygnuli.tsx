@@ -55,29 +55,86 @@ const B = [0, S(idx('допустим')), S(idx('три')), S(iJump), S(idx('ш�
 
 // ------------------------------------------------------------------ shared pieces
 const COLS = ['#5b86c4', '#d9483b', '#7fae6a', '#9b6fb0', '#e8a93a', '#4a4f5c', '#c98c55', '#6fb4d0'];
-const StreetBg: React.FC = () => (
-	<>
-		<rect width={1080} height={1920} fill="#c9b08a" />
-		{[0, 1, 2].map((b) => (
-			<g key={b}>
-				<rect x={b * 380 - 30} y={60} width={360} height={1000} fill={['#d9c19a', '#c9a878', '#e0caa4'][b]} stroke={O} strokeWidth={W} />
-				{Array.from({length: 4}).map((_, r) =>
-					[0, 1].map((c) => <rect key={`${r}${c}`} x={b * 380 + 20 + c * 160} y={110 + r * 200} width={110} height={130} fill="#9fb3c8" stroke={O} strokeWidth={W} />),
-				)}
-			</g>
-		))}
-		<rect x={0} y={1060} width={1080} height={300} fill="#8f8f95" stroke={O} strokeWidth={W} />
-		{Array.from({length: 7}).map((_, i) => (
-			<rect key={i} x={i * 160 + 20} y={1120} width={100} height={200} fill="#f4f1ea" />
-		))}
-		<rect x={0} y={1360} width={1080} height={560} fill="#d9d4c8" stroke={O} strokeWidth={W} />
-		<rect x={950} y={720} width={14} height={640} fill="#3a3f55" />
-		<rect x={915} y={600} width={84} height={220} rx={16} fill="#3a3f55" stroke={O} strokeWidth={W} />
-		{['#d9483b', '#e8a93a', '#5f9e55'].map((c, i) => (
-			<circle key={c} cx={957} cy={640 + i * 68} r={24} fill={c} opacity={i === 2 ? 1 : 0.35} stroke={O} strokeWidth={3} />
-		))}
-	</>
-);
+const StreetBg: React.FC<{t?: number}> = ({t = 0}) => {
+	const light = Math.floor(t / 3) % 3; // traffic light cycles
+	return (
+		<>
+			<rect width={1080} height={1920} fill="#9fd0e8" />
+			{[0, 1, 2].map((i) => (
+				<path key={i} transform={`translate(${((i * 420 + t * (14 + i * 6)) % 1500) - 250} ${20 + i * 14})`} d="M 0 30 q -10 -26 20 -30 q 10 -24 40 -14 q 30 -14 44 14 q 26 4 16 30 Z" fill="#fffaf0" stroke={O} strokeWidth={5} />
+			))}
+			{[0, 1, 2].map((b) => (
+				<g key={b}>
+					<rect x={b * 380 - 30} y={60} width={360} height={1000} fill={['#d9c19a', '#c9a878', '#e0caa4'][b]} stroke={O} strokeWidth={W} />
+					<rect x={b * 380 - 40} y={50} width={380} height={26} fill="#9c6338" stroke={O} strokeWidth={W} />
+					{Array.from({length: 4}).map((_, r) =>
+						[0, 1].map((c) => {
+							const k = b * 8 + r * 2 + c;
+							const lit = hash(k + Math.floor(t / 2.5)) > 0.8;
+							return (
+								<g key={`${r}${c}`}>
+									<rect x={b * 380 + 20 + c * 160} y={110 + r * 200} width={110} height={130} fill={lit ? '#ffe9a6' : '#9fb3c8'} stroke={O} strokeWidth={W} />
+									<line x1={b * 380 + 75 + c * 160} y1={110 + r * 200} x2={b * 380 + 75 + c * 160} y2={240 + r * 200} stroke={O} strokeWidth={4} />
+									<rect x={b * 380 + 12 + c * 160} y={238 + r * 200} width={126} height={14} fill="#f4f1ea" stroke={O} strokeWidth={4} />
+									{hash(k + 9) > 0.6 && (
+										<g transform={`translate(${b * 380 + 75 + c * 160} ${236 + r * 200})`}>
+											<rect x={-26} y={-18} width={52} height={20} fill="#d9483b" stroke={O} strokeWidth={3} />
+											{[-14, 0, 14].map((fx) => (
+												<circle key={fx} cx={fx} cy={-26 + Math.sin(t * 2 + fx) * 2} r={8} fill={['#f5c542', '#f29b8a', '#fffaf0'][(k + fx) % 3 === 0 ? 0 : 1]} stroke={O} strokeWidth={3} />
+											))}
+										</g>
+									)}
+								</g>
+							);
+						}),
+					)}
+					{/* shop awning */}
+					<g transform={`translate(${b * 380 - 20} 900)`}>
+						{Array.from({length: 7}).map((_, i) => (
+							<path key={i} d={`M ${i * 50} 0 L ${i * 50 + 50} 0 L ${i * 50 + 50} 50 Q ${i * 50 + 25} 66 ${i * 50} 50 Z`} fill={i % 2 ? '#fffaf0' : ['#d9483b', '#5b86c4', '#7fae6a'][b]} stroke={O} strokeWidth={4} />
+						))}
+					</g>
+				</g>
+			))}
+			{/* birds */}
+			{[0, 1, 2].map((i) => {
+				const x = ((t * (60 + i * 15) + i * 300) % 1300) - 100;
+				const f = Math.sin(t * 9 + i) * 10;
+				return <path key={i} transform={`translate(${x} ${330 + i * 60 + Math.sin(t + i) * 20})`} d={`M -24 ${f} Q -12 -12 0 0 Q 12 -12 24 ${f}`} stroke={O} strokeWidth={5} fill="none" strokeLinecap="round" />;
+			})}
+			<rect x={0} y={1060} width={1080} height={300} fill="#8f8f95" stroke={O} strokeWidth={W} />
+			{Array.from({length: 7}).map((_, i) => (
+				<rect key={i} x={i * 160 + 20} y={1120} width={100} height={200} fill="#f4f1ea" />
+			))}
+			<rect x={0} y={1360} width={1080} height={560} fill="#d9d4c8" stroke={O} strokeWidth={W} />
+			{Array.from({length: 8}).map((_, i) => (
+				<line key={i} x1={i * 150} y1={1360} x2={i * 150 - 80} y2={1920} stroke="#c6c0b2" strokeWidth={4} />
+			))}
+			{/* street lamp */}
+			<rect x={52} y={700} width={14} height={660} fill="#3a3f55" stroke={O} strokeWidth={3} />
+			<path d="M 30 700 L 88 700 L 76 660 L 42 660 Z" fill="#3a3f55" stroke={O} strokeWidth={4} />
+			<circle cx={59} cy={706} r={12} fill="#ffe08a" />
+			{/* traffic light */}
+			<rect x={950} y={720} width={14} height={640} fill="#3a3f55" />
+			<rect x={915} y={600} width={84} height={220} rx={16} fill="#3a3f55" stroke={O} strokeWidth={W} />
+			{['#d9483b', '#e8a93a', '#5f9e55'].map((c, i) => (
+				<circle key={c} cx={957} cy={640 + i * 68} r={24} fill={c} opacity={i === light ? 1 : 0.3} stroke={O} strokeWidth={3} />
+			))}
+			{/* pigeons pecking in front */}
+			{[[160, 1880], [900, 1890]].map(([px, py], i) => {
+				const peck = Math.max(0, Math.sin(t * 5 + i * 2)) * 10;
+				return (
+					<g key={i} transform={`translate(${px + Math.sin(t * 0.7 + i) * 20} ${py})`}>
+						<ellipse cx={0} cy={-20} rx={30} ry={20} fill="#9aa6b2" stroke={O} strokeWidth={4} />
+						<circle cx={26} cy={-34 + peck} r={13} fill="#9aa6b2" stroke={O} strokeWidth={4} />
+						<path d={`M 38 ${-34 + peck} l 10 4 l -10 4 Z`} fill="#e8a93a" />
+						<circle cx={30} cy={-37 + peck} r={2.5} fill={O} />
+					</g>
+				);
+			})}
+		</>
+	);
+};
 
 /** Crowd; lift = jump height per person (0..1), crouch = 0..1, lookAt = x everyone turns to. */
 const Crowd: React.FC<{t: number; lift?: (k: number) => number; crouch?: number; lookAt?: number; skip?: number}> = ({t, lift = () => 0, crouch = 0, lookAt, skip = -1}) => (
@@ -110,7 +167,7 @@ const Crowd: React.FC<{t: number; lift?: (k: number) => number; crouch?: number;
 );
 
 const Earth: React.FC<{x: number; y: number; r: number; t: number; crack?: number}> = ({x, y, r, t, crack = 0}) => (
-	<g transform={`translate(${x} ${y})`}>
+	<g transform={`translate(${x} ${y}) rotate(${t * 6})`}>
 		<circle r={r} fill="#5b86c4" stroke={O} strokeWidth={W} />
 		<path d={`M ${-r * 0.6} ${-r * 0.3} q ${r * 0.3} ${-r * 0.4} ${r * 0.6} ${-r * 0.1} q ${r * 0.1} ${r * 0.4} ${-r * 0.2} ${r * 0.5} q ${-r * 0.4} ${r * 0.1} ${-r * 0.4} ${-r * 0.4} Z`} fill="#7fae6a" stroke={O} strokeWidth={5} />
 		<path d={`M ${r * 0.2} ${r * 0.2} q ${r * 0.4} ${-r * 0.1} ${r * 0.5} ${r * 0.3} q ${-r * 0.2} ${r * 0.4} ${-r * 0.5} ${r * 0.1} Z`} fill="#7fae6a" stroke={O} strokeWidth={5} />
@@ -131,7 +188,7 @@ const Big: React.FC<{text: string; t: number; at: number; y?: number; size?: num
 // ------------------------------------------------------------------ scenes (t = local)
 const S1: React.FC<{t: number}> = ({t}) => (
 	<>
-		<StreetBg />
+		<StreetBg t={t} />
 		<Crowd t={t} />
 		<Shnurok x={540} y={1800} s={0.8} face="shock" />
 		<Odometer t={t} to={8000000000} x={540} y={250} />
@@ -170,27 +227,30 @@ const S3: React.FC<{t: number}> = ({t}) => {
 	const n1 = T('один') - A;
 	return (
 		<>
-			<StreetBg />
+			<StreetBg t={t} />
 			<Crowd t={t} crouch={ease((t - n1) / 0.4)} />
 			<ShnurokSide x={540} y={1800 + ease((t - n1) / 0.4) * 20} s={0.8} face="think" />
-			<Big text="3" t={t} at={n3} />
-			{t > n2 && <rect width={1080} height={700} fill="transparent" />}
-			<Big text="2" t={t} at={n2} color="#e8a93a" />
-			<Big text="1" t={t} at={n1} color="#d9483b" />
+			{t < n2 && <Big text="3" t={t} at={n3} />}
+			{t >= n2 && t < n1 && <Big text="2" t={t} at={n2} color="#e8a93a" />}
+			{t >= n1 && <Big text="1" t={t} at={n1} color="#d9483b" />}
 		</>
 	);
 };
 
 const S4: React.FC<{t: number}> = ({t}) => {
-	const up = (k: number) => Math.sin(clamp01((t - 0.1 - hash(k) * 0.15) / 1.6) * Math.PI) * (t < 1.8 ? 1 : 0) + (t >= 1.8 ? 1 : 0) * 1;
-	const hang = t < 1.8 ? 0 : 1;
-	const air = (k: number) => (t < 0.9 ? ease((t - hash(k) * 0.15) / 0.5) : 1) * (hang ? 1 : 1);
-	void up;
+	// anticipation → takeoff → slow-motion hang in the air
+	const air = (k: number) => {
+		const tau = t - hash(k) * 0.18;
+		if (tau < 0.15) return 0;
+		return ease((tau - 0.15) / 0.55) * (1 + Math.sin(t * 2.2 + k) * 0.04);
+	};
+	const crouch = t < 0.2 ? Math.sin((t / 0.2) * Math.PI) : 0;
 	return (
 		<>
-			<StreetBg />
-			<Crowd t={t} lift={air} />
-			<g transform={`translate(0 ${-ease(t / 0.5) * 240})`}>
+			<StreetBg t={t} />
+			{t > 0.15 && t < 1 && Array.from({length: 14}).map((_, i) => <line key={i} x1={60 + i * 75} y1={1300} x2={60 + i * 75} y2={1300 + 120 * (1 - (t - 0.15) / 0.85)} stroke="#fffaf0" strokeWidth={6} strokeLinecap="round" opacity={0.7} />)}
+			<Crowd t={t} lift={air} crouch={crouch} />
+			<g transform={`translate(0 ${-air(99) * 260})`}>
 				<ShnurokSide x={540} y={1800} s={0.8} face="joy" armFront={[125, 40]} />
 			</g>
 			<Odometer t={t - 1.2} to={500000000} x={540} y={250} />
@@ -269,9 +329,10 @@ const S6: React.FC<{t: number}> = ({t}) => {
 
 const S7: React.FC<{t: number}> = ({t}) => {
 	const land = (k: number) => 1 - ease((t - hash(k) * 0.1) / 0.4);
+	const sh = t > 0.38 && t < 0.9 ? (1 - (t - 0.38) / 0.52) * 14 : 0;
 	return (
-		<>
-			<StreetBg />
+		<g transform={`translate(${Math.sin(t * 70) * sh} ${Math.cos(t * 55) * sh})`}>
+			<StreetBg t={t} />
 			<Crowd t={t} lift={land} crouch={t > 0.4 && t < 0.8 ? 1 : 0} />
 			<ShnurokSide x={540} y={1800} s={0.8} face="joy" />
 			{t > 0.4 &&
@@ -284,13 +345,18 @@ const S7: React.FC<{t: number}> = ({t}) => {
 			{[0, 1, 2, 3].map((i) => (
 				<path key={i} transform={`translate(${200 + i * 200 + t * 120} ${500 - t * 160 - i * 30})`} d={`M -30 ${Math.sin(t * 12 + i) * 10} Q -15 -15 0 0 Q 15 -15 30 ${Math.sin(t * 12 + i) * 10}`} stroke={O} strokeWidth={7} fill="none" strokeLinecap="round" />
 			))}
-		</>
+			{t > 0.38 &&
+				Array.from({length: 12}).map((_, i) => {
+					const k = clamp01((t - 0.38) / 1.2);
+					return <circle key={i} cx={80 + i * 85 + (i % 2 ? 1 : -1) * k * 40} cy={1500 - k * 60 + (i % 3) * 140} r={18 + k * 30} fill="#e6dfd0" opacity={0.8 * (1 - k)} />;
+				})}
+		</g>
 	);
 };
 
 const S8: React.FC<{t: number}> = ({t}) => (
 	<>
-		<StreetBg />
+		<StreetBg t={t} />
 		<Crowd t={t} lookAt={540} />
 		<g transform={`translate(0 ${-ease((t - 0.4) / 0.6) * 320 + Math.sin(t * 3) * 8})`}>
 			<ShnurokSide x={540} y={1800} s={0.8} face="joy" armFront={[125, 40]} />
@@ -301,7 +367,7 @@ const S8: React.FC<{t: number}> = ({t}) => (
 
 const S9: React.FC<{t: number}> = ({t}) => (
 	<>
-		<StreetBg />
+		<StreetBg t={t} />
 		<rect width={1080} height={1920} fill="#fffaf0" opacity={0.35} />
 		<Shnurok x={540} y={1750} s={1.0} thinking />
 		<Big text="?" t={t} at={0.3} y={760} size={320} />
@@ -310,13 +376,18 @@ const S9: React.FC<{t: number}> = ({t}) => (
 
 const SCENES = [S1, S2, S3, S4, S5, S6, S7, S8, S9];
 
-const Layer: React.FC<{lead: number; C: React.FC<{t: number}>}> = ({lead, C: Scene}) => {
+const FADE = 0.3;
+const Layer: React.FC<{lead: number; dur: number; first: boolean; C: React.FC<{t: number}>}> = ({lead, dur, first, C: Scene}) => {
 	const t = useCurrentFrame() / FPS - lead;
+	const a = first ? 1 : clamp01((t + lead) / FADE);
+	const z = 1.0 + 0.06 * ease(t / Math.max(1, dur)); // slow push-in on every shot
 	return (
 		<ShotCtx.Provider value={{t, dur: 1, scatter: 0}}>
-			<AbsoluteFill>
+			<AbsoluteFill style={{opacity: a}}>
 				<svg width={1080} height={1920} viewBox="0 0 1080 1920">
-					<Scene t={t} />
+					<g transform={`translate(540 1000) scale(${z}) translate(-540 -1000)`}>
+						<Scene t={t} />
+					</g>
 				</svg>
 			</AbsoluteFill>
 		</ShotCtx.Provider>
@@ -335,10 +406,10 @@ export const Prygnuli: React.FC<{audio?: string}> = ({audio = ''}) => {
 			{SCENES.map((Sc, i) => {
 				const from = B[i];
 				const to = i < SCENES.length - 1 ? B[i + 1] : PRYG_DURATION;
-				const start = Math.round(from * FPS);
+				const start = Math.max(0, Math.round((from - (i ? FADE : 0)) * FPS));
 				return (
 					<Sequence key={i} from={start} durationInFrames={Math.max(1, Math.round(to * FPS) - start)}>
-						<Layer lead={0} C={Sc} />
+						<Layer lead={from - start / FPS} dur={to - from} first={i === 0} C={Sc} />
 					</Sequence>
 				);
 			})}
