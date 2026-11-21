@@ -53,7 +53,7 @@ export const FlatWalk: React.FC = () => {
 			<AbsoluteFill>
 				<svg width={1080} height={1920} viewBox="0 0 1080 1920">
 					<Hall t={t} />
-					<FlatKid x={-120 + t * 200} y={1420} s={1.3} pose="walk" face="neutral" />
+					<FlatKid x={-160 + t * 220} y={1430} s={1.9} pose="walk" face="neutral" />
 				</svg>
 			</AbsoluteFill>
 		</ShotCtx.Provider>

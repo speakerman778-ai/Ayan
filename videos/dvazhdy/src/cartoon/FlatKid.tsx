@@ -61,10 +61,10 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 	const bob = -Math.abs(Math.cos(ph)) * 6 * walk + Math.sin(t * 2 + phase) * 1.2;
 	const blink = (t + phase * 1.7) % 3.4 > 3.28 ? 0.1 : 1;
 
-	const legL = 72;
+	const legL = 64;
 	const hip = -legL * 2 + bob;
-	const sh = hip - 125;
-	const headCY = sh - 58;
+	const sh = hip - 100;
+	const headCY = sh - 57;
 	const turn = side ? 1 : 0;
 
 	const eyes = () => {
@@ -90,13 +90,13 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 
 	const armNear = armUp ? [160, 20] : [-sw * 0.9 - (side ? 0 : 8), 14 + Math.abs(sw) * 0.3];
 	const armFar = [sw * 0.9 + (side ? 0 : 8), 14 + Math.abs(sw) * 0.3];
-	const bodyW = side ? 62 : 88;
+	const bodyW = side ? 80 : 104;
 
 	return (
 		<g transform={`translate(${x} ${y}) scale(${s * dir} ${s})`}>
 			<ellipse cx={0} cy={4} rx={70} ry={10} fill="#000" opacity={0.12} />
 			{/* far arm + legs */}
-			{side ? limb(-4, sh + 20, armFar[0], armFar[1], 74, 68, 20, shade(top, 0.85), 'hand', shade(FL.skin, 0.93)) : limb(-bodyW / 2 + 4, sh + 22, -10, -6, 74, 68, 20, top, 'hand', FL.skin)}
+			{side ? limb(-4, sh + 20, armFar[0], armFar[1], 60, 54, 20, shade(top, 0.85), 'hand', shade(FL.skin, 0.93)) : limb(-bodyW / 2 + 4, sh + 22, -10, -6, 60, 54, 20, top, 'hand', FL.skin)}
 			{limb(side ? 0 : -20, hip, side ? -sw : 2, side ? -bend(-1) : 0, legL, legL, 40, shade(pants, 0.85), 'shoe', shade(shoes, 0.9))}
 			{limb(side ? 0 : 20, hip, side ? sw : -2, side ? -bend(1) : 0, legL, legL, 40, pants, 'shoe', shoes)}
 			{/* torso */}
@@ -110,8 +110,8 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 			)}
 			<path d={`M ${-bodyW / 2 + 8} ${sh + 8} Q 0 ${sh - 10} ${bodyW / 2 - 8} ${sh + 8}`} fill={shade(top, 0.9)} stroke={FL.ol} strokeWidth={FL.w} />
 			{/* head */}
-			<g transform={`translate(${side ? 4 : 0} ${headCY + bob * 0.3}) scale(0.44)`}>
-				<rect x={-22} y={86} width={44} height={56} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />
+			<g transform={`translate(${side ? 4 : 0} ${headCY + bob * 0.3}) scale(0.54)`}>
+				<rect x={-20} y={86} width={40} height={24} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />
 				{!side && <ellipse cx={98} cy={20} rx={12} ry={17} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />}
 				<ellipse cx={side ? -80 : -98} cy={20} rx={12} ry={17} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />
 				<path d="M -96 -46 Q -96 -66 -76 -66 L 76 -66 Q 96 -66 96 -46 L 96 76 Q 96 96 76 96 L -76 96 Q -96 96 -96 76 Z" fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} strokeLinejoin="round" />
@@ -132,7 +132,7 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 				</g>
 			</g>
 			{/* near arm */}
-			{side ? limb(10, sh + 20, armNear[0], armNear[1], 74, 68, 20, top, 'hand', FL.skin) : limb(bodyW / 2 - 4, sh + 22, armUp ? 160 : 10, armUp ? 20 : 6, 74, 68, 20, top, 'hand', FL.skin)}
+			{side ? limb(10, sh + 20, armNear[0], armNear[1], 60, 54, 20, top, 'hand', FL.skin) : limb(bodyW / 2 - 4, sh + 22, armUp ? 160 : 10, armUp ? 20 : 6, 60, 54, 20, top, 'hand', FL.skin)}
 		</g>
 	);
 };
