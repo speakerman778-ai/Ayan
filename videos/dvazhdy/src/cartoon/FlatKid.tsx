@@ -114,12 +114,9 @@ export const FlatKid: React.FC<FlatKidProps> = (p) => {
 				<rect x={-28} y={78} width={56} height={30} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />
 				{!side && <ellipse cx={98} cy={20} rx={12} ry={17} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />}
 				<ellipse cx={side ? -80 : -98} cy={20} rx={12} ry={17} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />
-				<rect x={-98} y={-62} width={196} height={154} rx={34} fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} />
-				{/* hair cap + fringe */}
-				<g transform="translate(0 12) scale(1.16 0.88)">
-				<path d={`M -88 -6 C -96 -86 -50 -104 0 -104 C 54 -104 96 -86 88 -10 L 78 -30 L 66 -14 L 54 -40 L 38 -18 L 22 -44 L 6 -22 L -12 -46 L -28 -22 L -46 -44 L -60 -18 L -74 -36 Z`} fill={hairColor} stroke={FL.ol} strokeWidth={FL.w} strokeLinejoin="round" />
-				{tuft && <path d="M 0 -102 C -8 -150 24 -168 46 -154 C 30 -150 22 -138 30 -122 C 40 -140 64 -140 70 -124 C 52 -124 44 -112 42 -100 Z" fill={hairColor} stroke={FL.ol} strokeWidth={FL.w} strokeLinejoin="round" />}
-				</g>
+				<path d="M -96 -40 Q -96 -66 -70 -66 L 70 -66 Q 96 -66 96 -40 L 96 34 Q 96 96 36 96 L -36 96 Q -96 96 -96 34 Z" fill={FL.skin} stroke={FL.ol} strokeWidth={FL.w} strokeLinejoin="round" />
+				{/* spiky hair on top */}
+				<path d="M -100 -6 L -100 -58 Q -98 -84 -72 -88 L -80 -122 L -52 -96 L -42 -134 L -20 -100 L -2 -140 L 16 -100 L 34 -134 L 46 -96 L 74 -124 L 70 -88 Q 98 -84 100 -58 L 100 -10 L 90 -36 L 68 -44 L 40 -38 L 12 -46 L -16 -38 L -44 -46 L -70 -38 L -90 -36 Z" fill={hairColor} stroke={FL.ol} strokeWidth={FL.w} strokeLinejoin="round" />
 				{/* face */}
 				<g transform="translate(0 16)">
 				<ellipse cx={turn * 26 - 44} cy={20} rx={13} ry={8} fill={FL.cheek} opacity={0.6} />
