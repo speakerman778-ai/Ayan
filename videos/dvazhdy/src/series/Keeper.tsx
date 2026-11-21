@@ -59,7 +59,7 @@ export const Cat: React.FC<{x: number; y: number; s?: number; t: number; look?: 
 	);
 };
 
-const Keeper: React.FC<{x: number; y: number; s?: number; armR?: [number, number]; armL?: [number, number]; face?: 'smile' | 'neutral' | 'think' | 'shock'}> = ({x, y, s = 1, armR, armL, face = 'smile'}) => (
+export const Keeper: React.FC<{x: number; y: number; s?: number; armR?: [number, number]; armL?: [number, number]; face?: 'smile' | 'neutral' | 'think' | 'shock'}> = ({x, y, s = 1, armR, armL, face = 'smile'}) => (
 	<Char x={x} y={y} s={s} headS={0.82} bodyS={1.14} headDrop={18} hair="old" beard nose hat="souwester" hatColor={COAT} jacket={COAT} pants="#3d4a66" face={face} armR={armR} armL={armL} />
 );
 
@@ -152,7 +152,7 @@ const Table: React.FC<{t: number}> = ({t}) => (
 	</g>
 );
 
-const Inside: React.FC<{t: number}> = ({t}) => (
+export const Inside: React.FC<{t: number}> = ({t}) => (
 	<>
 		<Room t={t} />
 		<Table t={t} />
@@ -244,7 +244,7 @@ const GrassTop: React.FC<{t: number}> = ({t}) => {
 	);
 };
 
-const Outside: React.FC<{t: number}> = ({t}) => (
+export const Outside: React.FC<{t: number}> = ({t}) => (
 	<>
 		<rect width={1080} height={1920} fill="#1d2b4f" />
 		{Array.from({length: 40}).map((_, i) => (
