@@ -14,6 +14,7 @@ import {SideSheet, SideWalk} from './series/SideDemo';
 import {FlatSheet, FlatWalk} from './series/FlatDemo';
 import {FlatStyleDemo} from './series/FlatStyleDemo';
 import {Prygnuli, PRYG_DURATION} from './series/Prygnuli';
+import {Kv190, KV190_DURATION} from './series/Kv190';
 import {Kypshak, KYPSHAK_DURATION} from './series/Kypshak';
 import {ShnurokAvatar, ShnurokHairOptions, ShnurokSheet} from './series/Shnurok';
 import timeline from '../public/timeline.json';
@@ -28,6 +29,7 @@ export const Root: React.FC = () => (
 	<Composition id="ShnurokHairOptions" component={ShnurokHairOptions} width={1080} height={1920} fps={30} durationInFrames={30} />
 	<Composition id="ShnurokSheet" component={ShnurokSheet} width={1080} height={1920} fps={30} durationInFrames={90} />
 	<Composition id="Kypshak" component={Kypshak} width={1080} height={1920} fps={30} durationInFrames={KYPSHAK_DURATION * 30} defaultProps={{audio: 'kypshak/mix.wav'}} />
+	<Composition id="Kv190" component={Kv190} width={1080} height={1920} fps={30} durationInFrames={KV190_DURATION * 30} defaultProps={{audio: ''}} />
 	<Composition id="Prygnuli" component={Prygnuli} width={1080} height={1920} fps={30} durationInFrames={PRYG_DURATION * 30} defaultProps={{audio: 'shnurok/ep04-mix.wav'}} />
 	<Composition id="FlatStyleDemo" component={FlatStyleDemo} width={1080} height={1920} fps={30} durationInFrames={480} />
 	<Composition id="FlatSheet" component={FlatSheet} width={1080} height={1920} fps={30} durationInFrames={30} />
