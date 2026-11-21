@@ -39,6 +39,13 @@
     });
   });
 
+  // ---- Плашка «цена для первых клиентов» ----
+  var left = C.firstClientsLeft;
+  if (typeof left === "number") {
+    if (left > 0) document.getElementById("promoLeft").textContent = left;
+    else document.querySelectorAll(".promo, .hero-promo").forEach(function (el) { el.hidden = true; });
+  }
+
   // ---- Кнопки «Выбрать» подставляют пакет в форму ----
   var form = document.getElementById("form");
   document.querySelectorAll("[data-plan]").forEach(function (a) {

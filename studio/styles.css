@@ -136,6 +136,13 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58% 92%, trans
 .extras { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
 .extras span { background: var(--paper); border: 2px dashed var(--wood-d); border-radius: 12px; padding: 10px 14px; font-size: 15px; }
 
+.promo { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; background: var(--yellow); border: var(--line); border-radius: 18px; padding: 16px 20px; margin: 0 0 36px; box-shadow: var(--shadow); }
+.promo p { margin: 0; flex: 1 1 280px; }
+.promo-tag { background: var(--red); color: #fff; font-weight: 900; border: var(--line); border-radius: 999px; padding: 6px 14px; font-size: 15px; white-space: nowrap; transform: rotate(-2deg); }
+.promo-left { display: inline-block; min-width: 1.6em; text-align: center; background: var(--paper); border: 2px solid var(--ink); border-radius: 8px; padding: 0 6px; }
+.hero-promo { margin: -12px 0 24px; font-weight: 700; }
+.hero-promo b { color: var(--red); }
+
 /* ---- steps ---- */
 .how { padding-top: 40px; }
 .steps { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
