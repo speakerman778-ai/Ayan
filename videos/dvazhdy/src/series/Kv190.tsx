@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, Audio, Easing, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {ShotCtx, hash} from '../lib';
-import {OL, OW} from '../cartoon/parts';
+import {OL, OW, NameTag} from '../cartoon/parts';
 import {SideChar, ShnurokSide} from '../cartoon/SideChar';
 import {KaraokeLine, Word} from '../subs/Karaoke';
 import {Shnurok} from './Shnurok';
@@ -268,6 +268,9 @@ const Stairwell: React.FC<{t: number; floor: string}> = ({t, floor}) => (
 
 // ------------------------------------------------------------------ scenes
 const S1: React.FC<{t: number}> = ({t}) => {
+	const intro = T('шнурок') - 0.2;
+	const soneyT = T('соней') - 0.2;
+	const floorT = T('семнадцатом') - 0.1;
 	const z = 1 + 0.9 * ease((t - 4) / 6);
 	return (
 		<>
@@ -301,6 +304,21 @@ const S1: React.FC<{t: number}> = ({t}) => {
 				<circle cy={150} r={50} fill="#5b86c4" stroke={O} strokeWidth={W} />
 			</g>
 			<Pill text="−52°" t={t - 1.2} y={190} />
+			{/* intro: as soon as the voice says «Шнурок» — cut inside to the heroes */}
+			{t > intro && (
+				<g opacity={ease((t - intro) / 0.4)}>
+					<g transform={`translate(540 1500) scale(${1 + 0.06 * ease((t - intro) / 5)}) translate(-540 -1500)`}>
+						<Flat t={t} dark={0.3} />
+						<FrostWindow t={t} />
+						<ShnurokSide x={400} y={1640} s={1.0} face="neutral" dir={1} />
+						<Sonya x={600} y={1640} s={0.6} dir={-1} face={t > soneyT ? 'smile' : 'neutral'} />
+						<Breath x={470} y={1080} t={t} dir={1} />
+					</g>
+					<NameTag name="Шнурок" role="главный герой" from={intro + 0.2} x={60} y={150} avatar={<ShnurokSide x={-6} y={215} s={0.4} face="neutral" />} />
+					{t > soneyT && <NameTag name="Соня" role="младшая сестра, 5 лет" from={soneyT} x={60} y={320} avatar={<Sonya x={-4} y={190} s={0.42} />} />}
+					<Pill text="17 этаж" t={t - floorT} y={540} />
+				</g>
+			)}
 		</>
 	);
 };
@@ -730,7 +748,7 @@ export const Kv190: React.FC<{audio?: string}> = ({audio = ''}) => {
 					</Sequence>
 				);
 			})}
-			{ci >= 0 && <KaraokeLine key={ci} words={CAPTIONS[ci]} t={t} />}
+			{ci >= 0 && <KaraokeLine key={ci} words={CAPTIONS[ci]} t={t} keepSpoken />}
 			<div style={{position: 'absolute', left: 40, top: 40, fontFamily: 'Inter', fontWeight: 800, fontSize: 34, color: '#fff', opacity: 0.8, textShadow: '0 2px 6px #0008'}}>Вселенная Шнурка</div>
 			<AbsoluteFill style={{background: '#000', opacity: endFade}} />
 			{audio && <Audio src={staticFile(audio)} />}
