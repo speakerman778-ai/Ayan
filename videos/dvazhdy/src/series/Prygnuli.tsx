@@ -5,6 +5,7 @@ import {OL, OW} from '../cartoon/parts';
 import {SideChar, ShnurokSide} from '../cartoon/SideChar';
 import {KaraokeLine, Word} from '../subs/Karaoke';
 import {Shnurok} from './Shnurok';
+import {Cat} from './Keeper';
 import {Odometer, Pill, Title} from './FlatStyleDemo';
 import rawWords from '../../public/shnurok/ep04-words.json';
 
@@ -196,6 +197,21 @@ const S1: React.FC<{t: number}> = ({t}) => (
 	</>
 );
 
+const Clock: React.FC<{x: number; y: number; t: number}> = ({x, y, t}) => {
+	const m = -60 + Math.min(60, t * 14);
+	return (
+		<g transform={`translate(${x} ${y})`}>
+			<circle r={70} fill="#fffaf0" stroke={O} strokeWidth={W} />
+			{Array.from({length: 12}).map((_, i) => (
+				<line key={i} transform={`rotate(${i * 30})`} x1={0} y1={-56} x2={0} y2={-46} stroke={O} strokeWidth={4} />
+			))}
+			<line x1={0} y1={0} x2={0} y2={-34} stroke={O} strokeWidth={8} strokeLinecap="round" transform={`rotate(${m * 0.5})`} />
+			<line x1={0} y1={0} x2={0} y2={-52} stroke="#d9483b" strokeWidth={5} strokeLinecap="round" transform={`rotate(${m * 6})`} />
+			<circle r={6} fill={O} />
+		</g>
+	);
+};
+
 const S2: React.FC<{t: number}> = ({t}) => (
 	<>
 		<rect width={1080} height={1920} fill="#a9bfd6" />
@@ -204,17 +220,62 @@ const S2: React.FC<{t: number}> = ({t}) => (
 		))}
 		<rect x={560} y={360} width={420} height={560} fill="#f5c542" stroke={O} strokeWidth={W} />
 		<rect x={600} y={400} width={340} height={480} fill="#bfe3f0" stroke={O} strokeWidth={W} />
+		<path d={`M ${640 + t * 10} 520 q 20 -30 50 -10 q 30 -20 50 10 Z`} fill="#fffaf0" stroke={O} strokeWidth={4} />
 		<line x1={770} y1={400} x2={770} y2={880} stroke="#f5c542" strokeWidth={14} />
 		<circle cx={880} cy={480} r={40} fill="#ffe08a" stroke={O} strokeWidth={5} />
+		<path d={`M 540 330 Q ${560 + Math.sin(t * 1.5) * 8} 640 ${530 + Math.sin(t * 1.5) * 12} 960 L 600 960 L 600 330 Z`} fill="#d9483b" stroke={O} strokeWidth={W} />
+		<path d={`M 1000 330 Q ${980 - Math.sin(t * 1.3) * 8} 640 ${1010 - Math.sin(t * 1.3) * 12} 960 L 940 960 L 940 330 Z`} fill="#d9483b" stroke={O} strokeWidth={W} />
+		<rect x={520} y={320} width={500} height={20} rx={8} fill="#9c6338" stroke={O} strokeWidth={W} />
+		<path d="M 600 920 L 940 920 L 700 1500 L 260 1500 Z" fill="#fff6d0" opacity={0.25} />
+		{Array.from({length: 10}).map((_, i) => (
+			<circle key={i} cx={500 + hash(i) * 400 + Math.sin(t + i) * 20} cy={1000 + ((hash(i + 3) * 500 + t * 20) % 500)} r={3} fill="#fffaf0" opacity={0.7} />
+		))}
+		<rect x={80} y={300} width={170} height={220} fill="#1d2b4f" stroke={O} strokeWidth={W} />
+		<circle cx={165} cy={400} r={40} fill="#d9483b" stroke={O} strokeWidth={4} />
+		<ellipse cx={165} cy={400} rx={66} ry={14} fill="none" stroke="#f5c542" strokeWidth={6} transform="rotate(-15 165 400)" />
+		<Clock x={380} y={420} t={t} />
+		<rect x={60} y={640} width={400} height={18} fill="#c98c55" stroke={O} strokeWidth={W} />
+		{['#d9483b', '#5b86c4', '#7fae6a', '#e8a93a', '#9b6fb0'].map((c, i) => (
+			<rect key={c} x={80 + i * 34} y={570} width={28} height={70} fill={c} stroke={O} strokeWidth={3} />
+		))}
+		<g transform="translate(380 640)">
+			<path d="M -30 0 L 30 0 L 22 -50 L -22 -50 Z" fill="#d9483b" stroke={O} strokeWidth={4} />
+			{[-1, 0, 1].map((k) => (
+				<path key={k} d={`M 0 -50 Q ${k * 30 + Math.sin(t * 2 + k) * 4} -90 ${k * 20} -120`} stroke="#5f9e55" strokeWidth={10} fill="none" strokeLinecap="round" />
+			))}
+		</g>
 		<rect x={0} y={1300} width={1080} height={620} fill="#b98a5e" stroke={O} strokeWidth={W} />
-		<ShnurokSide x={430} y={1560} s={0.9} face="shock" armFront={[110, -30]} />
-		<g transform={`translate(640 1000) rotate(-8) scale(${back((t - 0.6) / 0.4)})`}>
+		{Array.from({length: 10}).map((_, i) => (
+			<line key={i} x1={0} y1={1340 + i * 60} x2={1080} y2={1340 + i * 60} stroke="#a3764d" strokeWidth={4} />
+		))}
+		<ellipse cx={540} cy={1620} rx={420} ry={70} fill="#5b86c4" stroke={O} strokeWidth={W} />
+		<ellipse cx={540} cy={1620} rx={340} ry={48} fill="none" stroke="#f5c542" strokeWidth={8} strokeDasharray="30 18" />
+		<rect x={40} y={1060} width={300} height={26} rx={8} fill="#c98c55" stroke={O} strokeWidth={W} />
+		<rect x={60} y={1086} width={22} height={220} fill="#9c6338" stroke={O} strokeWidth={5} />
+		<rect x={300} y={1086} width={22} height={220} fill="#9c6338" stroke={O} strokeWidth={5} />
+		<g transform="translate(110 1060)">
+			<rect x={-30} y={-60} width={60} height={60} rx={8} fill="#fffaf0" stroke={O} strokeWidth={4} />
+			{[0, 1].map((i) => {
+				const k = (t * 0.7 + i * 0.5) % 1;
+				return <path key={i} d={`M ${-8 + i * 14} ${-70 - k * 60} q 10 -14 0 -28`} stroke="#fff" strokeWidth={6} fill="none" strokeLinecap="round" opacity={1 - k} />;
+			})}
+		</g>
+		<g transform="translate(250 1060)">
+			<path d="M -10 0 L -30 -90 L 30 -120" stroke={O} strokeWidth={8} fill="none" />
+			<path d="M 10 -150 L 60 -110 L 20 -90 Z" fill="#f5c542" stroke={O} strokeWidth={4} />
+		</g>
+		<Cat x={860} y={1640} s={0.38} t={t} look={-1} />
+		<ShnurokSide x={430} y={1600} s={0.9} face="shock" armFront={[110, -30]} />
+		<g transform={`translate(640 1040) rotate(${-8 + Math.sin(t * 6) * (t > 0.6 && t < 1.2 ? 4 : 0)}) scale(${back((t - 0.6) / 0.4)})`}>
 			<rect x={-110} y={-190} width={220} height={380} rx={26} fill="#2a2e3d" stroke={O} strokeWidth={W} />
 			<rect x={-94} y={-166} width={188} height={330} rx={12} fill="#fffaf0" />
 			<rect x={-94} y={-166} width={188} height={60} fill="#d9483b" />
 			<text textAnchor="middle" y={-124} fontFamily="Inter" fontWeight={900} fontSize={26} fill="#fff">НОВОСТИ</text>
 			<text textAnchor="middle" y={-40} fontFamily="Inter" fontWeight={900} fontSize={25} fill={O}>ВСЕ ПРЫГАЮТ</text>
 			<text textAnchor="middle" y={10} fontFamily="Inter" fontWeight={900} fontSize={44} fill="#d9483b">В 12:00</text>
+			{[0, 1, 2].map((i) => (
+				<rect key={i} x={-70} y={40 + i * 30} width={140 - i * 30} height={12} rx={6} fill="#c9c4bd" />
+			))}
 		</g>
 		<Pill text="СУББОТА · 12:00" t={t - 0.2} />
 	</>
@@ -259,6 +320,16 @@ const S4: React.FC<{t: number}> = ({t}) => {
 	);
 };
 
+const Sparkles: React.FC<{t: number; x: number; y: number; r: number}> = ({t, x, y, r}) => (
+	<>
+		{Array.from({length: 8}).map((_, i) => {
+			const a = (i / 8) * Math.PI * 2 + t * 0.6;
+			const k = 0.5 + 0.5 * Math.sin(t * 4 + i);
+			return <path key={i} transform={`translate(${x + Math.cos(a) * r} ${y + Math.sin(a) * r}) scale(${0.6 + k * 0.6})`} d="M 0 -14 L 4 -4 L 14 0 L 4 4 L 0 14 L -4 4 L -14 0 L -4 -4 Z" fill="#f5c542" stroke={O} strokeWidth={2} />;
+		})}
+	</>
+);
+
 const S5: React.FC<{t: number}> = ({t}) => {
 	const A = B[4];
 	const heavy = T('тяжелее') - A;
@@ -266,61 +337,108 @@ const S5: React.FC<{t: number}> = ({t}) => {
 	if (t < heavy - 0.2)
 		return (
 			<>
-				<rect width={1080} height={1920} fill="#9fd0e8" />
-				<ShnurokSide x={300} y={1500 + Math.sin(t * 3) * 10} s={0.9} face="think" />
+				<StreetBg t={t} />
+				<Crowd t={t} lift={(kk) => 1 + Math.sin(t * 2.2 + kk) * 0.04} />
+				<g transform={`translate(0 ${-260 + Math.sin(t * 2.2) * 8})`}>
+					<ShnurokSide x={540} y={1800} s={0.8} face="think" />
+				</g>
 				{[0.3, 0.55].map((p, i) => (
-					<circle key={i} cx={380 + p * 80} cy={760 - p * 160} r={16 + i * 10} fill="#fff" stroke={O} strokeWidth={W} opacity={k} />
+					<circle key={i} cx={560 + p * 60} cy={1060 - p * 260} r={16 + i * 10} fill="#fff" stroke={O} strokeWidth={W} opacity={k} />
 				))}
-				<g transform={`translate(600 420) scale(${k})`}>
-					<path d="M -320 60 C -380 0 -340 -130 -230 -130 C -210 -210 -60 -220 -20 -160 C 40 -230 200 -210 220 -130 C 340 -140 370 20 290 70 C 310 170 160 200 100 150 C 40 210 -120 210 -150 140 C -270 180 -350 130 -320 60 Z" fill="#fffaf0" stroke={O} strokeWidth={W} />
-					<Earth x={0} y={-10} r={130} t={t} crack={clamp01((t - 0.8) / 0.5)} />
-					<text x={0} y={-150} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={44} fill="#d9483b" opacity={clamp01(t - 1)}>
+				<g transform={`translate(560 520) scale(${k})`}>
+					<path d="M -340 60 C -400 0 -360 -140 -240 -140 C -220 -220 -60 -230 -20 -170 C 40 -240 210 -220 230 -140 C 360 -150 390 20 300 70 C 320 180 160 210 100 160 C 40 220 -120 220 -150 150 C -280 190 -370 140 -340 60 Z" fill="#fffaf0" stroke={O} strokeWidth={W} />
+					<g transform={`translate(${Math.sin(t * 40) * 4 * clamp01(t - 0.8)} 0)`}>
+						<Earth x={0} y={0} r={130} t={t} crack={clamp01((t - 0.8) / 0.5)} />
+						{[-1, 1].map((d) => (
+							<path key={d} d={`M ${d * 150} -40 l ${d * 30} -10 M ${d * 150} 0 l ${d * 36} 0 M ${d * 150} 40 l ${d * 30} 10`} stroke={O} strokeWidth={6} strokeLinecap="round" opacity={clamp01(t - 0.9)} />
+						))}
+					</g>
+					<text x={0} y={-150} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={48} fill="#d9483b" stroke={O} strokeWidth={4} paintOrder="stroke" opacity={clamp01(t - 1)}>
 						БАБАХ?!
 					</text>
 				</g>
 				<Pill text="землетрясение?" t={t - 0.4} y={140} />
 			</>
 		);
-	const s = t - heavy + 0.2;
+	const sT = t - heavy + 0.2;
+	const tilt = -12 * ease(sT / 0.8) + Math.sin(sT * 6) * 2 * Math.exp(-sT * 2);
 	return (
 		<>
 			<rect width={1080} height={1920} fill="#f4ecd8" />
-			{/* balance */}
+			{Array.from({length: 24}).map((_, i) => (
+				<path key={i} d={`M 540 760 L ${540 + Math.cos((i / 24) * Math.PI * 2) * 1400} ${760 + Math.sin((i / 24) * Math.PI * 2) * 1400} L ${540 + Math.cos(((i + 0.5) / 24) * Math.PI * 2) * 1400} ${760 + Math.sin(((i + 0.5) / 24) * Math.PI * 2) * 1400} Z`} fill="#efe3c8" transform={`rotate(${sT * 4} 540 760)`} />
+			))}
 			<rect x={530} y={700} width={20} height={700} fill="#9c6338" stroke={O} strokeWidth={W} />
-			<g transform={`rotate(${-12 * ease(s / 0.8)} 540 700)`}>
+			<path d="M 440 1440 L 640 1440 L 600 1400 L 480 1400 Z" fill="#9c6338" stroke={O} strokeWidth={W} />
+			<circle cx={540} cy={700} r={26} fill="#f5c542" stroke={O} strokeWidth={W} />
+			<g transform={`rotate(${tilt} 540 700)`}>
 				<rect x={120} y={690} width={840} height={24} rx={10} fill="#c98c55" stroke={O} strokeWidth={W} />
-				<path d="M 160 714 L 120 900 L 400 900 L 360 714" fill="none" stroke={O} strokeWidth={5} />
-				<rect x={110} y={900} width={300} height={20} fill="#c98c55" stroke={O} strokeWidth={W} />
-				<path d="M 720 714 L 680 900 L 960 900 L 920 714" fill="none" stroke={O} strokeWidth={5} />
-				<rect x={670} y={900} width={300} height={20} fill="#c98c55" stroke={O} strokeWidth={W} />
-				{Array.from({length: 6}).map((_, i) => (
-					<circle key={i} cx={180 + (i % 3) * 70} cy={880 - Math.floor(i / 3) * 40} r={22} fill={COLS[i]} stroke={O} strokeWidth={4} />
-				))}
+				<g transform={`rotate(${-tilt} 260 714)`}>
+					<path d="M 260 714 L 120 900 M 260 714 L 400 900" stroke={O} strokeWidth={5} />
+					<path d="M 100 900 L 420 900 Q 400 950 260 950 Q 120 950 100 900 Z" fill="#c98c55" stroke={O} strokeWidth={W} />
+					{Array.from({length: 10}).map((_, i) => (
+						<g key={i} transform={`translate(${150 + (i % 5) * 55} ${880 - Math.floor(i / 5) * 46 + Math.sin(sT * 4 + i) * 2})`}>
+							<circle r={20} fill={COLS[i % COLS.length]} stroke={O} strokeWidth={4} />
+							<circle cy={-28} r={13} fill="#f6c9a0" stroke={O} strokeWidth={4} />
+						</g>
+					))}
+					<text x={260} y={1000} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={34} fill={O}>8 млрд людей</text>
+				</g>
+				<g transform={`rotate(${-tilt} 820 714)`}>
+					<path d="M 820 714 L 680 900 M 820 714 L 960 900" stroke={O} strokeWidth={5} />
+					<path d="M 660 900 L 980 900 Q 960 950 820 950 Q 680 950 660 900 Z" fill="#c98c55" stroke={O} strokeWidth={W} />
+					<Earth x={820} y={760} r={130} t={t} />
+					<text x={820} y={1000} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={34} fill={O}>Земля</text>
+				</g>
 			</g>
-			<g transform={`translate(0 ${ease(s / 0.8) * 120})`}>
-				<Earth x={820} y={760} r={150} t={t} />
-			</g>
-			<rect x={380} y={1400} width={320} height={40} rx={12} fill="#9c6338" stroke={O} strokeWidth={W} />
-			<Pill text="тяжелее в 10 трлн раз" t={s - 0.3} y={260} />
+			<Sparkles t={t} x={820} y={860} r={180} />
+			<Pill text="тяжелее в 10 трлн раз" t={sT - 0.3} y={260} />
+			<ShnurokSide x={160} y={1700} s={0.7} face="shock" />
 		</>
 	);
 };
 
 const S6: React.FC<{t: number}> = ({t}) => {
-	const z = 1 + 2 * ease((t - 0.6) / 1.4);
+	const z = 1 + 1.6 * ease((t - 0.8) / 1.6);
+	const atom = clamp01((t - 2.2) / 0.5);
 	return (
 		<>
-			<rect width={1080} height={1920} fill="#1d2b4f" />
-			{Array.from({length: 40}).map((_, i) => (
-				<circle key={i} cx={hash(i) * 1080} cy={hash(i + 4) * 1920} r={3} fill="#fff6c8" opacity={0.4 + 0.6 * Math.abs(Math.sin(t * 2 + i))} />
+			<rect width={1080} height={1920} fill="#141d36" />
+			{Array.from({length: 70}).map((_, i) => (
+				<circle key={i} cx={hash(i) * 1080} cy={hash(i + 4) * 1920} r={1.5 + hash(i + 8) * 3} fill="#fff6c8" opacity={0.3 + 0.7 * Math.abs(Math.sin(t * (1 + hash(i)) + i))} />
 			))}
-			<g transform={`translate(540 900) scale(${z}) translate(-540 -900)`}>
-				<Earth x={540} y={900} r={300} t={t} />
+			<g transform={`translate(${-200 + ((t * 260) % 1600)} ${300 + ((t * 80) % 400)})`}>
+				<path d="M 0 0 L -160 -50 L -150 -10 Z" fill="#fff6c8" opacity={0.5} />
+				<circle r={12} fill="#fffaf0" stroke={O} strokeWidth={4} />
 			</g>
-			{/* magnifier */}
+			<circle cx={1000} cy={180} r={130} fill="#ffe08a" opacity={0.25} />
+			<circle cx={1000} cy={180} r={80} fill="#ffe08a" stroke={O} strokeWidth={W} />
+			<g transform={`translate(540 900) scale(${z}) translate(-540 -900)`}>
+				<circle cx={540} cy={900} r={330} fill="#6f9ad0" opacity={0.25} />
+				<Earth x={540} y={900} r={300} t={t} />
+				<g transform={`rotate(${t * 25} 540 900)`}>
+					<circle cx={540} cy={460} r={44} fill="#d9d4c8" stroke={O} strokeWidth={W} />
+					<circle cx={528} cy={450} r={9} fill="#bdb6a6" />
+					<circle cx={556} cy={474} r={6} fill="#bdb6a6" />
+				</g>
+				<g transform={`rotate(${-t * 40} 540 900) translate(540 540)`}>
+					<rect x={-14} y={-10} width={28} height={20} fill="#c9c4bd" stroke={O} strokeWidth={3} />
+					<rect x={-50} y={-6} width={32} height={12} fill="#5b86c4" stroke={O} strokeWidth={3} />
+					<rect x={18} y={-6} width={32} height={12} fill="#5b86c4" stroke={O} strokeWidth={3} />
+				</g>
+			</g>
 			<g transform={`translate(${700 - ease(t / 1) * 100} ${1250 - ease(t / 1) * 150}) rotate(-30)`}>
-				<circle r={160} fill="#bfe3f0" opacity={0.4} stroke={O} strokeWidth={14} />
+				<circle r={160} fill="#bfe3f0" opacity={0.35} stroke={O} strokeWidth={14} />
+				<path d="M -90 -80 Q -40 -130 30 -130" stroke="#fff" strokeWidth={10} fill="none" strokeLinecap="round" opacity={0.7} />
 				<rect x={-20} y={160} width={40} height={220} rx={14} fill="#9c6338" stroke={O} strokeWidth={W} />
+			</g>
+			<g transform={`translate(780 640) scale(${atom})`} opacity={atom}>
+				<circle r={60} fill="#fffaf0" stroke={O} strokeWidth={W} />
+				{[0, 60, 120].map((a) => (
+					<ellipse key={a} rx={42} ry={14} fill="none" stroke="#5b86c4" strokeWidth={4} transform={`rotate(${a + t * 40})`} />
+				))}
+				<circle r={8} fill="#d9483b" />
+				<text y={100} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={34} fill="#fffaf0">атом</text>
 			</g>
 			<Pill text="сдвиг меньше одного атома" t={t - 1.2} y={260} />
 		</>
@@ -354,23 +472,40 @@ const S7: React.FC<{t: number}> = ({t}) => {
 	);
 };
 
-const S8: React.FC<{t: number}> = ({t}) => (
-	<>
-		<StreetBg t={t} />
-		<Crowd t={t} lookAt={540} />
-		<g transform={`translate(0 ${-ease((t - 0.4) / 0.6) * 320 + Math.sin(t * 3) * 8})`}>
-			<ShnurokSide x={540} y={1800} s={0.8} face="joy" armFront={[125, 40]} />
-		</g>
-		<Pill text="на секунду позже" t={t - 0.3} />
-	</>
-);
+const S8: React.FC<{t: number}> = ({t}) => {
+	const up = -ease((t - 0.4) / 0.6) * 320 + Math.sin(t * 3) * 8;
+	return (
+		<>
+			<StreetBg t={t} />
+			<Crowd t={t} lookAt={540} />
+			{Array.from({length: 8}).map((_, i) => {
+				const on = Math.sin(t * 7 + i * 2.3) > 0.85;
+				return on ? <path key={i} transform={`translate(${80 + i * 130} ${1080 + (i % 3) * 140})`} d="M 0 -22 L 6 -6 L 22 0 L 6 6 L 0 22 L -6 6 L -22 0 L -6 -6 Z" fill="#fffaf0" stroke={O} strokeWidth={3} /> : null;
+			})}
+			<g transform={`translate(0 ${up})`}>
+				<circle cx={540} cy={1500} r={170 + Math.sin(t * 4) * 10} fill="#fff6c8" opacity={0.35} />
+				<ShnurokSide x={540} y={1800} s={0.8} face="joy" armFront={[125, 40]} />
+			</g>
+			{[0, 1, 2, 3, 4, 5].map((i) => (
+				<line key={i} x1={540 + Math.cos(i) * 220} y1={1450 + up + Math.sin(i) * 220} x2={540 + Math.cos(i) * 280} y2={1450 + up + Math.sin(i) * 280} stroke="#f5c542" strokeWidth={8} strokeLinecap="round" opacity={0.6 + 0.4 * Math.sin(t * 6 + i)} />
+			))}
+			<Pill text="на секунду позже" t={t - 0.3} />
+		</>
+	);
+};
 
 const S9: React.FC<{t: number}> = ({t}) => (
 	<>
 		<StreetBg t={t} />
-		<rect width={1080} height={1920} fill="#fffaf0" opacity={0.35} />
-		<Shnurok x={540} y={1750} s={1.0} thinking />
+		<Crowd t={t} lookAt={540} />
+		<rect width={1080} height={1920} fill="#fffaf0" opacity={0.3} />
+		<Shnurok x={540} y={1780} s={1.0} thinking />
 		<Big text="?" t={t} at={0.3} y={760} size={320} />
+		{[0, 1, 2].map((i) => (
+			<text key={i} x={300 + i * 230} y={1000 - ((t * 60 + i * 50) % 160)} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={70} fill="#f5c542" stroke={O} strokeWidth={6} paintOrder="stroke" opacity={0.7}>
+				?
+			</text>
+		))}
 	</>
 );
 
