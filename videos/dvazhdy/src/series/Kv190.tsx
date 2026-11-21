@@ -208,7 +208,7 @@ const FrostWindow: React.FC<{t: number; x?: number; y?: number; face?: number; h
 				</g>
 			)}
 			{hand > 0 && (
-				<g transform={`translate(${x + 200} ${y + 300}) scale(${0.6 + 0.4 * hand})`} opacity={hand}>
+				<g transform={`translate(${x + 320} ${y + 300}) scale(${0.6 + 0.4 * hand})`} opacity={hand}>
 					<ellipse rx={60} ry={70} fill="#eef4ff" />
 					{[-60, -32, -4, 24, 52, 78].map((fx, i) => (
 						<rect key={i} x={fx - 12} y={-160 + Math.abs(i - 2.5) * 12} width={24} height={110} rx={12} fill="#eef4ff" />
@@ -324,17 +324,17 @@ const S3: React.FC<{t: number}> = ({t}) => {
 
 const S4: React.FC<{t: number}> = ({t}) => {
 	const A = B[3];
-	const cur = ease(t / 1.2) * 0.75;
+	const cur = ease(t / 1.2) * 0.42;
 	const hand = ease((t - (T('успел') - A)) / 0.6);
 	const z = 1 + 0.5 * ease((t - (T('пять') - A)) / 1.5);
 	const six = T('шестой') - A;
 	return (
-		<g transform={`translate(770 640) scale(${z}) translate(-770 -640)`}>
+		<g transform={`translate(880 640) scale(${z}) translate(-880 -640)`}>
 			<Flat t={t} />
 			<FrostWindow t={t} hand={hand} curtain={cur} />
 			<ShnurokSide x={420} y={1600} s={0.9} face={hand > 0.5 ? 'shock' : 'neutral'} armFront={[150, -20]} />
 			{t > six && (
-				<g transform="translate(882 450)">
+				<g transform="translate(888 600)">
 					<circle r={60} fill="none" stroke="#d9483b" strokeWidth={10} opacity={0.6 + 0.4 * Math.sin(t * 8)} />
 				</g>
 			)}
