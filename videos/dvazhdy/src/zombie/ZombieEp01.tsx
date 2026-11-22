@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Easing, Sequence, getInputProps, interpolate, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Audio, Easing, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {ThreeCanvas} from '@remotion/three';
 import {ShotCtx, hash} from '../lib';
 import {C, Char, CharProps, NameTag, OL, OW} from '../cartoon/parts';
@@ -12,8 +12,6 @@ import rawWords from '../../public/zombie/ep01-words.json';
 // Сериал «Зомби» · серия 1 «Поезд». Мир — 3D (пластилин), герои — 2D.
 
 const FPS = 30;
-// Draft mode (`--props='{"draft":true}'`): no shadows, no antialias — much faster renders for checking timing.
-const DRAFT = Boolean((getInputProps() as {draft?: boolean}).draft);
 const O = OL;
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const ease = (v: number) => Easing.inOut(Easing.cubic)(clamp01(v));
@@ -194,7 +192,7 @@ const Cocoon: React.FC<{x: number; y: number; s: number; face?: CharProps['face'
 // ------------------------------------------------------------------ scene plumbing
 type SceneProps = {a: number};
 const Canvas3D: React.FC<{children: React.ReactNode; bg?: string}> = ({children, bg = '#0b1226'}) => (
-	<ThreeCanvas width={W} height={H} shadows={!DRAFT} gl={{antialias: !DRAFT}} style={{position: 'absolute', inset: 0, background: bg}}>
+	<ThreeCanvas width={W} height={H} shadows gl={{antialias: true}} style={{position: 'absolute', inset: 0, background: bg}}>
 		{children}
 	</ThreeCanvas>
 );
