@@ -147,7 +147,7 @@ body.touch #toast{top:30%}
     <kbd>S / ↓</kbd><span>тормоз и задний ход</span>
     <kbd>A D / ← →</kbd><span>руль</span>
     <kbd>Shift</kbd><span>нитро</span>
-    <kbd>Пробел</kbd><span>ручник (занос)</span>
+    <kbd>Пробел</kbd><span>ручник (резкая остановка)</span>
     <kbd>+ / −</kbd><span>мощность двигателя ×1 … ×100000</span>
     <kbd>F</kbd><span>убрать сопротивление воздуха: разгон без предела</span>
     <kbd>T</kbd><span>поставить бетонную стену впереди</span>
@@ -516,15 +516,16 @@ function stepCar(c,dt){
     _wf.addScaledVector(_gn,-_wf.dot(_gn)).normalize(); _ws2.crossVectors(_gn,_wf).normalize();
     worldVelAt(c,_cp,_tmp); const vl=_tmp.dot(_wf), vs=_tmp.dot(_ws2);
     const share=M/4/dt, muN=MU*Fs*(w.dmg>0.3?0.7:1);
-    let latMu=muN; if(input.hand&&!w.front) latMu*=0.4;
+    let latMu=muN; if(input.hand&&!w.front) latMu*=0.85;
     const slip=Math.atan2(vs,Math.max(Math.abs(vl),0.5));
     let Flat=-latMu*Math.tanh(slip*9); const latCap=Math.abs(vs)*share; if(Math.abs(Flat)>latCap) Flat=Math.sign(Flat)*latCap;
     let Fl=0;
     if(drivenOn>0) Fl+=driveTotal*(w.front?0.67:1)/drivenOn;
     if(braking) Fl-=Math.sign(vl)*Math.min(MU*Fs*0.95,Math.abs(vl)*share);
-    if(input.hand&&!w.front) Fl=-Math.sign(vl)*Math.min(muN,Math.abs(vl)*share);
+    if(input.hand) Fl=-Math.sign(vl)*Math.min(muN*1.7,Math.abs(vl)*share);   // ручник тормозит всеми колёсами
     if(!throttle&&!braking&&!input.hand){ Fl-=vl*30; if(Math.abs(vl)<0.4) Fl=-vl*share*0.5; }
-    const tot=Math.hypot(Fl,Flat); if(tot>muN){ Fl*=muN/tot; Flat*=muN/tot; }
+    if(input.hand){ const lim=muN*1.7; const room=Math.sqrt(Math.max(0,lim*lim-Flat*Flat)); if(Math.abs(Fl)>room) Fl=Math.sign(Fl)*room; } // боковое сцепление в приоритете, меньше заноса
+    else { const tot=Math.hypot(Fl,Flat); if(tot>muN){ Fl*=muN/tot; Flat*=muN/tot; } }
     _tmp.copy(_wf).multiplyScalar(Fl).addScaledVector(_ws2,Flat); _F.add(_tmp);
     _t2.copy(_cp).sub(c.pos).cross(_tmp); _T.add(_t2);
     w.ang+=vl/RADIUS*dt;
