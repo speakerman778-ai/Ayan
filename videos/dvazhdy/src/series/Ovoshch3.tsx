@@ -763,7 +763,7 @@ const VoteBars: React.FC<{t: number}> = ({t}) => {
 			<rect x={90} y={430} width={900} height={420} rx={36} fill="#fbf3e2" stroke={O} strokeWidth={8} />
 			<text x={540} y={510} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={52} fill={O}>вы выбрали</text>
 			<rect x={140} y={560} width={800 * 0.35 * k} height={90} rx={20} fill={KIT} stroke={O} strokeWidth={6} />
-			<text x={160} y={622} fontFamily="Inter" fontWeight={900} fontSize={40} fill="#fff" opacity={k}>1 · остаться</text>
+			<text x={160 + 800 * 0.35 * k + 20} y={622} fontFamily="Inter" fontWeight={900} fontSize={40} fill={O} opacity={k}>1 · остаться</text>
 			<rect x={140} y={690} width={800 * k} height={90} rx={20} fill={BLUE} stroke={O} strokeWidth={6} />
 			<rect x={140 + 800 * k * 0.5} y={690} width={800 * k * 0.25} height={90} fill={GARNET} />
 			<text x={160} y={752} fontFamily="Inter" fontWeight={900} fontSize={40} fill="#fff" opacity={k}>2 · «Барселона» ✓</text>
@@ -914,7 +914,7 @@ const sc: Scene[] = [];
 	const duel = T('дуэль') - at;
 	sc.push({
 		at,
-		cam: (t, dur) => orbit([9.4, 1.15, 2.0], 6.2, 0.5, 0.65 - 0.9 * ease(t / dur), 48),
+		cam: (t, dur) => orbit([9.4, 1.1, 2.1], 8.2, 0.5, 0.25 - 0.5 * ease(t / dur), 50),
 		world: (t) => (
 			<>
 				<Field t={t} night={0.1} crowd={0} skyCol="#7cbbe8" />
@@ -935,7 +935,6 @@ const sc: Scene[] = [];
 				{t > duel && <Pill text="завтра · дуэль · 5 пенальти" t={t - duel} y={360} />}
 			</>
 		),
-		heads: {lm: [9.4, 1.6, 1.6]},
 	});
 }
 
@@ -959,8 +958,8 @@ const sc: Scene[] = [];
 				<At x={1.4} z={-1.0} h={0.92}>
 					{(x, y, s) => (
 						<g>
-							<Marco x={x} y={y} s={s} dir={-1} face="sad" armFront={t > phone - 0.3 ? [120, -110] : undefined} />
-							{t > phone - 0.3 && <rect x={x - 70 * s} y={y - 600 * s} width={36 * s} height={64 * s} rx={8 * s} fill="#222" stroke={O} strokeWidth={4 * s} />}
+							<Marco x={x} y={y} s={s} dir={-1} face="sad" />
+							{t > phone - 0.3 && <rect x={x + 95 * s} y={y - 640 * s} width={40 * s} height={72 * s} rx={9 * s} fill="#222" stroke={O} strokeWidth={4 * s} />}
 							{[0, 1].map((i) => {
 								const k = (t * 0.8 + i * 0.5) % 1;
 								return <ellipse key={i} cx={x - 30 * s + i * 60 * s} cy={y - 500 * s + k * 120 * s} rx={7 * s} ry={11 * s} fill="#8fd0ff" opacity={1 - k} />;
@@ -989,7 +988,7 @@ const SPOT: V3 = [14.0, 0.13, 0.4];
 	const miss = T('мимо') - at;
 	sc.push({
 		at,
-		cam: (t, dur) => orbit([16.0, 1.0, 0.4], 9, 1.4, 1.35 - 0.75 * ease(t / dur), 52),
+		cam: (t, dur) => orbit([14.2, 1.0, 0.0], 6.5, 1.0, 1.25 - 0.7 * ease(t / dur), 52),
 		world: (t) => {
 			const shots = [
 				[mk, g1, 1.4, -1.6],
