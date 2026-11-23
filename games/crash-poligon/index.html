@@ -46,7 +46,11 @@ button:focus-visible{outline:2px solid var(--hazard);outline-offset:2px}
   text-shadow:0 2px 0 #000,0 0 14px rgba(0,0,0,.6);text-align:center;opacity:0;transition:opacity .25s;white-space:nowrap}
 #hint{left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);font-size:13px;color:var(--muted);text-align:center}
 
-#start{position:fixed;inset:0;z-index:5;display:grid;place-items:center;background:rgba(10,11,13,.72);padding:16px}
+#start{position:fixed;inset:0;z-index:5;display:grid;place-items:center;background:rgba(10,11,13,.72);padding:16px;overflow-y:auto;touch-action:pan-y}
+.touch-only{display:none}
+body.touch .touch-only{display:grid}
+body.touch .kb-only{display:none}
+@media (max-height:500px){ #start .card{padding:14px 16px 12px} #start h1{font-size:28px} .stripe{margin:8px 0 10px} #start p{font-size:13px;margin-bottom:8px} #go{padding:10px;font-size:18px} }
 #start .card{background:#1a1d21;border:1px solid var(--line);border-radius:14px;max-width:520px;width:100%;padding:22px 22px 18px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
 #start h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,6vw,44px);margin:0;line-height:1;letter-spacing:.02em}
 #start h1 span{color:var(--hazard)}
@@ -56,19 +60,34 @@ button:focus-visible{outline:2px solid var(--hazard);outline-offset:2px}
 .keys kbd{background:#2a2e34;border:1px solid #3d424a;border-bottom-width:2px;border-radius:5px;padding:1px 6px;font-family:var(--body);font-size:12px;white-space:nowrap;justify-self:start}
 #go{width:100%;background:var(--hazard);color:#111;border:0;border-radius:10px;padding:14px;font-family:var(--display);font-size:20px;letter-spacing:.04em}
 
-#touch{position:fixed;inset:auto 0 0 0;z-index:3;pointer-events:none;display:none;
-  padding:0 max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
-#touch .side{display:flex;gap:10px;align-items:flex-end}
-#touch .wrap{display:flex;justify-content:space-between;align-items:flex-end}
-.tb{pointer-events:auto;width:74px;height:74px;border-radius:50%;background:rgba(20,22,26,.55);border:2px solid rgba(255,255,255,.25);
-  color:#fff;font-size:15px;font-weight:800;display:grid;place-items:center;touch-action:none}
-.tb.big{width:92px;height:92px;font-size:17px}
-.tb.gas{border-color:var(--ok)} .tb.brk{border-color:var(--danger)} .tb.nit{border-color:#62b8ff} .tb.hb{border-color:var(--hazard)}
-.tb.down{background:rgba(255,255,255,.28)}
-body.touch #touch{display:block}
-body.touch #speedBox{bottom:calc(190px + env(safe-area-inset-bottom,0px))}
+#touch{position:fixed;inset:auto 0 0 0;z-index:3;pointer-events:none;display:none;justify-content:space-between;align-items:flex-end;gap:12px;
+  padding:0 max(14px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px))}
+#steer{pointer-events:auto;touch-action:none;position:relative;width:min(46vw,250px);height:96px;border-radius:48px;background:rgba(20,22,26,.5);border:2px solid rgba(255,255,255,.22)}
+#steer span{position:absolute;inset:auto 0 6px 0;text-align:center;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+#steer i{position:absolute;top:50%;width:0;height:0;border:12px solid transparent;transform:translateY(-50%)}
+#steer i.l{left:12px;border-right-color:rgba(255,255,255,.35);border-left:0} #steer i.r{right:12px;border-left-color:rgba(255,255,255,.35);border-right:0}
+#knob{position:absolute;top:8px;left:50%;width:76px;height:76px;margin-left:-38px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid var(--hazard);will-change:transform}
+.pedals{display:grid;grid-template-columns:repeat(2,auto);gap:10px;justify-items:center;align-items:end}
+.tb{pointer-events:auto;touch-action:none;display:grid;place-items:center;background:rgba(20,22,26,.55);border:2px solid rgba(255,255,255,.25);color:#fff;font-weight:800;letter-spacing:.04em}
+.tb.small{width:84px;height:46px;border-radius:12px;font-size:12px}
+.tb.pedal{width:84px;height:118px;border-radius:16px;font-size:14px}
+.tb.gas{border-color:var(--ok);height:136px} .tb.brk{border-color:var(--danger)} .tb.nit{border-color:#62b8ff} .tb.hb{border-color:var(--hazard)}
+.tb.down{background:rgba(255,255,255,.3);transform:scale(.96)}
+#menuToggle{display:none}
+body.touch #touch{display:flex}
+body.touch #menuToggle{display:inline-block}
+body.touch #menu .extra{display:none}
+body.touch #menu.open .extra{display:inline-block}
+body.touch #speedBox{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px));right:auto;left:50%;transform:translateX(-50%);text-align:center}
+body.touch #speed{font-size:clamp(34px,9vw,56px)}
+body.touch #nitroWrap{width:130px;margin:6px auto 0}
+body.touch #record{display:none}
 body.touch #hint{display:none}
 body.touch .btn kbd{display:none}
+body.touch #dmg{top:auto;bottom:calc(160px + env(safe-area-inset-bottom,0px));padding:6px 9px;min-width:0;font-size:11px}
+body.touch #dmg h3{display:none}
+body.touch #toast{top:30%}
+@media (max-width:700px){ body.touch #speedBox{left:auto;right:calc(12px + env(safe-area-inset-right,0px));transform:none;top:calc(100px + env(safe-area-inset-top,0px));text-align:right} body.touch #nitroWrap{margin-left:auto;margin-right:0} }
 @media (max-width:640px){ #dmg{min-width:0;font-size:11px;padding:7px 9px} #dmg h3{font-size:13px} .btn{padding:6px 8px;font-size:12px} }
 @media (prefers-reduced-motion:reduce){ #toast{transition:none} }
 </style>
@@ -87,15 +106,16 @@ body.touch .btn kbd{display:none}
 
 <div class="hud" id="menu">
   <div id="powerBox"><button id="pMinus" aria-label="Меньше мощности">−</button><div id="power">×1</div><button id="pPlus" aria-label="Больше мощности">+</button></div>
+  <button class="btn" id="menuToggle">Меню ▾</button>
   <button class="btn" id="bRepair">Починить<kbd>R</kbd></button>
-  <button class="btn" id="bWall">Стена впереди<kbd>T</kbd></button>
-  <button class="btn" id="bSlow">Замедление<kbd>X</kbd></button>
-  <button class="btn" id="bCam">Камера<kbd>C</kbd></button>
-  <button class="btn" id="bAir">Воздух: есть<kbd>F</kbd></button>
-  <button class="btn" id="bColor">Цвет<kbd>P</kbd></button>
-  <button class="btn" id="bHome">На старт<kbd>H</kbd></button>
-  <button class="btn" id="bQ">Графика: средне<kbd>Q</kbd></button>
-  <button class="btn" id="bSnd">Звук<kbd>M</kbd></button>
+  <button class="btn extra" id="bWall">Стена впереди<kbd>T</kbd></button>
+  <button class="btn extra" id="bSlow">Замедление<kbd>X</kbd></button>
+  <button class="btn extra" id="bCam">Камера<kbd>C</kbd></button>
+  <button class="btn extra" id="bAir">Воздух: есть<kbd>F</kbd></button>
+  <button class="btn extra" id="bColor">Цвет<kbd>P</kbd></button>
+  <button class="btn extra" id="bHome">На старт<kbd>H</kbd></button>
+  <button class="btn extra" id="bQ">Графика: средне<kbd>Q</kbd></button>
+  <button class="btn extra" id="bSnd">Звук<kbd>M</kbd></button>
 </div>
 
 <div class="hud" id="speedBox">
@@ -108,16 +128,21 @@ body.touch .btn kbd{display:none}
 <div class="hud" id="toast"></div>
 <div class="hud" id="hint">W/S — газ/тормоз · A/D — руль · Shift — нитро · Пробел — ручник · +/− — мощность</div>
 
-<div id="touch"><div class="wrap">
-  <div class="side"><div class="tb big" data-k="left">◀</div><div class="tb big" data-k="right">▶</div></div>
-  <div class="side"><div class="tb hb" data-k="hand">РУЧН</div><div class="tb nit" data-k="nitro">НИТРО</div><div class="tb brk" data-k="brake">ТОРМ</div><div class="tb big gas" data-k="gas">ГАЗ</div></div>
-</div></div>
+<div id="touch">
+  <div id="steer" aria-label="Руль: веди пальцем влево и вправо"><i class="l"></i><i class="r"></i><div id="knob"></div><span>руль</span></div>
+  <div class="pedals">
+    <div class="tb small hb" data-k="hand">РУЧНИК</div>
+    <div class="tb small nit" data-k="nitro">НИТРО</div>
+    <div class="tb pedal brk" data-k="brake">ТОРМОЗ</div>
+    <div class="tb pedal gas" data-k="gas">ГАЗ</div>
+  </div>
+</div>
 
 <div id="start"><div class="card">
   <h1>КРАШ <span>ПОЛИГОН</span></h1>
   <div class="stripe"></div>
   <p>Бесконечная прямая трасса и полигон для краш-тестов. Машина мнётся там, куда пришёлся удар, двери, капот, бамперы и колёса отрываются. Скорость не ограничена: поднимай мощность и разгоняйся сколько хочешь.</p>
-  <div class="keys">
+  <div class="keys kb-only">
     <kbd>W / ↑</kbd><span>газ</span>
     <kbd>S / ↓</kbd><span>тормоз и задний ход</span>
     <kbd>A D / ← →</kbd><span>руль</span>
@@ -128,6 +153,11 @@ body.touch .btn kbd{display:none}
     <kbd>T</kbd><span>поставить бетонную стену впереди</span>
     <kbd>X</kbd><span>замедленная съёмка аварии</span>
     <kbd>R</kbd><span>починить машину</span>
+  </div>
+  <div class="keys touch-only">
+    <kbd>Руль</kbd><span>веди пальцем влево и вправо по полоске слева</span>
+    <kbd>Педали</kbd><span>ГАЗ и ТОРМОЗ справа, над ними НИТРО и РУЧНИК</span>
+    <kbd>Меню</kbd><span>стена, замедление, камера, без воздуха и другое</span>
   </div>
   <button id="go">ПОЕХАЛИ</button>
 </div></div>
@@ -442,7 +472,7 @@ function resolveContact(c,p,n,e,mu){
   applyImpulse(c,_J,p); return -vn;
 }
 
-const input={gas:0,brake:0,left:0,right:0,hand:0,nitro:0};
+const input={gas:0,brake:0,left:0,right:0,hand:0,nitro:0,axis:0};
 const POWERS=[1,2,3,5,10,20,50,100,200,500,1000,2000,5000,10000,100000];
 let pIdx=clamp(store.get('power',4),0,POWERS.length-1), airDrag=true, nitro=100, slow=false;
 let shake=0, impactFlash=0;
@@ -460,7 +490,7 @@ function stepCar(c,dt){
   let throttle=input.gas?1:0, braking=false;
   if(input.brake){ if(vF>0.8) braking=true; else throttle=vF>-15?-0.5:0; }
   const steerMax=0.6/(1+Math.abs(vF)/22);
-  const steerT=(input.right-input.left)*steerMax+c.steerBias;
+  const steerT=clamp(input.right-input.left+input.axis,-1,1)*steerMax+c.steerBias;
   c.steer+=(steerT-c.steer)*Math.min(1,dt*7);
   let grounded=0, drivenOn=0;
   for(const w of c.wheels) if(w.attached&&w.contact&&!w.front) drivenOn++;
@@ -603,7 +633,7 @@ function updateCamera(dt,speed){
   _fw.set(0,0,1).applyQuaternion(car.q); const flat=new V3(_fw.x,0,_fw.z); if(flat.lengthSq()<0.01) flat.set(0,0,1); flat.normalize();
   if(speed>4){ const vd=car.vel.clone(); vd.y=0; if(vd.lengthSq()>1){ vd.normalize(); if(vd.dot(flat)>-0.2) flat.lerp(vd,0.5).normalize(); } }
   const look=car.pos.clone().add(new V3(0,0.9,0));
-  if(camMode===0||camMode===1){ const back=camMode===0?7:13, hgt=camMode===0?2.6:5;
+  if(camMode===0||camMode===1){ const pz=camera.aspect<1?1.7:1, back=(camMode===0?7:13)*pz, hgt=(camMode===0?2.6:5)*(camera.aspect<1?1.4:1);
     const want=flat.clone().multiplyScalar(-back); want.y=hgt; camOff.lerp(want,1-Math.exp(-dt*5)); camera.position.copy(car.pos).add(camOff);
     const gh=groundH(camera.position.x,camera.position.z)+0.4; if(camera.position.y<gh) camera.position.y=gh; camera.lookAt(look); }
   else if(camMode===2){ camera.position.copy(new V3(0,1.2,0.35).applyQuaternion(car.q).add(car.pos)); camera.quaternion.copy(car.q).multiply(new Q().setFromAxisAngle(new V3(0,1,0),Math.PI)); }
@@ -661,6 +691,15 @@ addEventListener('keydown',e=>{ const k=KEYMAP[e.code]; if(k){ input[k]=1; e.pre
     case 'Equal':case 'NumpadAdd':changePower(1);break; case 'Minus':case 'NumpadSubtract':changePower(-1);break; } });
 addEventListener('keyup',e=>{ const k=KEYMAP[e.code]; if(k) input[k]=0; });
 addEventListener('blur',()=>{ for(const k in input) input[k]=0; });
+$('#menuToggle').onclick=()=>{ const m=$('#menu'); m.classList.toggle('open'); $('#menuToggle').textContent=m.classList.contains('open')?'Меню ▴':'Меню ▾'; };
+document.querySelectorAll('#menu .extra').forEach(b=>b.addEventListener('click',()=>{ if(document.body.classList.contains('touch')){ $('#menu').classList.remove('open'); $('#menuToggle').textContent='Меню ▾'; } }));
+(function(){ const pad=$('#steer'), knob=$('#knob'); let id=null;
+  function move(e){ const r=pad.getBoundingClientRect(); const half=r.width/2-38; let x=(e.clientX-(r.left+r.width/2))/half; x=clamp(x,-1,1);
+    input.axis=Math.sign(x)*Math.pow(Math.abs(x),1.3); knob.style.transform='translateX('+(x*half)+'px)'; }
+  function end(e){ if(e.pointerId!==id) return; id=null; input.axis=0; knob.style.transform=''; }
+  pad.addEventListener('pointerdown',e=>{ e.preventDefault(); id=e.pointerId; try{pad.setPointerCapture(id);}catch(_){} move(e); sound.init(); });
+  pad.addEventListener('pointermove',e=>{ if(e.pointerId===id) move(e); });
+  pad.addEventListener('pointerup',end); pad.addEventListener('pointercancel',end); })();
 const isTouch=('ontouchstart' in window)||matchMedia('(pointer:coarse)').matches; if(isTouch) document.body.classList.add('touch');
 document.querySelectorAll('.tb').forEach(el=>{ const k=el.dataset.k;
   const on=e=>{ e.preventDefault(); input[k]=1; el.classList.add('down'); sound.init(); };
