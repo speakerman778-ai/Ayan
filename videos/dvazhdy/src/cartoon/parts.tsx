@@ -207,7 +207,7 @@ export type CharProps = {
 	kid?: boolean;
 	tone?: number; // 0..1 darken (silhouette)
 	beard?: boolean;
-	hat?: 'souwester';
+	hat?: 'souwester' | 'mongol' | 'turban' | 'helmet';
 	hatColor?: string;
 	nose?: boolean;
 	headS?: number; // head size multiplier
@@ -583,6 +583,32 @@ export const Char: React.FC<CharProps> = (p) => {
 							<path d="M -80 18 q 8 6 16 0" />
 							<path d="M 64 18 q 8 6 16 0" />
 							<path d="M -30 -84 q 30 -8 60 0" />
+						</g>
+					)}
+					{hat === 'mongol' && (
+						<g>
+							<path d="M -100 -96 Q -64 -236 0 -258 Q 64 -236 100 -96 Q 0 -122 -100 -96 Z" fill={hatColor} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -40 -200 Q 0 -214 40 -200" fill="none" stroke={OL} strokeWidth={4} opacity={0.4} />
+							<path d="M -132 -26 Q -138 -80 -112 -104 Q 0 -134 112 -104 Q 138 -80 132 -26 Q 0 -70 -132 -26 Z" fill="#7a5a3a" stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -100 -60 l 8 -18 M -60 -72 l 6 -18 M -20 -78 l 4 -18 M 20 -78 l -4 -18 M 60 -72 l -6 -18 M 100 -60 l -8 -18" stroke="#5a3f28" strokeWidth={5} strokeLinecap="round" />
+							<circle cx={0} cy={-262} r={16} fill="#d9483b" stroke={OL} strokeWidth={5} />
+						</g>
+					)}
+					{hat === 'turban' && (
+						<g>
+							<path d="M -128 -36 C -146 -150 -64 -206 0 -206 C 64 -206 146 -150 128 -36 Q 0 -96 -128 -36 Z" fill={hatColor} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M -116 -80 Q 0 -150 116 -80 M -96 -134 Q 0 -190 96 -134" fill="none" stroke={OL} strokeWidth={4} opacity={0.35} />
+							<circle cx={0} cy={-112} r={18} fill="#5f9e55" stroke={OL} strokeWidth={5} />
+							<path d="M 0 -130 Q 10 -170 -6 -200" stroke="#f4f1ea" strokeWidth={10} fill="none" strokeLinecap="round" />
+						</g>
+					)}
+					{hat === 'helmet' && (
+						<g>
+							<path d="M -126 -20 Q -150 30 -130 90 L -100 80 Q -112 30 -96 -10 Z M 126 -20 Q 150 30 130 90 L 100 80 Q 112 30 96 -10 Z" fill="#7a5a3a" stroke={OL} strokeWidth={6} strokeLinejoin="round" />
+							<path d="M -124 -40 Q -118 -200 0 -232 Q 118 -200 124 -40 Q 0 -80 -124 -40 Z" fill={hatColor} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
+							<path d="M 0 -232 L 0 -290" stroke={OL} strokeWidth={10} strokeLinecap="round" />
+							<circle cx={0} cy={-296} r={12} fill="#d9483b" stroke={OL} strokeWidth={4} />
+							<path d="M -124 -40 Q 0 -80 124 -40" fill="none" stroke="#c9a04a" strokeWidth={12} />
 						</g>
 					)}
 					{hat === 'souwester' && (

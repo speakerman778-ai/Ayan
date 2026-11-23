@@ -63,10 +63,10 @@ const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const prog = (t: number, a: number, d: number) => clamp01((t - a) / d);
 const ease = (v: number) => Easing.inOut(Easing.cubic)(clamp01(v));
 const pop = (t: number, a: number) => Easing.out(Easing.back(2))(clamp01((t - a) / 0.35));
-const Cam: React.FC<{z: number; cx: number; cy: number; children: React.ReactNode}> = ({z, cx, cy, children}) => (
+export const Cam: React.FC<{z: number; cx: number; cy: number; children: React.ReactNode}> = ({z, cx, cy, children}) => (
 	<g transform={`translate(${cx} ${cy}) scale(${z}) translate(${-cx} ${-cy})`}>{children}</g>
 );
-const Label: React.FC<{x: number; y: number; text: string; size?: number; color?: string; t?: number; from?: number; rot?: number}> = ({x, y, text, size = 56, color = C.red, t = 99, from = 0, rot = 0}) =>
+export const Label: React.FC<{x: number; y: number; text: string; size?: number; color?: string; t?: number; from?: number; rot?: number}> = ({x, y, text, size = 56, color = C.red, t = 99, from = 0, rot = 0}) =>
 	t < from ? null : (
 		<g transform={`translate(${x} ${y}) rotate(${rot}) scale(${pop(t, from)})`}>
 			<text textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={size} fill={color} stroke={OL} strokeWidth={8} paintOrder="stroke" strokeLinejoin="round">
@@ -77,7 +77,7 @@ const Label: React.FC<{x: number; y: number; text: string; size?: number; color?
 
 // ------------------------------------------------------------------ props
 const STONE = '#a9a39a';
-const StoneWarrior: React.FC<{x: number; y: number; s?: number}> = ({x, y, s = 1}) => (
+export const StoneWarrior: React.FC<{x: number; y: number; s?: number}> = ({x, y, s = 1}) => (
 	<g transform={`translate(${x} ${y}) scale(${s})`}>
 		<rect x={-90} y={-30} width={180} height={30} fill="#8f897f" stroke={OL} strokeWidth={OW} />
 		<path d="M -70 -30 L -78 -300 Q -80 -360 -40 -380 L 40 -380 Q 80 -360 78 -300 L 70 -30 Z" fill={STONE} stroke={OL} strokeWidth={OW} />
@@ -92,7 +92,7 @@ const StoneWarrior: React.FC<{x: number; y: number; s?: number}> = ({x, y, s = 1
 	</g>
 );
 
-const Yurt: React.FC<{x: number; y: number; s?: number; t: number}> = ({x, y, s = 1, t}) => (
+export const Yurt: React.FC<{x: number; y: number; s?: number; t: number}> = ({x, y, s = 1, t}) => (
 	<g transform={`translate(${x} ${y}) scale(${s})`}>
 		{[0, 1].map((i) => {
 			const k = (t * 0.4 + i * 0.5) % 1;
@@ -107,7 +107,7 @@ const Yurt: React.FC<{x: number; y: number; s?: number; t: number}> = ({x, y, s 
 	</g>
 );
 
-const Horse: React.FC<{x: number; y: number; s?: number; t: number; color?: string; flip?: boolean; gallop?: boolean}> = ({x, y, s = 1, t, color = '#9c6338', flip = false, gallop = false}) => {
+export const Horse: React.FC<{x: number; y: number; s?: number; t: number; color?: string; flip?: boolean; gallop?: boolean}> = ({x, y, s = 1, t, color = '#9c6338', flip = false, gallop = false}) => {
 	const sw = gallop ? Math.sin(t * 14) * 20 : Math.sin(t * 2) * 3;
 	const bob = gallop ? Math.abs(Math.sin(t * 14)) * -10 : 0;
 	return (
@@ -128,7 +128,7 @@ const Horse: React.FC<{x: number; y: number; s?: number; t: number; color?: stri
 	);
 };
 
-const Sheep: React.FC<{x: number; y: number; s?: number; t: number}> = ({x, y, s = 1, t}) => (
+export const Sheep: React.FC<{x: number; y: number; s?: number; t: number}> = ({x, y, s = 1, t}) => (
 	<g transform={`translate(${x} ${y + Math.sin(t * 2 + x) * 2}) scale(${s})`}>
 		<rect x={-40} y={-50} width={14} height={50} fill={OL} />
 		<rect x={26} y={-50} width={14} height={50} fill={OL} />
@@ -140,7 +140,7 @@ const Sheep: React.FC<{x: number; y: number; s?: number; t: number}> = ({x, y, s
 	</g>
 );
 
-const Grass: React.FC<{t: number; y: number; n?: number; color?: string}> = ({t, y, n = 40, color = '#c9b98a'}) => (
+export const Grass: React.FC<{t: number; y: number; n?: number; color?: string}> = ({t, y, n = 40, color = '#c9b98a'}) => (
 	<>
 		{Array.from({length: n}).map((_, i) => {
 			const x = hash(i) * 1100 - 10;
@@ -151,7 +151,7 @@ const Grass: React.FC<{t: number; y: number; n?: number; color?: string}> = ({t,
 	</>
 );
 
-const Steppe: React.FC<{t: number; dark?: number}> = ({t, dark = 0}) => (
+export const Steppe: React.FC<{t: number; dark?: number}> = ({t, dark = 0}) => (
 	<>
 		<rect width={1080} height={1920} fill={dark > 0.5 ? '#6b5d6e' : '#9fd0e8'} />
 		<rect width={1080} height={1920} fill="#3a2f45" opacity={dark * 0.6} />
@@ -258,7 +258,7 @@ const S3: React.FC<{t: number}> = ({t}) => {
 	);
 };
 
-const Scroll: React.FC<{x: number; y: number; title: string; sub: string; t: number; from: number; color?: string}> = ({x, y, title, sub, t, from, color = C.red}) =>
+export const Scroll: React.FC<{x: number; y: number; title: string; sub: string; t: number; from: number; color?: string}> = ({x, y, title, sub, t, from, color = C.red}) =>
 	t < from ? null : (
 		<g transform={`translate(${x} ${y}) scale(${pop(t, from)})`}>
 			<rect x={-150} y={-200} width={300} height={400} fill="#f7ecd6" stroke={OL} strokeWidth={OW} />
