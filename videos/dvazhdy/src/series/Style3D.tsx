@@ -37,7 +37,7 @@ export const project = (cam: THREE.PerspectiveCamera, x: number, y: number, z: n
 	return [(v.x * 0.5 + 0.5) * W, (-v.y * 0.5 + 0.5) * H] as const;
 };
 
-const CamRig: React.FC<{t: number}> = ({t}) => {
+export const CamRig: React.FC<{t: number}> = ({t}) => {
 	const {camera} = useThree();
 	const {pos, look} = camAt(t);
 	camera.position.copy(pos);
@@ -71,19 +71,19 @@ export const M = {
 	snow: mat('#ffffff', {emissive: '#ffffff', emissiveIntensity: 0.6}),
 };
 
-const RBox: React.FC<{size: [number, number, number]; pos: [number, number, number]; m: THREE.Material; r?: number; rot?: [number, number, number]}> = ({size, pos, m, r = 0.06, rot = [0, 0, 0]}) => {
+export const RBox: React.FC<{size: [number, number, number]; pos: [number, number, number]; m: THREE.Material; r?: number; rot?: [number, number, number]}> = ({size, pos, m, r = 0.06, rot = [0, 0, 0]}) => {
 	const geo = React.useMemo(() => new RoundedBoxGeometry(size[0], size[1], size[2], 4, Math.min(r, Math.min(...size) / 2 - 0.001)), [size[0], size[1], size[2], r]);
 	return <mesh geometry={geo} material={m} position={pos} rotation={rot} castShadow receiveShadow />;
 };
 
-const Box: React.FC<{size: [number, number, number]; pos: [number, number, number]; m: THREE.Material}> = ({size, pos, m}) => (
+export const Box: React.FC<{size: [number, number, number]; pos: [number, number, number]; m: THREE.Material}> = ({size, pos, m}) => (
 	<mesh position={pos} material={m} castShadow receiveShadow>
 		<boxGeometry args={size} />
 	</mesh>
 );
 
 // ---------------------------------------------------------------- room pieces
-const Room: React.FC = () => (
+export const Room: React.FC = () => (
 	<group>
 		{/* floor planks */}
 		{Array.from({length: 12}).map((_, i) => (
@@ -110,7 +110,7 @@ const Room: React.FC = () => (
 	</group>
 );
 
-const Window: React.FC = () => (
+export const Window: React.FC = () => (
 	<group>
 		{/* frame */}
 		<RBox size={[1.56, 0.1, 0.16]} pos={[0.7, 0.88, -3.0]} m={M.cream} r={0.03} />
@@ -136,7 +136,7 @@ const Window: React.FC = () => (
 	</group>
 );
 
-const Snow: React.FC<{t: number}> = ({t}) => (
+export const Snow: React.FC<{t: number}> = ({t}) => (
 	<group>
 		{Array.from({length: 70}).map((_, i) => {
 			const k = (t * (0.12 + hash(i) * 0.1) + hash(i + 3)) % 1;
@@ -150,7 +150,7 @@ const Snow: React.FC<{t: number}> = ({t}) => (
 	</group>
 );
 
-const Bed: React.FC = () => (
+export const Bed: React.FC = () => (
 	<group position={[-2.0, 0, -1.75]}>
 		<RBox size={[1.3, 0.32, 2.2]} pos={[0, 0.22, 0]} m={M.wood} r={0.05} />
 		<RBox size={[1.3, 0.95, 0.12]} pos={[0, 0.55, -1.1]} m={M.wood} r={0.05} />
@@ -162,7 +162,7 @@ const Bed: React.FC = () => (
 	</group>
 );
 
-const Sofa: React.FC = () => (
+export const Sofa: React.FC = () => (
 	<group position={[2.25, 0, -0.3]} rotation={[0, -Math.PI / 2, 0]}>
 		<RBox size={[2.0, 0.4, 0.9]} pos={[0, 0.25, 0]} m={M.ochre} r={0.1} />
 		<RBox size={[2.0, 0.7, 0.24]} pos={[0, 0.65, -0.36]} m={M.ochre} r={0.1} />
@@ -175,7 +175,7 @@ const Sofa: React.FC = () => (
 	</group>
 );
 
-const Rug: React.FC = () => (
+export const Rug: React.FC = () => (
 	<group position={[0.1, 0.005, 0.5]}>
 		<mesh material={M.red} receiveShadow>
 			<cylinderGeometry args={[1.35, 1.35, 0.02, 48]} />
@@ -189,7 +189,7 @@ const Rug: React.FC = () => (
 	</group>
 );
 
-const Desk: React.FC<{t: number}> = ({t}) => (
+export const Desk: React.FC<{t: number}> = ({t}) => (
 	<group position={[2.15, 0, -2.45]}>
 		<RBox size={[1.4, 0.07, 0.7]} pos={[0, 0.78, 0]} m={M.woodL} r={0.02} />
 		{[-0.62, 0.62].map((x) => [-0.28, 0.28].map((z) => <Box key={`${x}${z}`} size={[0.06, 0.76, 0.06]} pos={[x, 0.38, z]} m={M.wood} />))}
@@ -217,7 +217,7 @@ const Desk: React.FC<{t: number}> = ({t}) => (
 	</group>
 );
 
-const Shelf: React.FC = () => (
+export const Shelf: React.FC = () => (
 	<group position={[-2.92, 0, -0.1]}>
 		{[1.3, 1.8].map((y) => (
 			<group key={y}>
@@ -234,7 +234,7 @@ const Shelf: React.FC = () => (
 	</group>
 );
 
-const Plant: React.FC<{t: number}> = ({t}) => (
+export const Plant: React.FC<{t: number}> = ({t}) => (
 	<group position={[-0.75, 0, -2.6]} rotation={[0, 0, Math.sin(t * 1.3) * 0.02]}>
 		<mesh position={[0, 0.2, 0]} material={M.pot} castShadow>
 			<cylinderGeometry args={[0.2, 0.15, 0.4, 24]} />
@@ -247,7 +247,7 @@ const Plant: React.FC<{t: number}> = ({t}) => (
 	</group>
 );
 
-const Picture: React.FC = () => (
+export const Picture: React.FC = () => (
 	<group position={[-1.6, 1.9, -2.98]}>
 		<RBox size={[0.8, 0.6, 0.05]} pos={[0, 0, 0]} m={M.wood} r={0.02} />
 		<mesh position={[0, 0, 0.03]} material={mat('#2b4a7a')}>
@@ -262,7 +262,7 @@ const Picture: React.FC = () => (
 	</group>
 );
 
-const Pendant: React.FC<{t: number}> = ({t}) => (
+export const Pendant: React.FC<{t: number}> = ({t}) => (
 	<group position={[0.1, 3.2, 0.3]} rotation={[0, 0, Math.sin(t * 0.8) * 0.03]}>
 		<mesh position={[0, -0.3, 0]} material={M.metal}>
 			<cylinderGeometry args={[0.01, 0.01, 0.6, 6]} />
@@ -277,7 +277,7 @@ const Pendant: React.FC<{t: number}> = ({t}) => (
 	</group>
 );
 
-const Toys: React.FC = () => (
+export const Toys: React.FC = () => (
 	<group>
 		{/* low table on the rug edge, foreground */}
 		<group position={[-1.25, 0, 1.6]}>
@@ -299,7 +299,7 @@ const Toys: React.FC = () => (
 	</group>
 );
 
-const World: React.FC<{t: number}> = ({t}) => (
+export const World: React.FC<{t: number}> = ({t}) => (
 	<>
 		<CamRig t={t} />
 		<color attach="background" args={['#1d2b4f']} />
@@ -324,7 +324,7 @@ const World: React.FC<{t: number}> = ({t}) => (
 // ---------------------------------------------------------------- 2D heroes placed on the 3D floor
 export const PX_PER_M = 640 / 1.75; // SideChar at s=1 is ~640 px tall ≈ 1.75 m
 
-const Flat2D: React.FC<{cam: THREE.PerspectiveCamera; x: number; z: number; children: (sx: number, sy: number, s: number) => React.ReactNode}> = ({cam, x, z, children}) => {
+export const Flat2D: React.FC<{cam: THREE.PerspectiveCamera; x: number; z: number; children: (sx: number, sy: number, s: number) => React.ReactNode}> = ({cam, x, z, children}) => {
 	const [fx, fy] = project(cam, x, 0, z);
 	const [, hy] = project(cam, x, 1, z);
 	const pxPerM = fy - hy;

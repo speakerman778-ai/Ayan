@@ -6,7 +6,7 @@ import {C, Char, Face, Hair, Limb, OL, OW} from './parts';
  * Side-view (profile) character in the channel style. Faces right; dir=-1 mirrors.
  * (x, y) = point between the feet on the ground. Walk cycle driven by `walk` (0 = standing) and scene time.
  */
-export type SideFace = 'smile' | 'neutral' | 'shock' | 'closed' | 'joy' | 'think';
+export type SideFace = 'smile' | 'neutral' | 'shock' | 'closed' | 'joy' | 'think' | 'sad' | 'determined' | 'wince';
 export type SideProps = {
 	x: number;
 	y: number;
