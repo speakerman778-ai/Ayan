@@ -799,7 +799,7 @@ const sc: Scene[] = [];
 		cam: (t, dur) => orbit([15.1, 1.0, 2.4], 7.5, 1.3, 0.2 + 1.3 * ease(t / dur), 50),
 		world: (t) => {
 			const night = 1 - 0.75 * ease((t - dawn) / 1.5);
-			const k = (t * 0.7) % 2;
+			const k = (((t * 0.7) % 2) + 2) % 2;
 			const f = k < 1 ? k : 2 - k;
 			const p: V3 = lv([14.4, 0.13, 2.1], [15.8, 0.13, 2.7], ease(f));
 			p[1] += Math.sin(f * Math.PI) * 0.5;
@@ -811,7 +811,7 @@ const sc: Scene[] = [];
 			);
 		},
 		flat: (t) => {
-			const k = (t * 0.7) % 2;
+			const k = (((t * 0.7) % 2) + 2) % 2;
 			return (
 				<>
 					<At x={14.1} z={2.0} h={0.88}>{(x, y, s) => <ShnHood x={x} y={y} s={s} dir={1} face={t > dawn ? 'smile' : 'determined'} walk={k > 1.8 || k < 0.2 ? 0.7 : 0.1} />}</At>
@@ -861,7 +861,7 @@ const sc: Scene[] = [];
 			return {pos: lv([6.2, 1.5, 8.6], [6.8, 1.45, 7.4], k), look: [8.4, 1.05, 2.0], fov: 48};
 		},
 		world: (t) => {
-			const k = (t * 0.9) % 3;
+			const k = (((t * 0.9) % 3) + 3) % 3;
 			const pts: V3[] = [[5, 0.13, 0.5], [9, 0.13, -0.5], [11, 0.13, 2.8]];
 			const a = pts[Math.floor(k)];
 			const b = pts[(Math.floor(k) + 1) % 3];
