@@ -1103,7 +1103,7 @@ const sc: Scene[] = [];
 		cam: (t) => {
 			if (t < clap - 0.2) return orbit([16.0, 0.8, 2.4], 5.5, 0.8, 0.4 + 0.3 * ease(t / 3), 48);
 			if (t < med - 0.2) return orbit([0, 5, -18], 20, 0, -0.2 + 0.4 * ease((t - clap) / 3), 58);
-			return orbit([15, 0.8, 4], 5.5, 0.6, 0.2 - 0.5 * ease((t - med) / 4), 48);
+			return orbit([16.6, 0.8, 1.6], 8.5, 0.9, 0.35 - 0.4 * ease((t - med) / 4), 50);
 		},
 		world: (t) => {
 			const p: V3 = t < out ? [16.4, 0.13, 2.5] : lv([16.4, 0.13, 2.5], [14.5, 2.0, 15], clamp01((t - out) / 0.8));
@@ -1120,7 +1120,7 @@ const sc: Scene[] = [];
 				<>
 					{t < med && <At x={16.6} z={1.8} h={0.92} lie={1}>{(x, y, s) => <Kir x={x} y={y} s={s} dir={-1} face="wince" />}</At>}
 					{t >= med && (
-						<At x={lerp(16.4, 14.6, carry)} z={lerp(2.0, 6.0, carry)} h={1}>
+						<At x={lerp(16.4, 18.8, carry)} z={lerp(1.8, -1.5, carry)} h={1}>
 							{(x, y, s) => (
 								<g>
 									<Stretcher x={x} y={y - 60 * s} s={s * 0.9} />
@@ -1174,7 +1174,7 @@ const sc: Scene[] = [];
 		},
 		over: (t) => (
 			<>
-				<SubBoard t={t} at={0.2} />
+				{t < name - 0.2 && <SubBoard t={t} at={0.2} />}
 				{t > name && <NameTag name="Марко" role="теперь за «Метеор»" from={name} x={60} y={150} avatar={<SideChar x={0} y={190} s={0.38} frontHair="curly" hairColor="#1b1410" jacket={KIT} pants="#f4f1ea" />} />}
 			</>
 		),
@@ -1195,7 +1195,7 @@ const sc: Scene[] = [];
 		cam: (t) => {
 			if (t < ball - 0.2) return orbit([0, 4, -10], 20, 4, 0.5 - 0.3 * ease(t / 2.5), 56);
 			if (t < onlyT - 0.2) return orbit([5, 1.0, 1.5], 7, 0.8, 1.4 - 0.6 * ease((t - ball) / 3), 50);
-			return orbit([5.4, 0.9, 1.5], 3.6, 0.3, 0.6 + 1.6 * ease((t - onlyT) / Math.max(1, freeze - onlyT)), lerp(46, 38, ease((t - onlyT) / 3)));
+			return orbit([5.3, 0.9, 1.5], 7.0, 0.4, 0.45 - 0.45 * ease((t - onlyT) / Math.max(1, freeze - onlyT)), lerp(50, 44, ease((t - onlyT) / 3)));
 		},
 		world: (t) => {
 			const k = ease((t - ball) / Math.max(1, swing - ball));
