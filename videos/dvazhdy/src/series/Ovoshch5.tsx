@@ -1115,8 +1115,8 @@ const FK: V3 = [-12.5, 0.13, 1.0];
 	sc.push({
 		at,
 		cam: (t) => {
-			if (t < run - 0.2) return orbit([-14, 1.0, 0.8], 6, 0.5, 1.6 - 0.2 * ease(t / 4), 48);
-			if (t < crack - 0.2) return orbit([-12.4, 0.7, 1.0], 4.0, 0.3, 1.1 + 0.3 * ease((t - run) / 2), 44);
+			if (t < run - 0.2) return {pos: lv([-7.4, 1.7, 2.6], [-8.0, 1.6, 2.1], ease(t / 5)), look: [-16, 1.0, 0.6], fov: 50};
+			if (t < crack - 0.2) return orbit([-12.6, 0.8, 1.0], 5.6, 0.4, 0.6 + 0.2 * ease((t - run) / 2), 46);
 			return orbit([-12.0, 0.4, 1.2], 3.6, 0.6, 0.4 + 0.5 * ease((t - crack) / 6), 44);
 		},
 		world: (t) => {
