@@ -553,7 +553,7 @@ type Scene = {
 	heads?: Partial<Record<Who, V3>>;
 	freezeAt?: number;
 };
-const S = (w: string, from = 0, pad = 0.2) => Math.max(0, T(w, from) - pad);
+const S = (w: string, from = 0, pad = -0.02) => Math.max(0, T(w, from) - pad);
 
 const Seated = (x: number, z: number, w = 0.8, col = '#c98c55') => <Quad pts={[[x - w / 2, 0.42, z + 0.25], [x + w / 2, 0.42, z + 0.25], [x + w / 2, 0.56, z + 0.25], [x - w / 2, 0.56, z + 0.25]]} fill={col} />;
 
@@ -1413,7 +1413,7 @@ export const Ovoshch6: React.FC<{audio?: string}> = ({audio = ''}) => {
 	const t = useCurrentFrame() / FPS;
 	let ci = -1;
 	CAPTIONS.forEach((c, i) => {
-		if (c[0].start - 0.25 <= t) ci = i;
+		if (c[0].start - 0.05 <= t) ci = i;
 	});
 	const endFade = interpolate(t, [OVOSHCH6_DURATION - 0.25, OVOSHCH6_DURATION], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 	return (
@@ -1421,9 +1421,9 @@ export const Ovoshch6: React.FC<{audio?: string}> = ({audio = ''}) => {
 			{SCENES.map((sd, i) => {
 				const from = sd.at;
 				const to = i < SCENES.length - 1 ? SCENES[i + 1].at : OVOSHCH6_DURATION;
-				const start = Math.max(0, Math.round((from - (i ? FADE : 0)) * FPS));
+				const start = Math.max(0, Math.round(from * FPS));
 				return (
-					<Sequence key={i} from={start} durationInFrames={Math.max(1, Math.round(to * FPS) - start)}>
+					<Sequence key={i} from={start} durationInFrames={Math.max(1, Math.round((to + (i < SCENES.length - 1 ? FADE : 0)) * FPS) - start)}>
 						<Layer i={i} lead={from - start / FPS} dur={to - from} />
 					</Sequence>
 				);
