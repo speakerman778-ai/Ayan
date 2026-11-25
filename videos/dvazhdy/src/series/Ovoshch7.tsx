@@ -1596,9 +1596,9 @@ const BAR = 150;
 				<Board text="ФИНАЛ" sub="БАРСЕЛОНА — МАДРИД" />
 			</>
 		),
-		over: (t) =>
-			t > freeze + 0.9 ? (
-				<g opacity={clamp01((t - freeze - 0.9) / 0.5)}>
+		over: (_t, abs) =>
+			abs - at > freeze + 0.9 ? (
+				<g opacity={clamp01((abs - at - freeze - 0.9) / 0.5)}>
 					<text x={540} y={700} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={78} fill="#fff" stroke={O} strokeWidth={10} paintOrder="stroke">Продолжение</text>
 					<text x={540} y={800} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={78} fill="#f5c542" stroke={O} strokeWidth={10} paintOrder="stroke">следует…</text>
 					<text x={540} y={900} textAnchor="middle" fontFamily="Inter" fontWeight={800} fontSize={40} fill="#fff" stroke={O} strokeWidth={6} paintOrder="stroke">кто выдал секрет? пиши в комментах 👇</text>
