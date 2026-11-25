@@ -1526,27 +1526,35 @@ const BAR = 150;
 	});
 }
 
-// 13. he leans in: «How's your knee, Ovoshch?» -----------------------------------------
+// 13. he leans in while we walk: «How's your knee, Ovoshch?» ---------------------------
 {
 	const at = S('он', idx('рядом'));
 	const ask = T('как', idx('говорит')) - at;
+	const zAt = (t: number) => lerp(-5.0, -8.2, ease(Math.min(t, ask + 0.3) / (ask + 0.3)));
 	sc.push({
 		at,
 		grade: 'gold',
-		cam: (t, dur) => ({pos: lv([2.4, 1.6, -6.2], [1.9, 1.6, -6.0], ease(t / dur)), look: [0.05, 1.3, -9.3], fov: 46}),
+		cam: (t, dur) => {
+			const z = zAt(t);
+			const push = ease((t - ask) / 1.4);
+			const a = 0.95 - 0.35 * ease(t / dur);
+			const r = lerp(3.4, 2.9, push);
+			return {pos: [0.1 + r * Math.sin(a), 1.62, z + r * Math.cos(a)], look: [0.1 + 0.1 * push, 1.42, z], fov: 46};
+		},
 		world: (t) => <Tunnel t={t} />,
 		flat: (t) => {
-			const lean = ease((t - 0.3) / 1);
+			const z = zAt(t);
+			const walking = t < ask + 0.2;
+			const lean = ease((t - ask + 0.6) / 0.7);
 			return (
 				<>
-					<At x={-0.35} z={-9.4} h={0.88}>{(x, y, s) => <ShnBar x={x} y={y} s={s} dir={1} face={t > ask + 0.8 ? 'shock' : 'determined'} />}</At>
-					<At x={0.5} z={-9.2} h={0.93}>{(x, y, s) => <g transform={`rotate(${-9 * lean} ${x} ${y})`}><RmCap x={x} y={y} s={s} dir={-1} face={t > ask ? 'smile' : 'neutral'} /></g>}</At>
-					{t > ask + 0.8 && <rect width={VW} height={VH} fill="#000" opacity={0.25} />}
+					<At x={-0.3} z={z} h={0.88}>{(x, y, s) => <ShnBar x={x} y={y} s={s} dir={1} face={t > ask + 0.9 ? 'shock' : 'determined'} walk={walking ? 0.6 : 0} />}</At>
+					<At x={0.45} z={z - 0.15} h={0.93}>{(x, y, s) => <g transform={`rotate(${-10 * lean} ${x} ${y})`}><RmCap x={x} y={y} s={s} dir={-1} face={t > ask ? 'smile' : 'neutral'} walk={walking ? 0.6 : 0} /></g>}</At>
+					{t > ask + 0.9 && <rect width={VW} height={VH} fill="#7a0b12" opacity={0.18 * (0.6 + 0.4 * Math.sin((t - ask) * 9))} />}
 				</>
 			);
 		},
 		over: () => null,
-		heads: {rm: [0.4, 1.6, -9.2]},
 	});
 }
 
