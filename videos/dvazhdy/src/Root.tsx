@@ -23,6 +23,7 @@ import {Ovoshch3, OVOSHCH3_DURATION} from './series/Ovoshch3';
 import {Ovoshch4, OVOSHCH4_DURATION} from './series/Ovoshch4';
 import {Ovoshch5, OVOSHCH5_DURATION} from './series/Ovoshch5';
 import {Ovoshch6, OVOSHCH6_DURATION} from './series/Ovoshch6';
+import {Ovoshch7, OVOSHCH7_DURATION} from './series/Ovoshch7';
 import {Stream, STREAM_DURATION} from './series/Stream';
 import {Kypshak, KYPSHAK_DURATION} from './series/Kypshak';
 import {ShnurokAvatar, ShnurokHairOptions, ShnurokSheet} from './series/Shnurok';
@@ -40,6 +41,7 @@ export const Root: React.FC = () => (
 	<Composition id="Kypshak" component={Kypshak} width={1080} height={1920} fps={30} durationInFrames={KYPSHAK_DURATION * 30} defaultProps={{audio: 'kypshak/mix.wav'}} />
 	<Composition id="Stream" component={Stream} width={1080} height={1920} fps={30} durationInFrames={STREAM_DURATION * 30} defaultProps={{audio: 'shnurok/ep12-mix.wav'}} />
 	<Composition id="Ovoshch6" component={Ovoshch6} width={1080} height={1920} fps={30} durationInFrames={OVOSHCH6_DURATION * 30} defaultProps={{audio: 'shnurok/ep11-mix.wav'}} />
+	<Composition id="Ovoshch7" component={Ovoshch7} width={1080} height={1920} fps={30} durationInFrames={OVOSHCH7_DURATION * 30} defaultProps={{audio: 'shnurok/ep13-mix.wav'}} />
 	<Composition id="Ovoshch5" component={Ovoshch5} width={1080} height={1920} fps={30} durationInFrames={OVOSHCH5_DURATION * 30} defaultProps={{audio: 'shnurok/ep10-mix.wav'}} />
 	<Composition id="Ovoshch4" component={Ovoshch4} width={1080} height={1920} fps={30} durationInFrames={OVOSHCH4_DURATION * 30} defaultProps={{audio: 'shnurok/ep09-mix.wav'}} />
 	<Composition id="Ovoshch3" component={Ovoshch3} width={1080} height={1920} fps={30} durationInFrames={OVOSHCH3_DURATION * 30} defaultProps={{audio: 'shnurok/ep08-mix.wav'}} />
