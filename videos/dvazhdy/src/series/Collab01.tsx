@@ -82,16 +82,17 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 		const a = ((ang + (side > 0 ? st : -st) * 18) * Math.PI) / 180;
 		const sx = side * 108;
 		const sy = -440;
-		const ex = sx + side * Math.sin(a) * 150;
-		const ey = sy + Math.cos(a) * 150;
-		const hx = ex + side * Math.sin(a * 1.08) * 130;
-		const hy = ey + Math.cos(a * 1.08) * 130;
+		const ex = sx + side * Math.sin(a) * 168;
+		const ey = sy + Math.cos(a) * 168;
+		const hx = ex + side * Math.sin(a * 1.08) * 145;
+		const hy = ey + Math.cos(a * 1.08) * 145;
 		return (
 			<g>
 				<path d={`M ${sx} ${sy} L ${ex} ${ey} L ${hx} ${hy}`} stroke={L} strokeWidth={58} strokeLinecap="round" strokeLinejoin="round" fill="none" />
 				<path d={`M ${sx} ${sy} L ${ex} ${ey} L ${hx} ${hy}`} stroke={side > 0 ? top : dk} strokeWidth={47} strokeLinecap="round" strokeLinejoin="round" fill="none" />
-				<path d={`M ${hx - 22} ${hy - 4} L ${hx + 22} ${hy - 4}`} stroke={L} strokeWidth={5} />
-				<circle cx={hx} cy={hy + 16} r={28} fill={SK} stroke={L} strokeWidth={5} />
+				<path d={`M ${hx - 24} ${hy - 6} L ${hx + 24} ${hy - 6}`} stroke={L} strokeWidth={5} />
+				<circle cx={hx} cy={hy + 20} r={35} fill={SK} stroke={L} strokeWidth={5} />
+				<path d={`M ${ex - 18 * side} ${ey - 10} Q ${ex + 4 * side} ${ey + 14} ${ex + 22 * side} ${ey - 6}`} stroke={L} strokeWidth={4} fill="none" strokeLinecap="round" />
 				{phone && side > 0 && (
 					<g transform={`translate(${hx} ${hy - 10})`}>
 						<rect x={-20} y={-46} width={40} height={70} rx={8} fill="#1d2030" stroke={L} strokeWidth={5} />
@@ -112,6 +113,7 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 		<g>
 			<ellipse cx={ex} cy={-545} rx={40} ry={47 * blink} fill="#fff" stroke={L} strokeWidth={5} />
 			{blink > 0.5 && <circle cx={ex + look * 12 + (ex < 0 ? 4 : -4)} cy={-541 + (face === 'sad' ? 8 : 0)} r={face === 'shock' ? 9 : 12} fill="#2a2830" />}
+			{blink > 0.5 && <circle cx={ex + look * 12 + (ex < 0 ? 4 : -4) - 4} cy={-545 + (face === 'sad' ? 8 : 0)} r={4.5} fill="#fff" />}
 		</g>
 	);
 	const brow = (ex: number, side: -1 | 1) => {
@@ -133,15 +135,15 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 			<ellipse cx={0} cy={2} rx={120} ry={16} fill="#000" opacity={0.28} />
 			{leg(-1)}
 			{leg(1)}
-			<g transform="translate(0 -100)">
+			<g transform="translate(0 -160)">
 				{arm(-1, armL)}
 				{/* hoodie: longer torso */}
-				<path d={`M -60 -482 Q -112 -476 -118 -430 L ${-114 + breathe * 0.3} -150 L ${114 - breathe * 0.3} -150 L 118 -430 Q 112 -476 60 -482 Z`} fill={top} stroke={L} strokeWidth={6} strokeLinejoin="round" />
-				<path d={`M -114 -150 L 114 -150 L 115 -174 L -115 -174 Z`} fill={dk} stroke={L} strokeWidth={5} />
-				<path d={`M -118 -430 L -115 -174 L -84 -174 L -86 -462 Z`} fill={dk} opacity={0.6} />
+				<path d={`M -60 -482 Q -112 -476 -118 -430 L ${-114 + breathe * 0.3} -90 L ${114 - breathe * 0.3} -90 L 118 -430 Q 112 -476 60 -482 Z`} fill={top} stroke={L} strokeWidth={6} strokeLinejoin="round" />
+				<path d={`M -114 -90 L 114 -90 L 115 -114 L -115 -114 Z`} fill={dk} stroke={L} strokeWidth={5} />
+				<path d={`M -118 -430 L -115 -114 L -84 -114 L -86 -462 Z`} fill={dk} opacity={0.6} />
 				{!pj && !beard && !number && (
 					<>
-						<path d="M -58 -300 L 58 -300 Q 68 -225 60 -205 L -60 -205 Q -68 -225 -58 -300 Z" fill={dk} stroke={L} strokeWidth={5} strokeLinejoin="round" />
+						<path d="M -58 -250 L 58 -250 Q 68 -175 60 -150 L -60 -150 Q -68 -175 -58 -250 Z" fill={dk} stroke={L} strokeWidth={5} strokeLinejoin="round" />
 						<path d="M -92 -476 Q 0 -398 92 -476 Q 70 -526 0 -524 Q -70 -526 -92 -476 Z M -56 -478 Q 0 -440 56 -478 Q 30 -500 0 -498 Q -30 -500 -56 -478 Z" fill={dk} fillRule="evenodd" stroke={L} strokeWidth={5} />
 						<path d="M -20 -460 L -24 -360" stroke="#f4f4f4" strokeWidth={6} strokeLinecap="round" />
 						<path d="M 20 -460 L 24 -360" stroke="#f4f4f4" strokeWidth={6} strokeLinecap="round" />
@@ -149,8 +151,8 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 				)}
 				{number && (
 					<>
-						<path d="M 0 -480 L 0 -150" stroke={L} strokeWidth={5} />
-						<text x={50} y={-300} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={70} fill="#fff" stroke={L} strokeWidth={5} paintOrder="stroke">{number}</text>
+						<path d="M 0 -480 L 0 -90" stroke={L} strokeWidth={5} />
+						<text x={50} y={-260} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={70} fill="#fff" stroke={L} strokeWidth={5} paintOrder="stroke">{number}</text>
 					</>
 				)}
 				{pj && [0, 1, 2, 3].map((k) => <circle key={k} cx={-50 + k * 34} cy={-380 + (k % 2) * 70} r={10} fill="#fff" opacity={0.75} />)}
@@ -162,7 +164,7 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 				)}
 				{arm(1, armR)}
 				<g transform="translate(0 -50)">
-					<rect x={-26} y={-450} width={52} height={36} fill={SKD} stroke={L} strokeWidth={5} />
+					<rect x={-36} y={-446} width={72} height={26} fill={SKD} stroke={L} strokeWidth={5} />
 					<g transform={`rotate(${Math.sin(t * 1.3 + ph) * 2} 0 -430) translate(0 -430) scale(1.3) translate(0 430)`}>
 						<ellipse cx={-116} cy={-560} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
 						<ellipse cx={116} cy={-560} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
@@ -724,6 +726,33 @@ export const CollabSheet: React.FC = () => {
 				<Kid x={730} y={1360} s={0.38} t={t} {...VLAD} face="smirk" armR={150} />
 				<Kid x={930} y={1360} s={0.38} t={t} {...VLAD} face="neutral" />
 				{row(1760, 'Тренер', COACH, ['angry', 'neutral'])}
+			</svg>
+		</AbsoluteFill>
+	);
+};
+
+const HEROES: {name: string; p: Partial<KidP>; faces: Face[]}[] = [
+	{name: 'Дима «Лимон»', p: DIMA, faces: ['neutral', 'shock', 'sad', 'happy']},
+	{name: 'Артём', p: ARTEM, faces: ['smirk', 'laugh', 'angry', 'worried']},
+	{name: 'Соня', p: SONYA, faces: ['worried', 'happy', 'shock', 'sad']},
+	{name: 'Тренер', p: COACH, faces: ['angry', 'neutral', 'shock', 'smirk']},
+	{name: 'Влад', p: VLAD, faces: ['smirk', 'neutral', 'shock', 'laugh']},
+];
+export const CollabSheetOne: React.FC<{who: number}> = ({who}) => {
+	const h = HEROES[who];
+	const t = 1.2;
+	return (
+		<AbsoluteFill style={{background: '#141a33'}}>
+			<svg width={VW} height={VH} viewBox={`0 0 ${VW} ${VH}`}>
+				<text x={540} y={90} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={64} fill="#f5b638">{h.name}</text>
+				<text x={540} y={140} textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={30} fill="#9fb7d6">колаба × @multobiz</text>
+				<Kid x={540} y={1000} s={0.95} t={t} {...(h.p as object)} face={h.faces[0]} armL={10} armR={who === 4 ? 150 : 10} />
+				{h.faces.map((f, i) => (
+					<g key={i}>
+						<Kid x={150 + i * 260} y={1830} s={0.42} t={t} {...(h.p as object)} face={f} armL={i === 3 ? 150 : 10} armR={i === 1 ? 60 : 10} look={i % 2 ? 0.6 : -0.4} talk={i === 1 ? 0.6 : 0} />
+					</g>
+				))}
+				<text x={540} y={1300} textAnchor="middle" fontFamily="Inter" fontWeight={800} fontSize={32} fill="#9fb7d6">эмоции и позы</text>
 			</svg>
 		</AbsoluteFill>
 	);
