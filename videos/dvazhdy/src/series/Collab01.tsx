@@ -71,8 +71,8 @@ type KidP = {
 };
 const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632', pants = '#262d4d', face = 'neutral', talk = 0, armL = 8, armR = 8, walk = 0, look = 0, pj, girl, number, beard, whistle, phone, bald, ph = 0}) => {
 	const L = '#1c1d29';
-	const SK = '#e9b98f';
-	const SKD = '#d6a079';
+	const SK = '#dfa77c';
+	const SKD = '#c78d63';
 	const blink = (t + ph) % 3.4 > 3.27 ? 0.1 : 1;
 	const breathe = Math.sin(t * 2.4 + ph) * 2.5;
 	const st = Math.sin(t * 9 + ph) * walk;
@@ -80,8 +80,8 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 	const dk = shade(top);
 	const arm = (side: -1 | 1, ang: number) => {
 		const a = ((ang + (side > 0 ? st : -st) * 18) * Math.PI) / 180;
-		const sx = side * 104;
-		const sy = -455;
+		const sx = side * 108;
+		const sy = -440;
 		const ex = sx + side * Math.sin(a) * 150;
 		const ey = sy + Math.cos(a) * 150;
 		const hx = ex + side * Math.sin(a * 1.08) * 130;
@@ -102,29 +102,29 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 		);
 	};
 	const leg = (side: -1 | 1) => (
-		<g transform={`rotate(${(side > 0 ? st : -st) * 12} ${side * 38} -300)`}>
-			<path d={`M ${side * 38 - 30} -320 L ${side * 38 + 30} -320 L ${side * 38 + 25} -26 L ${side * 38 - 25} -26 Z`} fill={pants} stroke={L} strokeWidth={6} strokeLinejoin="round" />
+		<g transform={`rotate(${(side > 0 ? st : -st) * 12} ${side * 38} -250)`}>
+			<path d={`M ${side * 40 - 34} -270 L ${side * 40 + 34} -270 L ${side * 40 + 30} -26 L ${side * 40 - 30} -26 Z`} fill={pants} stroke={L} strokeWidth={6} strokeLinejoin="round" />
 			<path d={`M ${side * 38 - 36} -30 Q ${side * 38 - 36} -54 ${side * 38} -54 Q ${side * 38 + 44} -54 ${side * 38 + 46} -14 L ${side * 38 - 36} -6 Z`} fill="#eef0f4" stroke={L} strokeWidth={6} strokeLinejoin="round" />
 			<path d={`M ${side * 38 - 36} -10 L ${side * 38 + 46} -14`} stroke="#b9bfca" strokeWidth={8} />
 		</g>
 	);
 	const eye = (ex: number) => (
 		<g>
-			<ellipse cx={ex} cy={-560} rx={50} ry={55 * blink} fill="#fff" stroke={L} strokeWidth={6} />
-			{blink > 0.5 && <circle cx={ex + look * 12 + (ex < 0 ? 4 : -4)} cy={-556 + (face === 'sad' ? 8 : 0)} r={face === 'shock' ? 13 : 18} fill={L} />}
+			<ellipse cx={ex} cy={-545} rx={46} ry={52 * blink} fill="#fff" stroke={L} strokeWidth={5} />
+			{blink > 0.5 && <circle cx={ex + look * 12 + (ex < 0 ? 4 : -4)} cy={-541 + (face === 'sad' ? 8 : 0)} r={face === 'shock' ? 10 : 13} fill={L} />}
 		</g>
 	);
 	const brow = (ex: number, side: -1 | 1) => {
 		const tilt = face === 'angry' || face === 'smirk' ? 10 * side : face === 'sad' || face === 'worried' ? -9 * side : 0;
 		const yy = face === 'shock' ? -622 : -612;
-		return <path d={`M ${ex - 22} ${yy + tilt} L ${ex + 22} ${yy - tilt}`} stroke={L} strokeWidth={7} strokeLinecap="round" />;
+		return tilt ? <path d={`M ${ex - 20} ${yy + tilt} L ${ex + 20} ${yy - tilt}`} stroke={L} strokeWidth={5} strokeLinecap="round" /> : null;
 	};
 	const mouth = () => {
-		if (talk > 0.05) return <ellipse cx={0} cy={-482} rx={16 + talk * 6} ry={6 + talk * 15} fill="#8a2a2a" stroke={L} strokeWidth={5} />;
+		if (talk > 0.05) return (<g><ellipse cx={0} cy={-482} rx={16 + talk * 6} ry={6 + talk * 15} fill="#7a1f2a" stroke={L} strokeWidth={5} /><ellipse cx={0} cy={-476 + talk * 8} rx={9 + talk * 3} ry={4 + talk * 4} fill="#e8707a" /></g>);
 		if (face === 'laugh' || face === 'happy') return <path d="M -30 -492 Q 0 -446 30 -492 Z" fill="#8a2a2a" stroke={L} strokeWidth={5} strokeLinejoin="round" />;
 		if (face === 'smirk') return <path d="M -18 -482 Q 8 -476 28 -494" stroke={L} strokeWidth={6} strokeLinecap="round" fill="none" />;
 		if (face === 'sad' || face === 'worried') return <path d="M -20 -474 Q 0 -490 20 -474" stroke={L} strokeWidth={6} strokeLinecap="round" fill="none" />;
-		if (face === 'shock') return <ellipse cx={0} cy={-480} rx={15} ry={19} fill="#8a2a2a" stroke={L} strokeWidth={5} />;
+		if (face === 'shock') return (<g><ellipse cx={0} cy={-480} rx={16} ry={20} fill="#7a1f2a" stroke={L} strokeWidth={5} /><ellipse cx={0} cy={-470} rx={9} ry={6} fill="#e8707a" /></g>);
 		if (face === 'angry') return <path d="M -20 -480 L 20 -480" stroke={L} strokeWidth={6} strokeLinecap="round" />;
 		return <path d="M -16 -484 Q 0 -474 16 -484" stroke={L} strokeWidth={6} strokeLinecap="round" fill="none" />;
 	};
@@ -133,12 +133,12 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 			<ellipse cx={0} cy={2} rx={120} ry={16} fill="#000" opacity={0.28} />
 			{leg(-1)}
 			{leg(1)}
-			<g transform="translate(0 -150)">
+			<g transform="translate(0 -100)">
 				{arm(-1, armL)}
 				{/* hoodie: longer torso */}
-				<path d={`M -96 -478 Q -112 -478 -112 -458 L ${-106 + breathe * 0.3} -150 L ${106 - breathe * 0.3} -150 L 112 -458 Q 112 -478 96 -478 Z`} fill={top} stroke={L} strokeWidth={6} strokeLinejoin="round" />
-				<path d={`M -106 -150 L 106 -150 L 107 -172 L -107 -172 Z`} fill={dk} stroke={L} strokeWidth={5} />
-				<path d={`M -112 -458 L -107 -172 L -78 -172 L -80 -470 Z`} fill={dk} opacity={0.6} />
+				<path d={`M -60 -482 Q -112 -476 -118 -430 L ${-114 + breathe * 0.3} -150 L ${114 - breathe * 0.3} -150 L 118 -430 Q 112 -476 60 -482 Z`} fill={top} stroke={L} strokeWidth={6} strokeLinejoin="round" />
+				<path d={`M -114 -150 L 114 -150 L 115 -174 L -115 -174 Z`} fill={dk} stroke={L} strokeWidth={5} />
+				<path d={`M -118 -430 L -115 -174 L -84 -174 L -86 -462 Z`} fill={dk} opacity={0.6} />
 				{!pj && !beard && !number && (
 					<>
 						<path d="M -58 -300 L 58 -300 Q 68 -225 60 -205 L -60 -205 Q -68 -225 -58 -300 Z" fill={dk} stroke={L} strokeWidth={5} strokeLinejoin="round" />
@@ -161,9 +161,9 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 					</>
 				)}
 				{arm(1, armR)}
-				<g transform="translate(0 -75)">
-					<rect x={-24} y={-445} width={48} height={50} fill={SKD} stroke={L} strokeWidth={5} />
-					<g transform={`rotate(${Math.sin(t * 1.3 + ph) * 2} 0 -430) translate(0 -430) scale(1.14) translate(0 430)`}>
+				<g transform="translate(0 -50)">
+					<rect x={-26} y={-450} width={52} height={36} fill={SKD} stroke={L} strokeWidth={5} />
+					<g transform={`rotate(${Math.sin(t * 1.3 + ph) * 2} 0 -430) translate(0 -430) scale(1.3) translate(0 430)`}>
 						<ellipse cx={-116} cy={-560} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
 						<ellipse cx={116} cy={-560} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
 						<ellipse cx={0} cy={-572} rx={118} ry={124} fill={SK} stroke={L} strokeWidth={6} />
@@ -177,7 +177,7 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 						{beard && <path d="M -64 -486 Q -40 -440 0 -446 Q 40 -440 64 -486 Q 50 -470 0 -470 Q -50 -470 -64 -486 Z" fill="#4a3a30" stroke={L} strokeWidth={5} />}
 						{!bald && !girl && (
 							<path
-								d="M -112 -560 Q -122 -660 -80 -705 Q -40 -745 20 -740 Q 90 -738 112 -680 Q 124 -630 110 -560 L 100 -600 L 86 -580 L 80 -630 L 52 -612 L 46 -650 L 14 -626 L 4 -664 L -26 -630 L -40 -662 L -66 -624 L -84 -650 L -94 -596 Z"
+								d="M -120 -548 Q -132 -650 -92 -700 L -70 -684 Q -60 -730 -10 -722 L 6 -748 L 30 -718 Q 80 -730 100 -690 L 124 -700 Q 132 -640 120 -548 L 104 -590 L 96 -616 L 70 -598 L 58 -640 L 24 -612 L 10 -650 L -24 -612 L -46 -646 L -66 -604 L -92 -626 L -104 -580 Z"
 								fill={hair}
 								stroke={L}
 								strokeWidth={6}
@@ -479,7 +479,7 @@ S.push({
 					<rect x={-46} y={-20} width={92} height={60} rx={14} fill="#4a8a44" stroke={OL} strokeWidth={6} />
 				</g>
 				<Kid x={850} y={1720} s={1.02} t={t} {...ARTEM} face={t > hit + 0.4 ? 'laugh' : 'smirk'} armL={t > hit - 0.3 && t < hit + 0.4 ? 95 : 15} armR={15} look={-0.7} talk={talkOf('art', abs)} />
-				<Plate t={t} at={A('art') - (A('art') - 0.5) + 2.4} text="ПОДКОЛОВ ЗА НЕДЕЛЮ: 14" y={1000} />
+				<Plate t={t} at={A('art') - (A('art') - 0.5) + 2.4} text="ПОДКОЛОВ ЗА НЕДЕЛЮ: 14" y={520} />
 				{/* raise hand at the end — the freeze point before the banner */}
 				{t > 5.2 && <text x={900} y={980} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={120} fill="#ff5a4f">!</text>}
 			</>
