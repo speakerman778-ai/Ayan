@@ -69,114 +69,128 @@ type KidP = {
 	bald?: boolean;
 	ph?: number;
 };
-const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#6b4226', top = '#f2b632', pants = '#2b3a67', face = 'neutral', talk = 0, armL = 8, armR = 8, walk = 0, look = 0, pj, girl, number, beard, whistle, phone, bald, ph = 0}) => {
-	const blink = (t + ph) % 3.4 > 3.27 ? 0.12 : 1;
-	const breathe = Math.sin(t * 2.4 + ph) * 3;
+const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632', pants = '#262d4d', face = 'neutral', talk = 0, armL = 8, armR = 8, walk = 0, look = 0, pj, girl, number, beard, whistle, phone, bald, ph = 0}) => {
+	const L = '#1c1d29';
+	const SK = '#e9b98f';
+	const SKD = '#d6a079';
+	const blink = (t + ph) % 3.4 > 3.27 ? 0.1 : 1;
+	const breathe = Math.sin(t * 2.4 + ph) * 2.5;
 	const st = Math.sin(t * 9 + ph) * walk;
 	const bob = -Math.abs(st) * 10;
+	const dk = shade(top);
 	const arm = (side: -1 | 1, ang: number) => {
 		const a = ((ang + (side > 0 ? st : -st) * 18) * Math.PI) / 180;
-		const sx = side * 92;
-		const ex = sx + side * Math.sin(a) * 95;
-		const ey = -300 + Math.cos(a) * 95;
-		const hx = ex + side * Math.sin(a * 1.1) * 80;
-		const hy = ey + Math.cos(a * 1.1) * 80;
+		const sx = side * 88;
+		const sy = -380;
+		const ex = sx + side * Math.sin(a) * 120;
+		const ey = sy + Math.cos(a) * 120;
+		const hx = ex + side * Math.sin(a * 1.08) * 105;
+		const hy = ey + Math.cos(a * 1.08) * 105;
 		return (
 			<g>
-				<path d={`M ${sx} -300 L ${ex} ${ey} L ${hx} ${hy}`} stroke={OL} strokeWidth={50} strokeLinecap="round" strokeLinejoin="round" fill="none" />
-				<path d={`M ${sx} -300 L ${ex} ${ey} L ${hx} ${hy}`} stroke={top} strokeWidth={38} strokeLinecap="round" strokeLinejoin="round" fill="none" />
-				<circle cx={hx} cy={hy} r={22} fill="#f6c9a0" stroke={OL} strokeWidth={6} />
-				{phone && side > 0 && <rect x={hx - 22} y={hy - 50} width={44} height={74} rx={8} fill="#222838" stroke={OL} strokeWidth={5} />}
-				{phone && side > 0 && <rect x={hx - 15} y={hy - 42} width={30} height={52} rx={4} fill="#5ab0ff" opacity={0.85} />}
+				<path d={`M ${sx} ${sy} L ${ex} ${ey} L ${hx} ${hy}`} stroke={L} strokeWidth={44} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+				<path d={`M ${sx} ${sy} L ${ex} ${ey} L ${hx} ${hy}`} stroke={side > 0 ? top : dk} strokeWidth={34} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+				<path d={`M ${hx - 15} ${hy - 6} L ${hx + 15} ${hy - 6}`} stroke={L} strokeWidth={4} />
+				<circle cx={hx} cy={hy + 12} r={21} fill={SK} stroke={L} strokeWidth={5} />
+				{phone && side > 0 && (
+					<g transform={`translate(${hx} ${hy - 10})`}>
+						<rect x={-20} y={-46} width={40} height={70} rx={8} fill="#1d2030" stroke={L} strokeWidth={5} />
+						<rect x={-14} y={-39} width={28} height={50} rx={4} fill="#62b6ff" />
+					</g>
+				)}
 			</g>
 		);
 	};
 	const leg = (side: -1 | 1) => (
-		<g transform={`rotate(${(side > 0 ? st : -st) * 14} ${side * 40} -150)`}>
-			<rect x={side * 40 - 28} y={-150} width={56} height={145} rx={22} fill={pants} stroke={OL} strokeWidth={7} />
-			<ellipse cx={side * 46} cy={-4} rx={42} ry={20} fill="#f4f4f4" stroke={OL} strokeWidth={7} />
+		<g transform={`rotate(${(side > 0 ? st : -st) * 14} ${side * 38} -150)`}>
+			<path d={`M ${side * 38 - 30} -170 L ${side * 38 + 30} -170 L ${side * 38 + 26} -26 L ${side * 38 - 26} -26 Z`} fill={pants} stroke={L} strokeWidth={6} strokeLinejoin="round" />
+			<path d={`M ${side * 38 - 36} -30 Q ${side * 38 - 36} -54 ${side * 38} -54 Q ${side * 38 + 44} -54 ${side * 38 + 46} -14 L ${side * 38 - 36} -6 Z`} fill="#eef0f4" stroke={L} strokeWidth={6} strokeLinejoin="round" />
+			<path d={`M ${side * 38 - 36} -10 L ${side * 38 + 46} -14`} stroke="#b9bfca" strokeWidth={8} />
 		</g>
 	);
 	const eye = (ex: number) => (
 		<g>
-			<ellipse cx={ex} cy={-520} rx={44} ry={50 * blink} fill="#fff" stroke={OL} strokeWidth={7} />
-			{blink > 0.5 && (
-				<>
-					<circle cx={ex + look * 14} cy={-512 + (face === 'sad' ? 8 : 0)} r={face === 'shock' ? 15 : 22} fill="#151826" />
-					<circle cx={ex + look * 14 - 8} cy={-522} r={7} fill="#fff" />
-				</>
-			)}
+			<ellipse cx={ex} cy={-560} rx={40} ry={44 * blink} fill="#fff" stroke={L} strokeWidth={6} />
+			{blink > 0.5 && <circle cx={ex + look * 12 + (ex < 0 ? 4 : -4)} cy={-556 + (face === 'sad' ? 8 : 0)} r={face === 'shock' ? 11 : 15} fill={L} />}
 		</g>
 	);
 	const brow = (ex: number, side: -1 | 1) => {
-		const tilt = face === 'angry' || face === 'smirk' ? 14 * side : face === 'sad' || face === 'worried' ? -12 * side : face === 'shock' ? 0 : 0;
-		const yy = face === 'shock' ? -592 : -578;
-		return <path d={`M ${ex - 32} ${yy + tilt} Q ${ex} ${yy - 10} ${ex + 32} ${yy - tilt}`} stroke={hair === 'none' ? OL : shade(hair)} strokeWidth={12} strokeLinecap="round" fill="none" />;
+		const tilt = face === 'angry' || face === 'smirk' ? 10 * side : face === 'sad' || face === 'worried' ? -9 * side : 0;
+		const yy = face === 'shock' ? -622 : -612;
+		return <path d={`M ${ex - 22} ${yy + tilt} L ${ex + 22} ${yy - tilt}`} stroke={L} strokeWidth={7} strokeLinecap="round" />;
 	};
-	const mouthOpen = talk > 0.05 ? 6 + talk * 30 : 0;
 	const mouth = () => {
-		if (mouthOpen > 0) return <ellipse cx={0} cy={-440} rx={22 + talk * 6} ry={mouthOpen / 2 + 4} fill="#7a2230" stroke={OL} strokeWidth={6} />;
-		if (face === 'laugh' || face === 'happy') return <path d="M -36 -452 Q 0 -400 36 -452 Z" fill="#7a2230" stroke={OL} strokeWidth={6} strokeLinejoin="round" />;
-		if (face === 'smirk') return <path d="M -24 -440 Q 10 -432 34 -452" stroke={OL} strokeWidth={8} strokeLinecap="round" fill="none" />;
-		if (face === 'sad' || face === 'worried') return <path d="M -26 -430 Q 0 -450 26 -430" stroke={OL} strokeWidth={8} strokeLinecap="round" fill="none" />;
-		if (face === 'shock') return <ellipse cx={0} cy={-438} rx={18} ry={24} fill="#7a2230" stroke={OL} strokeWidth={6} />;
-		if (face === 'angry') return <path d="M -26 -436 L 26 -436" stroke={OL} strokeWidth={8} strokeLinecap="round" />;
-		return <path d="M -22 -442 Q 0 -428 22 -442" stroke={OL} strokeWidth={8} strokeLinecap="round" fill="none" />;
+		if (talk > 0.05) return <ellipse cx={0} cy={-482} rx={16 + talk * 6} ry={6 + talk * 15} fill="#8a2a2a" stroke={L} strokeWidth={5} />;
+		if (face === 'laugh' || face === 'happy') return <path d="M -30 -492 Q 0 -446 30 -492 Z" fill="#8a2a2a" stroke={L} strokeWidth={5} strokeLinejoin="round" />;
+		if (face === 'smirk') return <path d="M -18 -482 Q 8 -476 28 -494" stroke={L} strokeWidth={6} strokeLinecap="round" fill="none" />;
+		if (face === 'sad' || face === 'worried') return <path d="M -20 -474 Q 0 -490 20 -474" stroke={L} strokeWidth={6} strokeLinecap="round" fill="none" />;
+		if (face === 'shock') return <ellipse cx={0} cy={-480} rx={15} ry={19} fill="#8a2a2a" stroke={L} strokeWidth={5} />;
+		if (face === 'angry') return <path d="M -20 -480 L 20 -480" stroke={L} strokeWidth={6} strokeLinecap="round" />;
+		return <path d="M -16 -484 Q 0 -474 16 -484" stroke={L} strokeWidth={6} strokeLinecap="round" fill="none" />;
 	};
 	return (
 		<g transform={`translate(${x} ${y + bob}) scale(${s})`}>
-			<ellipse cx={0} cy={6} rx={130} ry={20} fill="#000" opacity={0.25} />
+			<ellipse cx={0} cy={2} rx={120} ry={16} fill="#000" opacity={0.28} />
 			{leg(-1)}
 			{leg(1)}
 			{arm(-1, armL)}
-			{/* torso */}
-			<path d={`M -100 -330 Q -112 ${-180 + breathe} -86 -140 L 86 -140 Q 112 ${-180 + breathe} 100 -330 Q 0 -365 -100 -330 Z`} fill={top} stroke={OL} strokeWidth={8} strokeLinejoin="round" />
-			{!pj && !beard && <path d="M -50 -215 L 50 -215 L 58 -160 L -58 -160 Z" fill={shade(top)} stroke={OL} strokeWidth={6} strokeLinejoin="round" />}
-			{!pj && !number && !beard && (
+			{/* hoodie */}
+			<path d={`M -92 -395 Q -104 ${-260 + breathe} -100 -150 L 100 -150 Q 104 ${-260 + breathe} 92 -395 Q 0 -425 -92 -395 Z`} fill={top} stroke={L} strokeWidth={6} strokeLinejoin="round" />
+			<path d={`M -100 -150 L 100 -150 L 100 -170 L -100 -170 Z`} fill={dk} stroke={L} strokeWidth={5} />
+			<path d={`M -92 -395 Q -104 -260 -100 -170 L -70 -170 Q -78 -280 -66 -390 Z`} fill={dk} opacity={0.6} />
+			{!pj && !beard && !number && (
 				<>
-					<path d="M -22 -340 L -26 -270" stroke="#f4f4f4" strokeWidth={7} strokeLinecap="round" />
-					<path d="M 22 -340 L 26 -270" stroke="#f4f4f4" strokeWidth={7} strokeLinecap="round" />
+					<path d="M -56 -270 L 56 -270 Q 66 -205 58 -190 L -58 -190 Q -66 -205 -56 -270 Z" fill={dk} stroke={L} strokeWidth={5} strokeLinejoin="round" />
+					<path d="M -66 -405 Q 0 -350 66 -405 Q 40 -440 0 -438 Q -40 -440 -66 -405 Z" fill={dk} stroke={L} strokeWidth={5} />
+					<path d="M -20 -385 L -24 -300" stroke="#f4f4f4" strokeWidth={6} strokeLinecap="round" />
+					<path d="M 20 -385 L 24 -300" stroke="#f4f4f4" strokeWidth={6} strokeLinecap="round" />
 				</>
 			)}
-			{number && <text x={0} y={-225} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={90} fill="#fff" stroke={OL} strokeWidth={6} paintOrder="stroke">{number}</text>}
-			{pj && [0, 1, 2].map((k) => <circle key={k} cx={-40 + k * 40} cy={-250 + (k % 2) * 40} r={12} fill="#fff" opacity={0.7} />)}
+			{number && (
+				<>
+					<path d="M 0 -405 L 0 -150" stroke={L} strokeWidth={5} />
+					<text x={50} y={-250} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={70} fill="#fff" stroke={L} strokeWidth={5} paintOrder="stroke">{number}</text>
+				</>
+			)}
+			{pj && [0, 1, 2, 3].map((k) => <circle key={k} cx={-50 + k * 34} cy={-320 + (k % 2) * 60} r={10} fill="#fff" opacity={0.75} />)}
 			{whistle && (
 				<>
-					<path d="M -30 -335 Q 0 -260 30 -335" stroke="#e8e8e8" strokeWidth={5} fill="none" />
-					<rect x={-14} y={-285} width={28} height={22} rx={6} fill="#c9ced8" stroke={OL} strokeWidth={4} />
+					<path d="M -30 -405 Q 0 -320 30 -405" stroke="#e8e8e8" strokeWidth={4} fill="none" />
+					<rect x={-13} y={-345} width={26} height={20} rx={6} fill="#c9ced8" stroke={L} strokeWidth={4} />
 				</>
 			)}
 			{arm(1, armR)}
-			{/* head */}
-			<g transform={`rotate(${Math.sin(t * 1.3 + ph) * 2} 0 -380)`}>
-				<ellipse cx={-118} cy={-500} rx={22} ry={30} fill="#f6c9a0" stroke={OL} strokeWidth={7} />
-				<ellipse cx={118} cy={-500} rx={22} ry={30} fill="#f6c9a0" stroke={OL} strokeWidth={7} />
-				<path d="M -120 -520 Q -124 -380 0 -370 Q 124 -380 120 -520 Q 118 -650 0 -652 Q -118 -650 -120 -520 Z" fill="#f6c9a0" stroke={OL} strokeWidth={8} />
-				<ellipse cx={-74} cy={-460} rx={18} ry={10} fill="#ef8b8b" opacity={0.6} />
-				<ellipse cx={74} cy={-460} rx={18} ry={10} fill="#ef8b8b" opacity={0.6} />
-				{eye(-48)}
-				{eye(48)}
-				{brow(-48, -1)}
-				{brow(48, 1)}
-				<path d="M -4 -488 Q 6 -470 -6 -462" stroke={OL} strokeWidth={6} fill="none" strokeLinecap="round" />
+			{/* neck + head */}
+			<rect x={-26} y={-440} width={52} height={44} fill={SKD} stroke={L} strokeWidth={5} />
+			<g transform={`rotate(${Math.sin(t * 1.3 + ph) * 2} 0 -430)`}>
+				<ellipse cx={-104} cy={-548} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
+				<ellipse cx={104} cy={-548} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
+				<path d="M -104 -590 Q -108 -470 -40 -440 Q 0 -428 40 -440 Q 108 -470 104 -590 Q 100 -700 0 -704 Q -100 -700 -104 -590 Z" fill={SK} stroke={L} strokeWidth={6} />
+				<ellipse cx={-64} cy={-506} rx={15} ry={8} fill="#e88b7a" opacity={0.45} />
+				<ellipse cx={64} cy={-506} rx={15} ry={8} fill="#e88b7a" opacity={0.45} />
+				{eye(-42)}
+				{eye(42)}
+				{brow(-42, -1)}
+				{brow(42, 1)}
 				{mouth()}
-				{beard && <path d="M -60 -440 Q -40 -415 0 -420 Q 40 -415 60 -440 Q 50 -470 0 -455 Q -50 -470 -60 -440 Z" fill="#5a4636" stroke={OL} strokeWidth={6} />}
+				{beard && <path d="M -64 -486 Q -40 -440 0 -446 Q 40 -440 64 -486 Q 50 -470 0 -470 Q -50 -470 -64 -486 Z" fill="#4a3a30" stroke={L} strokeWidth={5} />}
 				{!bald && !girl && (
 					<path
-						d="M -126 -540 Q -140 -640 -60 -680 L -40 -640 L -10 -700 L 20 -650 L 60 -700 L 70 -645 Q 140 -640 126 -540 Q 100 -600 40 -600 Q 0 -585 -40 -605 Q -100 -600 -126 -540 Z"
+						d="M -112 -560 Q -122 -660 -80 -705 Q -40 -745 20 -740 Q 90 -738 112 -680 Q 124 -630 110 -560 L 100 -600 L 86 -580 L 80 -630 L 52 -612 L 46 -650 L 14 -626 L 4 -664 L -26 -630 L -40 -662 L -66 -624 L -84 -650 L -94 -596 Z"
 						fill={hair}
-						stroke={OL}
-						strokeWidth={8}
+						stroke={L}
+						strokeWidth={6}
 						strokeLinejoin="round"
 					/>
 				)}
 				{girl && (
 					<>
-						<path d="M -130 -520 Q -150 -680 0 -680 Q 150 -680 130 -520 L 150 -400 Q 120 -420 110 -520 Q 60 -600 -110 -560 L -120 -400 Q -150 -420 -130 -520 Z" fill={hair} stroke={OL} strokeWidth={8} strokeLinejoin="round" />
-						<circle cx={90} cy={-640} r={22} fill="#ff7fb0" stroke={OL} strokeWidth={6} />
+						<path d="M -116 -560 Q -130 -720 0 -726 Q 130 -720 116 -560 L 128 -440 Q 104 -450 98 -560 Q 40 -650 -98 -600 L -104 -440 Q -132 -450 -116 -560 Z" fill={hair} stroke={L} strokeWidth={6} strokeLinejoin="round" />
+						<circle cx={86} cy={-690} r={18} fill="#ff7fb0" stroke={L} strokeWidth={5} />
 					</>
 				)}
-				{bald && <path d="M -120 -540 Q -110 -640 -40 -650 L -30 -600 Q -80 -600 -120 -540 Z M 120 -540 Q 110 -640 40 -650 L 30 -600 Q 80 -600 120 -540 Z" fill={hair} stroke={OL} strokeWidth={7} />}
+				{bald && <path d="M -104 -590 Q -100 -680 -40 -690 L -34 -650 Q -80 -640 -104 -590 Z M 104 -590 Q 100 -680 40 -690 L 34 -650 Q 80 -640 104 -590 Z" fill={hair} stroke={L} strokeWidth={5} />}
+				{face === 'shock' || face === 'worried' ? <path d="M 118 -640 Q 132 -610 118 -598 Q 104 -610 118 -640 Z" fill="#7cc4f0" stroke={L} strokeWidth={3} /> : null}
 			</g>
 		</g>
 	);
@@ -188,7 +202,7 @@ const shade = (hex: string) => {
 };
 
 // heroes
-const DIMA = {hair: '#3b2a20', top: '#f2c230', pants: '#2b3a67'}; // «Лимон»: lemon hoodie
+const DIMA = {hair: '#7a4a2a', top: '#e8a632', pants: '#262d4d'}; // «Лимон»: lemon hoodie
 const ARTEM = {hair: '#8a5a2b', top: '#d9483b', pants: '#1f2438', number: '7'};
 const SONYA = {hair: '#a0522d', top: '#f4a6c8', pants: '#f4a6c8', pj: true, girl: true};
 const COACH = {hair: '#4a3a30', top: '#2f6fb5', pants: '#2f6fb5', beard: true, whistle: true, bald: true};
@@ -613,7 +627,7 @@ export const Collab01: React.FC<{audio?: string}> = ({audio = ''}) => {
 					</Sequence>
 				);
 			})}
-			{ci >= 0 && <KaraokeLine key={ci} words={CAPTIONS[ci]} t={t} keepSpoken />}
+			{ci >= 0 && <KaraokeLine key={ci} words={CAPTIONS[ci]} t={t} y={1620} keepSpoken />}
 			<div style={{position: 'absolute', left: 36, top: 36, fontFamily: 'Inter', fontWeight: 800, fontSize: 30, color: '#fff', opacity: 0.85, textShadow: '0 2px 6px #000a'}}>Вселенная Шнурка × @multobiz</div>
 			<div style={{position: 'absolute', left: 0, right: 0, top: 640, display: 'flex', justifyContent: 'center', opacity: tagA}}>
 				<div style={{background: '#151826', border: '6px solid #f5c542', borderRadius: 28, padding: '20px 40px', fontFamily: 'Inter', fontWeight: 900, fontSize: 52, color: '#fff', transform: `scale(${0.8 + 0.2 * tagA})`}}>
