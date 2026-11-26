@@ -81,11 +81,11 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 	const arm = (side: -1 | 1, ang: number) => {
 		const a = ((ang + (side > 0 ? st : -st) * 18) * Math.PI) / 180;
 		const sx = side * 88;
-		const sy = -380;
-		const ex = sx + side * Math.sin(a) * 120;
-		const ey = sy + Math.cos(a) * 120;
-		const hx = ex + side * Math.sin(a * 1.08) * 105;
-		const hy = ey + Math.cos(a * 1.08) * 105;
+		const sy = -455;
+		const ex = sx + side * Math.sin(a) * 150;
+		const ey = sy + Math.cos(a) * 150;
+		const hx = ex + side * Math.sin(a * 1.08) * 130;
+		const hy = ey + Math.cos(a * 1.08) * 130;
 		return (
 			<g>
 				<path d={`M ${sx} ${sy} L ${ex} ${ey} L ${hx} ${hy}`} stroke={L} strokeWidth={44} strokeLinecap="round" strokeLinejoin="round" fill="none" />
@@ -102,8 +102,8 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 		);
 	};
 	const leg = (side: -1 | 1) => (
-		<g transform={`rotate(${(side > 0 ? st : -st) * 14} ${side * 38} -150)`}>
-			<path d={`M ${side * 38 - 30} -170 L ${side * 38 + 30} -170 L ${side * 38 + 26} -26 L ${side * 38 - 26} -26 Z`} fill={pants} stroke={L} strokeWidth={6} strokeLinejoin="round" />
+		<g transform={`rotate(${(side > 0 ? st : -st) * 12} ${side * 38} -300)`}>
+			<path d={`M ${side * 38 - 30} -320 L ${side * 38 + 30} -320 L ${side * 38 + 25} -26 L ${side * 38 - 25} -26 Z`} fill={pants} stroke={L} strokeWidth={6} strokeLinejoin="round" />
 			<path d={`M ${side * 38 - 36} -30 Q ${side * 38 - 36} -54 ${side * 38} -54 Q ${side * 38 + 44} -54 ${side * 38 + 46} -14 L ${side * 38 - 36} -6 Z`} fill="#eef0f4" stroke={L} strokeWidth={6} strokeLinejoin="round" />
 			<path d={`M ${side * 38 - 36} -10 L ${side * 38 + 46} -14`} stroke="#b9bfca" strokeWidth={8} />
 		</g>
@@ -129,68 +129,71 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 		return <path d="M -16 -484 Q 0 -474 16 -484" stroke={L} strokeWidth={6} strokeLinecap="round" fill="none" />;
 	};
 	return (
-		<g transform={`translate(${x} ${y + bob}) scale(${s})`}>
+		<g transform={`translate(${x} ${y + bob}) scale(${s * 0.86})`}>
 			<ellipse cx={0} cy={2} rx={120} ry={16} fill="#000" opacity={0.28} />
 			{leg(-1)}
 			{leg(1)}
-			{arm(-1, armL)}
-			{/* hoodie */}
-			<path d={`M -92 -395 Q -104 ${-260 + breathe} -100 -150 L 100 -150 Q 104 ${-260 + breathe} 92 -395 Q 0 -425 -92 -395 Z`} fill={top} stroke={L} strokeWidth={6} strokeLinejoin="round" />
-			<path d={`M -100 -150 L 100 -150 L 100 -170 L -100 -170 Z`} fill={dk} stroke={L} strokeWidth={5} />
-			<path d={`M -92 -395 Q -104 -260 -100 -170 L -70 -170 Q -78 -280 -66 -390 Z`} fill={dk} opacity={0.6} />
-			{!pj && !beard && !number && (
-				<>
-					<path d="M -56 -270 L 56 -270 Q 66 -205 58 -190 L -58 -190 Q -66 -205 -56 -270 Z" fill={dk} stroke={L} strokeWidth={5} strokeLinejoin="round" />
-					<path d="M -66 -405 Q 0 -350 66 -405 Q 40 -440 0 -438 Q -40 -440 -66 -405 Z" fill={dk} stroke={L} strokeWidth={5} />
-					<path d="M -20 -385 L -24 -300" stroke="#f4f4f4" strokeWidth={6} strokeLinecap="round" />
-					<path d="M 20 -385 L 24 -300" stroke="#f4f4f4" strokeWidth={6} strokeLinecap="round" />
-				</>
-			)}
-			{number && (
-				<>
-					<path d="M 0 -405 L 0 -150" stroke={L} strokeWidth={5} />
-					<text x={50} y={-250} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={70} fill="#fff" stroke={L} strokeWidth={5} paintOrder="stroke">{number}</text>
-				</>
-			)}
-			{pj && [0, 1, 2, 3].map((k) => <circle key={k} cx={-50 + k * 34} cy={-320 + (k % 2) * 60} r={10} fill="#fff" opacity={0.75} />)}
-			{whistle && (
-				<>
-					<path d="M -30 -405 Q 0 -320 30 -405" stroke="#e8e8e8" strokeWidth={4} fill="none" />
-					<rect x={-13} y={-345} width={26} height={20} rx={6} fill="#c9ced8" stroke={L} strokeWidth={4} />
-				</>
-			)}
-			{arm(1, armR)}
-			{/* neck + head */}
-			<rect x={-26} y={-440} width={52} height={44} fill={SKD} stroke={L} strokeWidth={5} />
-			<g transform={`rotate(${Math.sin(t * 1.3 + ph) * 2} 0 -430)`}>
-				<ellipse cx={-104} cy={-548} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
-				<ellipse cx={104} cy={-548} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
-				<path d="M -104 -590 Q -108 -470 -40 -440 Q 0 -428 40 -440 Q 108 -470 104 -590 Q 100 -700 0 -704 Q -100 -700 -104 -590 Z" fill={SK} stroke={L} strokeWidth={6} />
-				<ellipse cx={-64} cy={-506} rx={15} ry={8} fill="#e88b7a" opacity={0.45} />
-				<ellipse cx={64} cy={-506} rx={15} ry={8} fill="#e88b7a" opacity={0.45} />
-				{eye(-42)}
-				{eye(42)}
-				{brow(-42, -1)}
-				{brow(42, 1)}
-				{mouth()}
-				{beard && <path d="M -64 -486 Q -40 -440 0 -446 Q 40 -440 64 -486 Q 50 -470 0 -470 Q -50 -470 -64 -486 Z" fill="#4a3a30" stroke={L} strokeWidth={5} />}
-				{!bald && !girl && (
-					<path
-						d="M -112 -560 Q -122 -660 -80 -705 Q -40 -745 20 -740 Q 90 -738 112 -680 Q 124 -630 110 -560 L 100 -600 L 86 -580 L 80 -630 L 52 -612 L 46 -650 L 14 -626 L 4 -664 L -26 -630 L -40 -662 L -66 -624 L -84 -650 L -94 -596 Z"
-						fill={hair}
-						stroke={L}
-						strokeWidth={6}
-						strokeLinejoin="round"
-					/>
-				)}
-				{girl && (
+			<g transform="translate(0 -150)">
+				{arm(-1, armL)}
+				{/* hoodie: longer torso */}
+				<path d={`M -88 -470 Q -104 ${-300 + breathe} -100 -150 L 100 -150 Q 104 ${-300 + breathe} 88 -470 Q 0 -500 -88 -470 Z`} fill={top} stroke={L} strokeWidth={6} strokeLinejoin="round" />
+				<path d={`M -100 -150 L 100 -150 L 100 -172 L -100 -172 Z`} fill={dk} stroke={L} strokeWidth={5} />
+				<path d={`M -88 -470 Q -104 -300 -100 -172 L -70 -172 Q -78 -330 -64 -465 Z`} fill={dk} opacity={0.6} />
+				{!pj && !beard && !number && (
 					<>
-						<path d="M -116 -560 Q -130 -720 0 -726 Q 130 -720 116 -560 L 128 -440 Q 104 -450 98 -560 Q 40 -650 -98 -600 L -104 -440 Q -132 -450 -116 -560 Z" fill={hair} stroke={L} strokeWidth={6} strokeLinejoin="round" />
-						<circle cx={86} cy={-690} r={18} fill="#ff7fb0" stroke={L} strokeWidth={5} />
+						<path d="M -58 -300 L 58 -300 Q 68 -225 60 -205 L -60 -205 Q -68 -225 -58 -300 Z" fill={dk} stroke={L} strokeWidth={5} strokeLinejoin="round" />
+						<path d="M -64 -480 Q 0 -425 64 -480 Q 40 -515 0 -513 Q -40 -515 -64 -480 Z" fill={dk} stroke={L} strokeWidth={5} />
+						<path d="M -20 -460 L -24 -360" stroke="#f4f4f4" strokeWidth={6} strokeLinecap="round" />
+						<path d="M 20 -460 L 24 -360" stroke="#f4f4f4" strokeWidth={6} strokeLinecap="round" />
 					</>
 				)}
-				{bald && <path d="M -104 -590 Q -100 -680 -40 -690 L -34 -650 Q -80 -640 -104 -590 Z M 104 -590 Q 100 -680 40 -690 L 34 -650 Q 80 -640 104 -590 Z" fill={hair} stroke={L} strokeWidth={5} />}
-				{face === 'shock' || face === 'worried' ? <path d="M 118 -640 Q 132 -610 118 -598 Q 104 -610 118 -640 Z" fill="#7cc4f0" stroke={L} strokeWidth={3} /> : null}
+				{number && (
+					<>
+						<path d="M 0 -480 L 0 -150" stroke={L} strokeWidth={5} />
+						<text x={50} y={-300} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={70} fill="#fff" stroke={L} strokeWidth={5} paintOrder="stroke">{number}</text>
+					</>
+				)}
+				{pj && [0, 1, 2, 3].map((k) => <circle key={k} cx={-50 + k * 34} cy={-380 + (k % 2) * 70} r={10} fill="#fff" opacity={0.75} />)}
+				{whistle && (
+					<>
+						<path d="M -30 -480 Q 0 -380 30 -480" stroke="#e8e8e8" strokeWidth={4} fill="none" />
+						<rect x={-13} y={-405} width={26} height={20} rx={6} fill="#c9ced8" stroke={L} strokeWidth={4} />
+					</>
+				)}
+				{arm(1, armR)}
+				<g transform="translate(0 -75)">
+					<rect x={-24} y={-445} width={48} height={50} fill={SKD} stroke={L} strokeWidth={5} />
+					<g transform={`rotate(${Math.sin(t * 1.3 + ph) * 2} 0 -430)`}>
+						<ellipse cx={-104} cy={-548} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
+						<ellipse cx={104} cy={-548} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
+						<path d="M -104 -590 Q -108 -470 -40 -440 Q 0 -428 40 -440 Q 108 -470 104 -590 Q 100 -700 0 -704 Q -100 -700 -104 -590 Z" fill={SK} stroke={L} strokeWidth={6} />
+						<ellipse cx={-64} cy={-506} rx={15} ry={8} fill="#e88b7a" opacity={0.45} />
+						<ellipse cx={64} cy={-506} rx={15} ry={8} fill="#e88b7a" opacity={0.45} />
+						{eye(-42)}
+						{eye(42)}
+						{brow(-42, -1)}
+						{brow(42, 1)}
+						{mouth()}
+						{beard && <path d="M -64 -486 Q -40 -440 0 -446 Q 40 -440 64 -486 Q 50 -470 0 -470 Q -50 -470 -64 -486 Z" fill="#4a3a30" stroke={L} strokeWidth={5} />}
+						{!bald && !girl && (
+							<path
+								d="M -112 -560 Q -122 -660 -80 -705 Q -40 -745 20 -740 Q 90 -738 112 -680 Q 124 -630 110 -560 L 100 -600 L 86 -580 L 80 -630 L 52 -612 L 46 -650 L 14 -626 L 4 -664 L -26 -630 L -40 -662 L -66 -624 L -84 -650 L -94 -596 Z"
+								fill={hair}
+								stroke={L}
+								strokeWidth={6}
+								strokeLinejoin="round"
+							/>
+						)}
+						{girl && (
+							<>
+								<path d="M -116 -560 Q -130 -720 0 -726 Q 130 -720 116 -560 L 128 -440 Q 104 -450 98 -560 Q 40 -650 -98 -600 L -104 -440 Q -132 -450 -116 -560 Z" fill={hair} stroke={L} strokeWidth={6} strokeLinejoin="round" />
+								<circle cx={86} cy={-690} r={18} fill="#ff7fb0" stroke={L} strokeWidth={5} />
+							</>
+						)}
+						{bald && <path d="M -104 -590 Q -100 -680 -40 -690 L -34 -650 Q -80 -640 -104 -590 Z M 104 -590 Q 100 -680 40 -690 L 34 -650 Q 80 -640 104 -590 Z" fill={hair} stroke={L} strokeWidth={5} />}
+						{face === 'shock' || face === 'worried' ? <path d="M 118 -640 Q 132 -610 118 -598 Q 104 -610 118 -640 Z" fill="#7cc4f0" stroke={L} strokeWidth={3} /> : null}
+					</g>
+				</g>
 			</g>
 		</g>
 	);
@@ -565,7 +568,7 @@ S.push({
 			<>
 				<BackWall t={t} />
 				<Kid x={360} y={1720} s={0.92} t={t} {...DIMA} face={abs > A('dim', 2) - 0.2 ? 'neutral' : 'worried'} armL={10} armR={10} look={0.7} talk={talkOf('dim', abs)} />
-				<Kid x={lerp(760, 690, ease(t / 0.6))} y={1720} s={1.02} t={t} {...ARTEM} face={t > deal - 0.2 ? 'worried' : abs > A('dim', 2) ? 'shock' : 'angry'} armL={t < deal ? 95 : 15} armR={15} look={-0.7} talk={talkOf('art', abs)} ph={1} />
+				<Kid x={lerp(760, 690, ease(t / 0.6))} y={1720} s={1.02} t={t} {...ARTEM} face={t > deal - 0.2 ? 'worried' : abs > A('dim', 2) ? 'shock' : 'angry'} armL={t < deal ? 72 : 15} armR={15} look={-0.7} talk={talkOf('art', abs)} ph={1} />
 				<Plate t={t} at={debt} text="АРТЁМ ДОЛЖЕН ДИМЕ: 1" color="#f5c542" y={620} />
 				{t > ding - 0.3 && <Rel t={t} v={v} y={330} />}
 				{t > ding && t < ding + 0.8 && <text x={540} y={500} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={70} fill="#f5c542" opacity={1 - (t - ding) / 0.8}>+5 · дзынь!</text>}
