@@ -91,7 +91,7 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 				<path d={`M ${sx} ${sy} L ${ex} ${ey} L ${hx} ${hy}`} stroke={L} strokeWidth={58} strokeLinecap="round" strokeLinejoin="round" fill="none" />
 				<path d={`M ${sx} ${sy} L ${ex} ${ey} L ${hx} ${hy}`} stroke={side > 0 ? top : dk} strokeWidth={47} strokeLinecap="round" strokeLinejoin="round" fill="none" />
 				<path d={`M ${hx - 22} ${hy - 4} L ${hx + 22} ${hy - 4}`} stroke={L} strokeWidth={5} />
-				<ellipse cx={hx} cy={hy + 14} rx={22} ry={26} fill={SK} stroke={L} strokeWidth={5} />
+				<circle cx={hx} cy={hy + 16} r={28} fill={SK} stroke={L} strokeWidth={5} />
 				{phone && side > 0 && (
 					<g transform={`translate(${hx} ${hy - 10})`}>
 						<rect x={-20} y={-46} width={40} height={70} rx={8} fill="#1d2030" stroke={L} strokeWidth={5} />
@@ -110,8 +110,8 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 	);
 	const eye = (ex: number) => (
 		<g>
-			<ellipse cx={ex} cy={-545} rx={46} ry={52 * blink} fill="#fff" stroke={L} strokeWidth={5} />
-			{blink > 0.5 && <circle cx={ex + look * 12 + (ex < 0 ? 4 : -4)} cy={-541 + (face === 'sad' ? 8 : 0)} r={face === 'shock' ? 10 : 13} fill={L} />}
+			<ellipse cx={ex} cy={-545} rx={40} ry={47 * blink} fill="#fff" stroke={L} strokeWidth={5} />
+			{blink > 0.5 && <circle cx={ex + look * 12 + (ex < 0 ? 4 : -4)} cy={-541 + (face === 'sad' ? 8 : 0)} r={face === 'shock' ? 9 : 12} fill="#2a2830" />}
 		</g>
 	);
 	const brow = (ex: number, side: -1 | 1) => {
@@ -142,7 +142,7 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 				{!pj && !beard && !number && (
 					<>
 						<path d="M -58 -300 L 58 -300 Q 68 -225 60 -205 L -60 -205 Q -68 -225 -58 -300 Z" fill={dk} stroke={L} strokeWidth={5} strokeLinejoin="round" />
-						<path d="M -64 -480 Q 0 -425 64 -480 Q 40 -515 0 -513 Q -40 -515 -64 -480 Z" fill={dk} stroke={L} strokeWidth={5} />
+						<path d="M -92 -476 Q 0 -398 92 -476 Q 70 -526 0 -524 Q -70 -526 -92 -476 Z M -56 -478 Q 0 -440 56 -478 Q 30 -500 0 -498 Q -30 -500 -56 -478 Z" fill={dk} fillRule="evenodd" stroke={L} strokeWidth={5} />
 						<path d="M -20 -460 L -24 -360" stroke="#f4f4f4" strokeWidth={6} strokeLinecap="round" />
 						<path d="M 20 -460 L 24 -360" stroke="#f4f4f4" strokeWidth={6} strokeLinecap="round" />
 					</>
@@ -169,8 +169,8 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 						<ellipse cx={0} cy={-572} rx={118} ry={124} fill={SK} stroke={L} strokeWidth={6} />
 						<ellipse cx={-64} cy={-506} rx={15} ry={8} fill="#e88b7a" opacity={0.45} />
 						<ellipse cx={64} cy={-506} rx={15} ry={8} fill="#e88b7a" opacity={0.45} />
-						{eye(-52)}
-						{eye(52)}
+						{eye(-50)}
+						{eye(50)}
 						{brow(-42, -1)}
 						{brow(42, 1)}
 						{mouth()}
@@ -205,7 +205,7 @@ const shade = (hex: string) => {
 };
 
 // heroes
-const DIMA = {hair: '#7a4a2a', top: '#e8a632', pants: '#262d4d'}; // «Лимон»: lemon hoodie
+const DIMA = {hair: '#8b5a33', top: '#e8a632', pants: '#262d4d'}; // «Лимон»: lemon hoodie
 const ARTEM = {hair: '#8a5a2b', top: '#d9483b', pants: '#1f2438', number: '7'};
 const SONYA = {hair: '#a0522d', top: '#f4a6c8', pants: '#f4a6c8', pj: true, girl: true};
 const COACH = {hair: '#4a3a30', top: '#2f6fb5', pants: '#2f6fb5', beard: true, whistle: true, bald: true};
@@ -696,6 +696,34 @@ const SceneLayer: React.FC<{sc: Scene; first: boolean}> = ({sc, first}) => {
 					</radialGradient>
 				</defs>
 				<rect width={VW} height={VH} fill="url(#cv)" />
+			</svg>
+		</AbsoluteFill>
+	);
+};
+
+// ------------------------------------------------------------------ character sheet (for approval)
+export const CollabSheet: React.FC = () => {
+	const t = 1.2;
+	const row = (y: number, name: string, p: Partial<KidP>, faces: Face[]) => (
+		<g>
+			<text x={y < 700 ? 250 : 20} y={y < 700 ? y - 440 : y - 190} fontFamily="Inter" fontWeight={900} fontSize={y < 700 ? 40 : 32} fill="#f5b638">{name.split(' · ').map((q, k) => <tspan key={k} x={y < 700 ? 250 : 20} dy={k ? 40 : 0}>{q}</tspan>)}</text>
+			{faces.map((f, i) => (
+				<Kid key={i} x={330 + i * 200} y={y} s={0.38} t={t} {...(p as object)} face={f} look={i % 2 ? 0.5 : -0.3} talk={f === 'neutral' && i === 1 ? 0.6 : 0} />
+			))}
+		</g>
+	);
+	return (
+		<AbsoluteFill style={{background: '#141a33'}}>
+			<svg width={VW} height={VH} viewBox={`0 0 ${VW} ${VH}`}>
+				<text x={540} y={70} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={46} fill="#fff">Персонажи колабы × @multobiz</text>
+				<image href={staticFile('collab/ref.png')} x={20} y={200} width={190} height={528} />
+				<text x={115} y={755} textAnchor="middle" fontFamily="Inter" fontWeight={800} fontSize={24} fill="#9fb7d6">оригинал</text>
+				{row(640, 'Дима «Лимон»', DIMA, ['neutral', 'neutral', 'shock', 'sad'])}
+				{row(1000, 'Артём', ARTEM, ['smirk', 'laugh', 'angry', 'worried'])}
+				{row(1360, 'Соня · Влад', SONYA, ['worried', 'happy'])}
+				<Kid x={730} y={1360} s={0.38} t={t} {...VLAD} face="smirk" armR={150} />
+				<Kid x={930} y={1360} s={0.38} t={t} {...VLAD} face="neutral" />
+				{row(1760, 'Тренер', COACH, ['angry', 'neutral'])}
 			</svg>
 		</AbsoluteFill>
 	);
