@@ -80,7 +80,7 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 	const dk = shade(top);
 	const arm = (side: -1 | 1, ang: number) => {
 		const a = ((ang + (side > 0 ? st : -st) * 18) * Math.PI) / 180;
-		const sx = side * 88;
+		const sx = side * 104;
 		const sy = -455;
 		const ex = sx + side * Math.sin(a) * 150;
 		const ey = sy + Math.cos(a) * 150;
@@ -88,10 +88,10 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 		const hy = ey + Math.cos(a * 1.08) * 130;
 		return (
 			<g>
-				<path d={`M ${sx} ${sy} L ${ex} ${ey} L ${hx} ${hy}`} stroke={L} strokeWidth={44} strokeLinecap="round" strokeLinejoin="round" fill="none" />
-				<path d={`M ${sx} ${sy} L ${ex} ${ey} L ${hx} ${hy}`} stroke={side > 0 ? top : dk} strokeWidth={34} strokeLinecap="round" strokeLinejoin="round" fill="none" />
-				<path d={`M ${hx - 15} ${hy - 6} L ${hx + 15} ${hy - 6}`} stroke={L} strokeWidth={4} />
-				<circle cx={hx} cy={hy + 12} r={21} fill={SK} stroke={L} strokeWidth={5} />
+				<path d={`M ${sx} ${sy} L ${ex} ${ey} L ${hx} ${hy}`} stroke={L} strokeWidth={58} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+				<path d={`M ${sx} ${sy} L ${ex} ${ey} L ${hx} ${hy}`} stroke={side > 0 ? top : dk} strokeWidth={47} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+				<path d={`M ${hx - 22} ${hy - 4} L ${hx + 22} ${hy - 4}`} stroke={L} strokeWidth={5} />
+				<ellipse cx={hx} cy={hy + 14} rx={22} ry={26} fill={SK} stroke={L} strokeWidth={5} />
 				{phone && side > 0 && (
 					<g transform={`translate(${hx} ${hy - 10})`}>
 						<rect x={-20} y={-46} width={40} height={70} rx={8} fill="#1d2030" stroke={L} strokeWidth={5} />
@@ -110,8 +110,8 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 	);
 	const eye = (ex: number) => (
 		<g>
-			<ellipse cx={ex} cy={-560} rx={40} ry={44 * blink} fill="#fff" stroke={L} strokeWidth={6} />
-			{blink > 0.5 && <circle cx={ex + look * 12 + (ex < 0 ? 4 : -4)} cy={-556 + (face === 'sad' ? 8 : 0)} r={face === 'shock' ? 11 : 15} fill={L} />}
+			<ellipse cx={ex} cy={-560} rx={50} ry={55 * blink} fill="#fff" stroke={L} strokeWidth={6} />
+			{blink > 0.5 && <circle cx={ex + look * 12 + (ex < 0 ? 4 : -4)} cy={-556 + (face === 'sad' ? 8 : 0)} r={face === 'shock' ? 13 : 18} fill={L} />}
 		</g>
 	);
 	const brow = (ex: number, side: -1 | 1) => {
@@ -136,9 +136,9 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 			<g transform="translate(0 -150)">
 				{arm(-1, armL)}
 				{/* hoodie: longer torso */}
-				<path d={`M -88 -470 Q -104 ${-300 + breathe} -100 -150 L 100 -150 Q 104 ${-300 + breathe} 88 -470 Q 0 -500 -88 -470 Z`} fill={top} stroke={L} strokeWidth={6} strokeLinejoin="round" />
-				<path d={`M -100 -150 L 100 -150 L 100 -172 L -100 -172 Z`} fill={dk} stroke={L} strokeWidth={5} />
-				<path d={`M -88 -470 Q -104 -300 -100 -172 L -70 -172 Q -78 -330 -64 -465 Z`} fill={dk} opacity={0.6} />
+				<path d={`M -96 -478 Q -112 -478 -112 -458 L ${-106 + breathe * 0.3} -150 L ${106 - breathe * 0.3} -150 L 112 -458 Q 112 -478 96 -478 Z`} fill={top} stroke={L} strokeWidth={6} strokeLinejoin="round" />
+				<path d={`M -106 -150 L 106 -150 L 107 -172 L -107 -172 Z`} fill={dk} stroke={L} strokeWidth={5} />
+				<path d={`M -112 -458 L -107 -172 L -78 -172 L -80 -470 Z`} fill={dk} opacity={0.6} />
 				{!pj && !beard && !number && (
 					<>
 						<path d="M -58 -300 L 58 -300 Q 68 -225 60 -205 L -60 -205 Q -68 -225 -58 -300 Z" fill={dk} stroke={L} strokeWidth={5} strokeLinejoin="round" />
@@ -163,14 +163,14 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 				{arm(1, armR)}
 				<g transform="translate(0 -75)">
 					<rect x={-24} y={-445} width={48} height={50} fill={SKD} stroke={L} strokeWidth={5} />
-					<g transform={`rotate(${Math.sin(t * 1.3 + ph) * 2} 0 -430)`}>
-						<ellipse cx={-104} cy={-548} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
-						<ellipse cx={104} cy={-548} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
-						<path d="M -104 -590 Q -108 -470 -40 -440 Q 0 -428 40 -440 Q 108 -470 104 -590 Q 100 -700 0 -704 Q -100 -700 -104 -590 Z" fill={SK} stroke={L} strokeWidth={6} />
+					<g transform={`rotate(${Math.sin(t * 1.3 + ph) * 2} 0 -430) translate(0 -430) scale(1.14) translate(0 430)`}>
+						<ellipse cx={-116} cy={-560} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
+						<ellipse cx={116} cy={-560} rx={16} ry={24} fill={SK} stroke={L} strokeWidth={5} />
+						<ellipse cx={0} cy={-572} rx={118} ry={124} fill={SK} stroke={L} strokeWidth={6} />
 						<ellipse cx={-64} cy={-506} rx={15} ry={8} fill="#e88b7a" opacity={0.45} />
 						<ellipse cx={64} cy={-506} rx={15} ry={8} fill="#e88b7a" opacity={0.45} />
-						{eye(-42)}
-						{eye(42)}
+						{eye(-52)}
+						{eye(52)}
 						{brow(-42, -1)}
 						{brow(42, 1)}
 						{mouth()}
