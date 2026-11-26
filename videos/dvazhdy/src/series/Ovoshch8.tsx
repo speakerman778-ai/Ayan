@@ -1693,44 +1693,43 @@ const sc: Scene7[] = [];
 	});
 }
 
-// 15. the choice: 1 or 2 ---------------------------------------------------------------
+// 15. the choice: 1 or 2 — card 1 pops in centred, then slides left as card 2 arrives ---
 {
 	const at = S('что', idx('предал'));
 	const two = T('два', idx('сдать')) - at;
+	const card = (cx: number, sc2: number, num: string, label: string, fill: string, hero: React.ReactNode) => (
+		<g transform={`translate(${cx} 800) scale(${sc2})`}>
+			<rect x={-235} y={-380} width={470} height={760} rx={36} fill={fill} stroke={O} strokeWidth={8} />
+			<circle cx={0} cy={-260} r={80} fill="#f2c230" stroke={O} strokeWidth={8} />
+			<text x={0} y={-225} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={100} fill={O}>{num}</text>
+			<text x={0} y={-110} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={46} fill="#fff" stroke={O} strokeWidth={6} paintOrder="stroke">{label}</text>
+			{hero}
+		</g>
+	);
 	sc.push({
 		at,
 		grade: 'night',
 		cam: (t, dur) => orbit([0.4, 1.2, -1.0], 5, 0.4, -0.3 + 0.6 * ease(t / dur), 50),
 		world: (t) => <Locker t={t} />,
-		flat: (t) => (
-			<g>
-				<rect width={VW} height={VH} fill="#0b1226" opacity={0.55} />
-				<g transform={`translate(${-560 * (1 - back(t / 0.4))} 0)`}>
-					<rect x={30} y={420} width={500} height={760} rx={36} fill={BLUE} stroke={O} strokeWidth={8} />
-					<circle cx={280} cy={540} r={80} fill="#f2c230" stroke={O} strokeWidth={8} />
-					<text x={280} y={575} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={100} fill={O}>1</text>
-					<text x={280} y={690} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={46} fill="#fff" stroke={O} strokeWidth={6} paintOrder="stroke">сдать Даню</text>
-					<Dan x={280} y={1110} s={0.42} dir={1} face="shock" />
+		flat: (t) => {
+			const slide = ease((t - two + 0.3) / 0.5);
+			return (
+				<g>
+					<rect width={VW} height={VH} fill="#0b1226" opacity={0.6} />
+					{card(lerp(540, 285, slide), back(t / 0.4), '1', 'сдать Даню', BLUE, <Dan x={0} y={330} s={0.42} dir={1} face="shock" />)}
+					{t > two - 0.3 && card(lerp(1300, 795, slide), 1, '2', 'промолчать', KIT, <ShnBar x={0} y={330} s={0.42} dir={-1} face="think" />)}
 				</g>
-				{t > two - 0.2 && (
-					<g transform={`translate(${560 * (1 - back((t - two + 0.2) / 0.4))} 0)`}>
-						<rect x={550} y={420} width={500} height={760} rx={36} fill={KIT} stroke={O} strokeWidth={8} />
-						<circle cx={800} cy={540} r={80} fill="#f2c230" stroke={O} strokeWidth={8} />
-						<text x={800} y={575} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={100} fill={O}>2</text>
-						<text x={800} y={690} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={46} fill="#fff" stroke={O} strokeWidth={6} paintOrder="stroke">промолчать</text>
-						<ShnBar x={800} y={1110} s={0.42} dir={-1} face="think" />
-					</g>
-				)}
-			</g>
-		),
+			);
+		},
 		over: (t) => (
-			<g transform={`translate(540 ${BAR + 140}) scale(${back(t / 0.35)})`}>
-				<rect x={-380} y={-75} width={760} height={130} rx={36} fill="#fbf3e2" stroke={O} strokeWidth={8} />
-				<text textAnchor="middle" y={22} fontFamily="Inter" fontWeight={900} fontSize={60} fill={KIT}>Что бы сделал ты?</text>
+			<g transform={`translate(540 ${BAR + 120}) scale(${back(t / 0.35)})`}>
+				<rect x={-380} y={-65} width={760} height={120} rx={36} fill="#fbf3e2" stroke={O} strokeWidth={8} />
+				<text textAnchor="middle" y={20} fontFamily="Inter" fontWeight={900} fontSize={60} fill={KIT}>Что бы сделал ты?</text>
 			</g>
 		),
 	});
 }
+
 const SCENES = sc;
 
 // ---------------------------------------------------------------- layers (cinema look)
