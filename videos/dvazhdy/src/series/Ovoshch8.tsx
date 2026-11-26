@@ -1655,7 +1655,7 @@ const sc: Scene7[] = [];
 		over: (t) => (
 			<>
 				<Score t={t} a={1} b={1} />
-				{t > two && <Minute t={t} at={two} text={`${Math.max(0, 2 - Math.floor((t - two) * 0.25))}:${String(59 - (Math.floor((t - two) * 7) % 60)).padStart(2, '0')}`} />}
+				{t > two && <Minute t={t} at={two} text={`1:${String(Math.max(0, 59 - Math.floor((t - two) * 1))).padStart(2, '0')}`} />}
 			</>
 		),
 	});
