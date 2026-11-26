@@ -39,6 +39,10 @@ export type SideProps = {
 	nose?: boolean;
 	hatFront?: 'souwester';
 	look?: number;
+	/** 0..1 kick cycle of the near leg: wind-up (0–0.4) then strike (0.4–1). */
+	kick?: number;
+	/** 0..1 knee bend for jump take-off / landing squash. */
+	crouch?: number;
 };
 
 const shade = (hex: string, k: number) => {
@@ -79,6 +83,8 @@ export const SideChar: React.FC<SideProps> = (p) => {
 		hatFront,
 		look = 0.6,
 		headLower = 0,
+		kick = 0,
+		crouch = 0,
 	} = p;
 	const ph = (t * speed + phase) * Math.PI * 2;
 	const sw = Math.sin(ph) * 28 * walk; // leg swing
@@ -88,7 +94,7 @@ export const SideChar: React.FC<SideProps> = (p) => {
 	const blink = (t + phase * 1.3) % 3.3 > 3.18 ? 0.15 : 1;
 
 	const legLen = 100 * bodyS;
-	const hipY = -legLen * 2 - 10 + bob;
+	const hipY = -legLen * 2 - 10 + bob + crouch * legLen * 0.45;
 	const shY = hipY - 200 * bodyS;
 	const headY = shY - 118 * headS + 10;
 
@@ -105,8 +111,10 @@ export const SideChar: React.FC<SideProps> = (p) => {
 			<ellipse cx={0} cy={6} rx={95} ry={14} fill="#000" opacity={0.13} />
 			{/* far limbs */}
 			{arm(sw * 0.8, 18 + Math.abs(sw) * 0.3, true)}
-			{leg(-sw, bendB, true)}
-			{leg(sw, bendF, false)}
+			{leg(-sw + crouch * 28, bendB + crouch * 62, true)}
+			{kick > 0
+				? leg(kick < 0.4 ? 48 * (kick / 0.4) : 48 - 140 * Math.min(1, (kick - 0.4) / 0.35), kick < 0.4 ? -70 * (kick / 0.4) : -70 * Math.max(0, 1 - (kick - 0.4) / 0.25), false)
+				: leg(sw + crouch * 28, bendF + crouch * 62, false)}
 			{/* torso (side) */}
 			<path d={`M -52 ${shY + 10} Q -64 ${shY} -40 ${shY - 6} L 40 ${shY - 6} Q 66 ${shY} 60 ${shY + 30} L 54 ${hipY + 14} Q 0 ${hipY + 26} -54 ${hipY + 14} Z`} fill={jacket} stroke={OL} strokeWidth={OW} strokeLinejoin="round" />
 			{hoodie && (
