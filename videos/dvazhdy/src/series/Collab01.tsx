@@ -82,10 +82,10 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 		const a = ((ang + (side > 0 ? st : -st) * 18) * Math.PI) / 180;
 		const sx = side * 108;
 		const sy = -440;
-		const ex = sx + side * Math.sin(a) * 168;
-		const ey = sy + Math.cos(a) * 168;
-		const hx = ex + side * Math.sin(a * 1.08) * 145;
-		const hy = ey + Math.cos(a * 1.08) * 145;
+		const ex = sx + side * Math.sin(a) * 138;
+		const ey = sy + Math.cos(a) * 138;
+		const hx = ex + side * Math.sin(a * 1.08) * 118;
+		const hy = ey + Math.cos(a * 1.08) * 118;
 		return (
 			<g>
 				<path d={`M ${sx} ${sy} L ${ex} ${ey} L ${hx} ${hy}`} stroke={L} strokeWidth={58} strokeLinecap="round" strokeLinejoin="round" fill="none" />
@@ -103,8 +103,8 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 		);
 	};
 	const leg = (side: -1 | 1) => (
-		<g transform={`rotate(${(side > 0 ? st : -st) * 12} ${side * 38} -250)`}>
-			<path d={`M ${side * 40 - 34} -270 L ${side * 40 + 34} -270 L ${side * 40 + 30} -26 L ${side * 40 - 30} -26 Z`} fill={pants} stroke={L} strokeWidth={6} strokeLinejoin="round" />
+		<g transform={`rotate(${(side > 0 ? st : -st) * 12} ${side * 38} -330)`}>
+			<path d={`M ${side * 40 - 34} -350 L ${side * 40 + 34} -350 L ${side * 40 + 30} -26 L ${side * 40 - 30} -26 Z`} fill={pants} stroke={L} strokeWidth={6} strokeLinejoin="round" />
 			<path d={`M ${side * 38 - 36} -30 Q ${side * 38 - 36} -54 ${side * 38} -54 Q ${side * 38 + 44} -54 ${side * 38 + 46} -14 L ${side * 38 - 36} -6 Z`} fill="#eef0f4" stroke={L} strokeWidth={6} strokeLinejoin="round" />
 			<path d={`M ${side * 38 - 36} -10 L ${side * 38 + 46} -14`} stroke="#b9bfca" strokeWidth={8} />
 		</g>
@@ -135,7 +135,7 @@ const Kid: React.FC<KidP> = ({x, y, s = 1, t, hair = '#7a4a2a', top = '#e8a632',
 			<ellipse cx={0} cy={2} rx={120} ry={16} fill="#000" opacity={0.28} />
 			{leg(-1)}
 			{leg(1)}
-			<g transform="translate(0 -160)">
+			<g transform="translate(0 -240)">
 				{arm(-1, armL)}
 				{/* hoodie: longer torso */}
 				<path d={`M -60 -482 Q -112 -476 -118 -430 L ${-114 + breathe * 0.3} -90 L ${114 - breathe * 0.3} -90 L 118 -430 Q 112 -476 60 -482 Z`} fill={top} stroke={L} strokeWidth={6} strokeLinejoin="round" />
@@ -710,7 +710,7 @@ export const CollabSheet: React.FC = () => {
 		<g>
 			<text x={y < 700 ? 250 : 20} y={y < 700 ? y - 440 : y - 190} fontFamily="Inter" fontWeight={900} fontSize={y < 700 ? 40 : 32} fill="#f5b638">{name.split(' · ').map((q, k) => <tspan key={k} x={y < 700 ? 250 : 20} dy={k ? 40 : 0}>{q}</tspan>)}</text>
 			{faces.map((f, i) => (
-				<Kid key={i} x={330 + i * 200} y={y} s={0.38} t={t} {...(p as object)} face={f} look={i % 2 ? 0.5 : -0.3} talk={f === 'neutral' && i === 1 ? 0.6 : 0} />
+				<Kid key={i} x={330 + i * 200} y={y} s={0.32} t={t} {...(p as object)} face={f} look={i % 2 ? 0.5 : -0.3} talk={f === 'neutral' && i === 1 ? 0.6 : 0} />
 			))}
 		</g>
 	);
@@ -723,8 +723,8 @@ export const CollabSheet: React.FC = () => {
 				{row(640, 'Дима «Лимон»', DIMA, ['neutral', 'neutral', 'shock', 'sad'])}
 				{row(1000, 'Артём', ARTEM, ['smirk', 'laugh', 'angry', 'worried'])}
 				{row(1360, 'Соня · Влад', SONYA, ['worried', 'happy'])}
-				<Kid x={730} y={1360} s={0.38} t={t} {...VLAD} face="smirk" armR={150} />
-				<Kid x={930} y={1360} s={0.38} t={t} {...VLAD} face="neutral" />
+				<Kid x={730} y={1360} s={0.32} t={t} {...VLAD} face="smirk" armR={150} />
+				<Kid x={930} y={1360} s={0.32} t={t} {...VLAD} face="neutral" />
 				{row(1760, 'Тренер', COACH, ['angry', 'neutral'])}
 			</svg>
 		</AbsoluteFill>
@@ -746,13 +746,13 @@ export const CollabSheetOne: React.FC<{who: number}> = ({who}) => {
 			<svg width={VW} height={VH} viewBox={`0 0 ${VW} ${VH}`}>
 				<text x={540} y={90} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={64} fill="#f5b638">{h.name}</text>
 				<text x={540} y={140} textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={30} fill="#9fb7d6">колаба × @multobiz</text>
-				<Kid x={540} y={1000} s={0.95} t={t} {...(h.p as object)} face={h.faces[0]} armL={10} armR={who === 4 ? 150 : 10} />
+				<Kid x={540} y={1120} s={0.8} t={t} {...(h.p as object)} face={h.faces[0]} armL={10} armR={who === 4 ? 150 : 10} />
 				{h.faces.map((f, i) => (
 					<g key={i}>
 						<Kid x={150 + i * 260} y={1830} s={0.42} t={t} {...(h.p as object)} face={f} armL={i === 3 ? 150 : 10} armR={i === 1 ? 60 : 10} look={i % 2 ? 0.6 : -0.4} talk={i === 1 ? 0.6 : 0} />
 					</g>
 				))}
-				<text x={540} y={1300} textAnchor="middle" fontFamily="Inter" fontWeight={800} fontSize={32} fill="#9fb7d6">эмоции и позы</text>
+				<text x={540} y={1290} textAnchor="middle" fontFamily="Inter" fontWeight={800} fontSize={32} fill="#9fb7d6">эмоции и позы</text>
 			</svg>
 		</AbsoluteFill>
 	);
