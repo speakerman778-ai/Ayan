@@ -351,21 +351,58 @@ const BackWall: React.FC<{t: number}> = ({t}) => (
 );
 
 // ------------------------------------------------------------------ UI pieces
-const Plate: React.FC<{t: number; at: number; text: string; color?: string; y?: number; out?: number}> = ({t, at, text, color = '#d9483b', y = 330, out = 1e9}) =>
-	t < at || t > out ? null : (
-		<g transform={`translate(540 ${y}) scale(${back((t - at) / 0.35)}) rotate(-2)`}>
-			<rect x={-text.length * 19 - 40} y={-55} width={text.length * 38 + 80} height={110} rx={20} fill="#151826" stroke={color} strokeWidth={8} />
-			<text y={20} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={56} fill={color}>{text}</text>
-		</g>
-	);
-const Rel: React.FC<{t: number; v: number; y?: number}> = ({t, v, y = 300}) => (
-	<g transform={`translate(540 ${y})`}>
-		<text y={-40} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={40} fill="#fff" stroke={OL} strokeWidth={6} paintOrder="stroke">ОТНОШЕНИЯ</text>
-		<rect x={-400} y={-20} width={800} height={60} rx={30} fill="#151826" stroke={OL} strokeWidth={7} />
-		<rect x={-392} y={-12} width={784 * ((v + 100) / 200) + 10} height={44} rx={22} fill="#d9483b" />
-		<text y={100} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={70} fill="#ff5a4f" stroke={OL} strokeWidth={8} paintOrder="stroke">{Math.round(v)}</text>
+/** his UI: dark card, glowing gold border, small caps label + big gold value */
+const GOLD = '#f5b638';
+const Glow: React.FC<{w: number; h: number; children?: React.ReactNode; color?: string}> = ({w, h, children, color = GOLD}) => (
+	<g>
+		<rect x={-w / 2 - 10} y={-h / 2 - 10} width={w + 20} height={h + 20} rx={34} fill={color} opacity={0.18} />
+		<rect x={-w / 2 - 4} y={-h / 2 - 4} width={w + 8} height={h + 8} rx={30} fill={color} opacity={0.25} />
+		<rect x={-w / 2} y={-h / 2} width={w} height={h} rx={26} fill="#17151e" stroke={color} strokeWidth={6} />
+		{children}
 	</g>
 );
+const Plate: React.FC<{t: number; at: number; text: string; color?: string; y?: number; out?: number}> = ({t, at, text, color = GOLD, y = 330, out = 1e9}) => {
+	if (t < at || t > out) return null;
+	const [label, value] = text.includes(':') ? text.split(':').map((q) => q.trim()) : ['', text];
+	const w = Math.max(label.length * 22, value.length * 46) + 120;
+	return (
+		<g transform={`translate(540 ${y}) scale(${back((t - at) / 0.35)})`}>
+			<Glow w={w} h={label ? 170 : 120} color={color === '#d9483b' ? GOLD : color}>
+				{label && <text y={-36} textAnchor="middle" fontFamily="Inter" fontWeight={800} fontSize={30} letterSpacing={4} fill="#d9c9a0">{label}</text>}
+				<text y={label ? 46 : 22} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={label ? 76 : 60} fill={GOLD}>{value}</text>
+			</Glow>
+		</g>
+	);
+};
+const Rel: React.FC<{t: number; v: number; y?: number}> = ({t, v, y = 300}) => {
+	const k = (v + 100) / 200;
+	return (
+		<g transform={`translate(540 ${y})`}>
+			<Glow w={760} h={220}>
+				<text y={-56} textAnchor="middle" fontFamily="Inter" fontWeight={800} fontSize={30} letterSpacing={6} fill="#d9c9a0">ОТНОШЕНИЯ</text>
+				<text y={22} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={84} fill={GOLD}>{Math.round(v)} / 100</text>
+				<rect x={-320} y={56} width={640} height={16} rx={8} fill="#2a2633" />
+				<rect x={-320} y={56} width={Math.max(16, 640 * k)} height={16} rx={8} fill={GOLD} />
+				<circle cx={-320 + Math.max(8, 640 * k)} cy={64} r={18} fill={GOLD} stroke="#17151e" strokeWidth={5} />
+			</Glow>
+		</g>
+	);
+};
+/** his live-chat overlay: colored nicks, white text */
+const Chat: React.FC<{t: number; at: number; lines: [string, string][]; x?: number; y?: number}> = ({t, at, lines, x = 60, y = 1180}) => {
+	const cols = ['#ff7a7a', '#7fd1ff', '#b38bff', '#7fe0a0', '#ffd36a', '#ff9fd6'];
+	const n = Math.min(lines.length, Math.floor(Math.max(0, t - at) / 0.35));
+	return (
+		<g>
+			{lines.slice(0, n).map(([nick, msg], i) => (
+				<text key={i} x={x} y={y + (i - n) * 46} fontFamily="Inter" fontWeight={800} fontSize={32}>
+					<tspan fill={cols[i % cols.length]}>{nick}: </tspan>
+					<tspan fill="#fff">{msg}</tspan>
+				</text>
+			))}
+		</g>
+	);
+};
 const Phone: React.FC<{t: number; at: number; children: React.ReactNode; y?: number; s?: number}> = ({t, at, children, y = 880, s = 1}) =>
 	t < at ? null : (
 		<g transform={`translate(540 ${y + 50 * (1 - ease((t - at) / 0.4))}) scale(${s * back((t - at) / 0.4)})`}>
@@ -458,18 +495,19 @@ S.push({
 		return (
 			<>
 				<Night t={t} warm />
-				<Phone t={t} at={0} y={860} s={1.1}>
+				<Phone t={t} at={0} y={760} s={1.0}>
 					<rect x={-252} y={-462} width={504} height={70} fill="#1b1e2b" />
 					<text x={0} y={-416} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={28} fill="#fff">@artem_7 · сейчас</text>
 					<rect x={-230} y={-380} width={460} height={420} rx={20} fill="#f2c230" />
-					<Kid x={0} y={30} s={0.5} t={t} {...DIMA} face="shock" armR={40} />
+					<Kid x={0} y={40} s={0.4} t={t} {...DIMA} face="shock" armR={40} />
 					<text x={0} y={-320} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={54} fill={OL}>ЛИМОН 🍋</text>
 					<text x={-200} y={110} fontFamily="Inter" fontWeight={900} fontSize={40} fill="#ff5a7a">♥ {likes.toLocaleString('ru-RU')}</text>
 					<Msg t={t} at={1.6} y={170} from="kirill" text={['ахахах лимон']} />
 					<Msg t={t} at={2.4} y={290} from="lena" text={['бедный 😬']} />
 					<Msg t={t} at={3.2} y={410} from="dimon" text={['🍋🍋🍋']} />
 				</Phone>
-				<Plate t={t} at={2.6} text="24/7" color="#f5c542" y={260} />
+				<Plate t={t} at={2.6} text="24/7" y={260} />
+				<Chat t={t} at={1.2} x={40} y={1540} lines={[['kirill', 'ахахах лимон'], ['lena', 'бедный'], ['dimon', 'репост'], ['nastya_k', 'жёстко'], ['okak', '🍋🍋🍋'], ['max_pro', 'кто это?']]} />
 			</>
 		);
 	},
@@ -653,8 +691,8 @@ const SceneLayer: React.FC<{sc: Scene; first: boolean}> = ({sc, first}) => {
 				<g transform={`translate(${cx} ${cy}) scale(${z * (first ? 1 : 1 + 0.06 * (1 - ease(lt / 0.5)))}) translate(${-cx} ${-cy})`}>{sc.draw(t, abs)}</g>
 				<defs>
 					<radialGradient id="cv" cx="50%" cy="50%" r="75%">
-						<stop offset="60%" stopColor="#000" stopOpacity={0} />
-						<stop offset="100%" stopColor="#000" stopOpacity={0.35} />
+						<stop offset="50%" stopColor="#000" stopOpacity={0} />
+						<stop offset="100%" stopColor="#000" stopOpacity={0.55} />
 					</radialGradient>
 				</defs>
 				<rect width={VW} height={VH} fill="url(#cv)" />
