@@ -26,6 +26,7 @@ import {Ovoshch6, OVOSHCH6_DURATION} from './series/Ovoshch6';
 import {Ovoshch7, OVOSHCH7_DURATION} from './series/Ovoshch7';
 import {Ovoshch8, OVOSHCH8_DURATION} from './series/Ovoshch8';
 import {Ovoshch8b, OVOSHCH8B_DURATION} from './series/Ovoshch8b';
+import {StenaSheet} from './series/Stena';
 import {Collab01, COLLAB01_DURATION, CollabSheet, CollabSheetOne} from './series/Collab01';
 import {Stream, STREAM_DURATION} from './series/Stream';
 import {Kypshak, KYPSHAK_DURATION} from './series/Kypshak';
@@ -47,6 +48,7 @@ export const Root: React.FC = () => (
 	<Composition id="Ovoshch7" component={Ovoshch7} width={1080} height={1920} fps={30} durationInFrames={OVOSHCH7_DURATION * 30} defaultProps={{audio: 'shnurok/ep13-mix.wav'}} />
 	<Composition id="Ovoshch8" component={Ovoshch8} width={1080} height={1920} fps={30} durationInFrames={OVOSHCH8_DURATION * 30} defaultProps={{audio: 'shnurok/ep14-mix.wav'}} />
 	<Composition id="Ovoshch8b" component={Ovoshch8b} width={1080} height={1920} fps={30} durationInFrames={OVOSHCH8B_DURATION * 30} defaultProps={{audio: 'shnurok/ep14b-mix.wav'}} />
+	<Composition id="StenaSheet" component={StenaSheet} width={1080} height={1920} fps={30} durationInFrames={30} />
 	<Composition id="Collab01" component={Collab01} width={1080} height={1920} fps={30} durationInFrames={COLLAB01_DURATION * 30} defaultProps={{audio: 'collab/mix.wav'}} />
 	<Composition id="CollabSheet" component={CollabSheet} width={1080} height={1920} fps={30} durationInFrames={30} />
 	<Composition id="CollabSheetOne" component={CollabSheetOne} width={1080} height={1920} fps={30} durationInFrames={30} defaultProps={{who: 0}} />
