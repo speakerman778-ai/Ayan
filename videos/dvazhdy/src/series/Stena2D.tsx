@@ -613,7 +613,7 @@ export const Stena2D: React.FC<{audio?: string}> = ({audio = ''}) => {
 					</Sequence>
 				);
 			})}
-			{ci >= 0 && t < WORDS[WORDS.length - 1].end + 0.6 && <KaraokeLine key={ci} words={CAPTIONS[ci]} t={t} y={880} keepSpoken />}
+			{ci >= 0 && t < WORDS[WORDS.length - 1].end + 0.6 && <KaraokeLine key={ci} words={CAPTIONS[ci]} t={t} keepSpoken />}
 			<div style={{position: 'absolute', right: 40, top: 40, fontFamily: 'Inter', fontWeight: 800, fontSize: 30, color: '#fff', opacity: 0.9, textShadow: '0 2px 6px #000a'}}>Вселенная Шнурка</div>
 			{audio && <Audio src={staticFile(audio)} />}
 		</AbsoluteFill>
