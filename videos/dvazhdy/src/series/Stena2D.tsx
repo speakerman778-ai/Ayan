@@ -60,7 +60,7 @@ const SPEAK: {who: string; start: number; end: number}[] = (() => {
 const talkOf = (who: string, abs: number) => (SPEAK.some((s) => s.who === who && abs >= s.start - 0.03 && abs <= s.end + 0.05) ? clamp01(((ENV[Math.round(abs * FPS)] ?? 0) - 0.12) * 1.5) : 0);
 
 // ------------------------------------------------------------------ flat backgrounds
-const Classroom: React.FC<{t: number}> = ({t}) => (
+const Classroom: React.FC<{t: number; noText?: boolean}> = ({t, noText}) => (
 	<g>
 		<rect width={VW} height={VH} fill="#f3e3c3" />
 		<rect y={0} width={VW} height={110} fill="#e8d4ad" />
@@ -68,8 +68,8 @@ const Classroom: React.FC<{t: number}> = ({t}) => (
 		<path d="M 0 0 L 300 160 L 300 1180 L 0 1420 Z" fill="#ead6b0" stroke={O} strokeWidth={8} />
 		<path d="M 30 330 L 270 380 L 270 900 L 30 1010 Z" fill="#2f5a45" stroke={O} strokeWidth={9} />
 		<path d="M 30 1010 L 270 900 L 270 920 L 30 1036 Z" fill="#c98c55" stroke={O} strokeWidth={5} />
-		<text transform="translate(150 560) skewY(12)" textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={46} fill="#f4f1ea" opacity={0.85}>2+2=?</text>
-		<text transform="translate(150 660) skewY(12)" textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={28} fill="#f4f1ea" opacity={0.7}>Классная работа</text>
+		{!noText && <text transform="translate(150 560) skewY(12)" textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={46} fill="#f4f1ea" opacity={0.85}>2+2=?</text>}
+		{!noText && <text transform="translate(150 660) skewY(12)" textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={28} fill="#f4f1ea" opacity={0.7}>Классная работа</text>}
 		{/* teacher's desk (empty) near the board */}
 		<path d="M 300 1060 L 470 1040 L 470 1180 L 300 1210 Z" fill="#9c6338" stroke={O} strokeWidth={7} />
 		<path d="M 290 1040 L 480 1020 L 480 1050 L 290 1070 Z" fill="#c98c55" stroke={O} strokeWidth={6} />
@@ -81,9 +81,9 @@ const Classroom: React.FC<{t: number}> = ({t}) => (
 		<circle cx={560} cy={220} r={56} fill="#fff" stroke={O} strokeWidth={7} />
 		<path d={`M 560 220 L ${560 + Math.sin(t * 0.5) * 34} ${220 - Math.cos(t * 0.5) * 34} M 560 220 L 580 236`} stroke={O} strokeWidth={6} strokeLinecap="round" />
 		<rect x={360} y={330} width={160} height={210} rx={8} fill="#fbf3e2" stroke={O} strokeWidth={6} />
-		<text x={440} y={400} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#d9483b">А Б В</text>
-		<text x={440} y={450} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#3d6fb5">Г Д Е</text>
-		<text x={440} y={500} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#5f9e55">Ё Ж З</text>
+		{!noText && <text x={440} y={400} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#d9483b">А Б В</text>}
+		{!noText && <text x={440} y={450} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#3d6fb5">Г Д Е</text>}
+		{!noText && <text x={440} y={500} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#5f9e55">Ё Ж З</text>}
 		<rect x={560} y={420} width={170} height={120} rx={8} fill="#fbf3e2" stroke={O} strokeWidth={6} />
 		<path d="M 580 520 L 620 470 L 650 500 L 690 450 L 710 520 Z" fill="#5f9e55" stroke={O} strokeWidth={4} />
 		<rect x={360} y={640} width={420} height={22} rx={6} fill="#9c6338" stroke={O} strokeWidth={5} />
@@ -256,11 +256,12 @@ SC.push({
 		draw: (t) => {
 			const looked = t > oink - 0.3;
 			const seats: [number, number, number, number][] = [
-				[520, 1250, 0, 0.42], [760, 1250, 1, 0.42], [600, 1470, 2, 0.5], [860, 1470, 3, 0.5],
+				[440, 1250, 0, 0.42], [680, 1250, 1, 0.42], [480, 1470, 2, 0.5], [740, 1470, 3, 0.5],
 			];
 			return (
 				<>
-					<Classroom t={t} />
+					<g transform="translate(1080 0) scale(-1 1)">
+					<Classroom t={t} noText />
 					{seats.map(([x, y, k, sc]) => (
 						<g key={k}>
 							<g transform={looked ? '' : `translate(${2 * x} 0) scale(-1 1)`}>
@@ -269,9 +270,15 @@ SC.push({
 							<Desk x={x - 10} y={y - 110 * sc / 0.42} s={sc / 0.42 * 0.85} />
 						</g>
 					))}
-					<Sanya x={lerp(1250, 930, ease((t - walk) / 2))} y={1800} s={0.62} face={t > oink + 0.5 ? 'sad' : 'neutral'} />
+					</g>
+					<text transform="translate(930 560) skewY(-12)" textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={46} fill="#f4f1ea" opacity={0.85}>2+2=?</text>
+					<text transform="translate(930 660) skewY(-12)" textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={28} fill="#f4f1ea" opacity={0.7}>Классная работа</text>
+					<text x={640} y={400} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#d9483b">А Б В</text>
+					<text x={640} y={450} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#3d6fb5">Г Д Е</text>
+					<text x={640} y={500} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#5f9e55">Ё Ж З</text>
+					<Sanya x={lerp(-170, 130, ease((t - walk) / 2))} y={1800} s={0.6} face={t > oink + 0.5 ? 'sad' : 'neutral'} />
 					<Big t={t} at={oink} out={oink + 1.6} text="ХРЮ!" y={880} size={170} color="#ff9fb0" />
-					{t > oink + 0.4 && [0, 1, 2].map((k) => <text key={k} x={470 + k * 180} y={1000 - Math.abs(Math.sin(t * 6 + k)) * 20} fontFamily="Inter" fontWeight={900} fontSize={46} fill="#d9483b">ха-ха</text>)}
+					{t > oink + 0.4 && [0, 1, 2].map((k) => <text key={k} x={360 + k * 180} y={1000 - Math.abs(Math.sin(t * 6 + k)) * 20} fontFamily="Inter" fontWeight={900} fontSize={46} fill="#d9483b">ха-ха</text>)}
 				</>
 			);
 		},
