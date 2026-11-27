@@ -245,7 +245,59 @@ SC.push({
 	),
 });
 
-// 2. classroom: walk in, «хрю», laughter
+// 2. classroom seen from the back: board straight ahead, kids' backs, they turn round on «хрю»
+const KidBack: React.FC<{x: number; y: number; s: number; k: number; turn: number; face?: React.ComponentProps<typeof Char>['face']}> = ({x, y, s, k, turn, face}) => {
+	const tops = ['#3d6fb5', '#8a5a9a', '#e8a93a', '#5f9e55', '#c0603e', '#2b9a9a'];
+	const hc = ['#2b211d', '#7a4a2a', '#e0b04a', '#1b1410', '#a0522d', '#4a3a30'];
+	if (turn > 0.5) return <Kid x={x} y={y} s={s} k={k} face={face} />;
+	return (
+		<g transform={`translate(${x} ${y}) scale(${s})`}>
+			{/* back view: torso, head from behind (hair only) */}
+			<rect x={-84} y={-470} width={168} height={250} rx={44} fill={tops[k % 6]} stroke={O} strokeWidth={7} />
+			<path d="M -60 -470 Q 0 -500 60 -470 Q 40 -430 0 -428 Q -40 -430 -60 -470 Z" fill={tops[k % 6]} stroke={O} strokeWidth={6} />
+			<circle cx={0} cy={-600} r={118} fill={hc[k % 6]} stroke={O} strokeWidth={7} />
+			<ellipse cx={-118} cy={-590} rx={18} ry={28} fill="#f6c9a0" stroke={O} strokeWidth={6} />
+			<ellipse cx={118} cy={-590} rx={18} ry={28} fill="#f6c9a0" stroke={O} strokeWidth={6} />
+		</g>
+	);
+};
+const ClassBack: React.FC<{t: number}> = ({t}) => (
+	<g>
+		<rect width={VW} height={VH} fill="#f3e3c3" />
+		<rect y={0} width={VW} height={110} fill="#e8d4ad" />
+		{/* front wall: board in the middle */}
+		<rect x={170} y={260} width={740} height={420} rx={14} fill="#2f5a45" stroke={O} strokeWidth={10} />
+		<rect x={150} y={680} width={780} height={22} rx={8} fill="#c98c55" stroke={O} strokeWidth={6} />
+		<text x={540} y={430} textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={70} fill="#f4f1ea" opacity={0.85}>2 + 2 = ?</text>
+		<text x={540} y={530} textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={40} fill="#f4f1ea" opacity={0.7}>Классная работа</text>
+		<circle cx={540} cy={180} r={50} fill="#fff" stroke={O} strokeWidth={7} />
+		<path d={`M 540 180 L ${540 + Math.sin(t * 0.5) * 30} ${180 - Math.cos(t * 0.5) * 30} M 540 180 L 558 194`} stroke={O} strokeWidth={6} strokeLinecap="round" />
+		<rect x={30} y={250} width={110} height={300} rx={10} fill="#bfe0ff" stroke={O} strokeWidth={8} />
+		<rect x={940} y={250} width={110} height={300} rx={10} fill="#bfe0ff" stroke={O} strokeWidth={8} />
+		<rect x={40} y={600} width={90} height={120} rx={6} fill="#fbf3e2" stroke={O} strokeWidth={5} />
+		<text x={85} y={650} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={24} fill="#d9483b">А Б В</text>
+		<text x={85} y={690} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={24} fill="#3d6fb5">Г Д Е</text>
+		<rect x={950} y={620} width={90} height={90} rx={14} fill="#c0603e" stroke={O} strokeWidth={6} />
+		{[0, 1, 2].map((k) => <ellipse key={k} cx={995 + (k - 1) * 26} cy={590 - (k % 2) * 26} rx={24} ry={40} fill="#5f9e55" stroke={O} strokeWidth={5} />)}
+		{/* teacher's desk (empty) in front of the board */}
+		<rect x={380} y={760} width={320} height={120} rx={10} fill="#9c6338" stroke={O} strokeWidth={7} />
+		<rect x={360} y={740} width={360} height={30} rx={8} fill="#c98c55" stroke={O} strokeWidth={6} />
+		<rect x={410} y={700} width={44} height={40} rx={6} fill="#3d6fb5" stroke={O} strokeWidth={4} />
+		<circle cx={660} cy={718} r={22} fill="#d9483b" stroke={O} strokeWidth={4} />
+		{/* floor */}
+		<rect y={880} width={VW} height={VH - 880} fill="#c98c55" />
+		{Array.from({length: 9}).map((_, i) => (
+			<path key={i} d={`M ${540 + (i - 4) * 60} 880 L ${540 + (i - 4) * 260} ${VH}`} stroke="#9c6338" strokeWidth={5} opacity={0.5} />
+		))}
+	</g>
+);
+const DeskBack: React.FC<{x: number; y: number; s: number}> = ({x, y, s}) => (
+	<g transform={`translate(${x} ${y}) scale(${s})`}>
+		<rect x={-170} y={-30} width={340} height={40} rx={8} fill="#d9b07a" stroke={O} strokeWidth={7} />
+		<rect x={-160} y={10} width={24} height={150} fill="#9c6338" stroke={O} strokeWidth={5} />
+		<rect x={136} y={10} width={24} height={150} fill="#9c6338" stroke={O} strokeWidth={5} />
+	</g>
+);
 {
 	const at = S('каждое');
 	const walk = T('захожу') - at;
@@ -254,31 +306,24 @@ SC.push({
 		at,
 		zoom: () => [1, 540, 960],
 		draw: (t) => {
-			const looked = t > oink - 0.3;
-			const seats: [number, number, number, number][] = [
-				[440, 1250, 0, 0.42], [680, 1250, 1, 0.42], [480, 1470, 2, 0.5], [740, 1470, 3, 0.5],
+			const turned = t > oink - 0.1 ? 1 : 0;
+			// rows: back row is closer to the camera (bigger)
+			const rows: [number, number, number][] = [
+				[330, 1060, 0.36], [750, 1060, 0.36],
+				[290, 1330, 0.5], [790, 1330, 0.5],
 			];
 			return (
 				<>
-					<g transform="translate(1080 0) scale(-1 1)">
-					<Classroom t={t} noText />
-					{seats.map(([x, y, k, sc]) => (
+					<ClassBack t={t} />
+					{rows.map(([x, y, sc], k) => (
 						<g key={k}>
-							<g transform={looked ? '' : `translate(${2 * x} 0) scale(-1 1)`}>
-								<Kid x={x} y={y + 70 * sc / 0.42} s={sc} k={k} face={t > oink ? 'laugh' : 'neutral'} turn={0.8} armR={t > oink && k === 2 ? [140, 30] : undefined} />
-							</g>
-							<Desk x={x - 10} y={y - 110 * sc / 0.42} s={sc / 0.42 * 0.85} />
+							<DeskBack x={x} y={y - 230 * sc} s={sc * 1.1} />
+							<KidBack x={x} y={y + 40 * sc} s={sc} k={k} turn={turned} face={turned ? 'laugh' : 'neutral'} />
 						</g>
 					))}
-					</g>
-					<text transform="translate(930 560) skewY(-12)" textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={46} fill="#f4f1ea" opacity={0.85}>2+2=?</text>
-					<text transform="translate(930 660) skewY(-12)" textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={28} fill="#f4f1ea" opacity={0.7}>Классная работа</text>
-					<text x={640} y={400} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#d9483b">А Б В</text>
-					<text x={640} y={450} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#3d6fb5">Г Д Е</text>
-					<text x={640} y={500} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#5f9e55">Ё Ж З</text>
-					<Sanya x={lerp(-170, 130, ease((t - walk) / 2))} y={1800} s={0.6} face={t > oink + 0.5 ? 'sad' : 'neutral'} />
-					<Big t={t} at={oink} out={oink + 1.6} text="ХРЮ!" y={880} size={170} color="#ff9fb0" />
-					{t > oink + 0.4 && [0, 1, 2].map((k) => <text key={k} x={360 + k * 180} y={1000 - Math.abs(Math.sin(t * 6 + k)) * 20} fontFamily="Inter" fontWeight={900} fontSize={46} fill="#d9483b">ха-ха</text>)}
+					<Sanya x={lerp(1250, 540, ease((t - walk) / 2.2))} y={1830} s={0.62} face={t > oink + 0.5 ? 'sad' : 'neutral'} />
+					<Big t={t} at={oink} out={oink + 1.6} text="ХРЮ!" y={820} size={170} color="#ff9fb0" />
+					{t > oink + 0.4 && [0, 1, 2].map((k) => <text key={k} x={200 + k * 300} y={950 - Math.abs(Math.sin(t * 6 + k)) * 20} fontFamily="Inter" fontWeight={900} fontSize={46} fill="#d9483b">ха-ха</text>)}
 				</>
 			);
 		},
