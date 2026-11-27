@@ -9,7 +9,7 @@ import {ShotCtx} from '../lib';
 type F = React.ComponentProps<typeof Char>['face'];
 /** Big kid: body stretched wide, head drawn on top un-stretched but larger → round full face. */
 export const Sanya: React.FC<{x: number; y: number; s: number; face?: F; armL?: [number, number]; armR?: [number, number]; talk?: number; gloves?: boolean}> = ({x, y, s, face = 'smile', armL, armR, talk = 0, gloves}) => {
-	const p = {hair: 'crew' as const, hairColor: '#5a3a24', jacket: '#4f8a5b', pants: '#3a4560', hoodie: true, headS: 0.92, bodyS: 1.12, headDrop: 30, face, talk, freckles: true, ...(armL ? {armL} : {}), ...(armR ? {armR} : {})};
+	const p = {hair: 'crew' as const, hairColor: '#5a3a24', jacket: '#4f8a5b', pants: '#3a4560', hoodie: true, headS: 0.92, bodyS: 1.4, headDrop: 30, face, talk, freckles: true, ...(armL ? {armL} : {}), ...(armR ? {armR} : {})};
 	return (
 		<g>
 			<g transform={`translate(${x} ${y}) scale(1.42 1) translate(${-x} ${-y})`}>
@@ -22,13 +22,13 @@ export const Sanya: React.FC<{x: number; y: number; s: number; face?: F; armL?: 
 };
 export const SanyaSide: React.FC<{x: number; y: number; s: number; dir?: 1 | -1; face?: React.ComponentProps<typeof SideChar>['face']; walk?: number}> = ({x, y, s, dir = 1, face = 'smile', walk = 0}) => (
 	<g transform={`translate(${x} ${y}) scale(1.35 1) translate(${-x} ${-y})`}>
-		<SideChar x={x} y={y} s={s} dir={dir} face={face} walk={walk} hair="short" hairColor="#5a3a24" jacket="#4f8a5b" pants="#3a4560" hoodie freckles />
+		<SideChar x={x} y={y} s={s} dir={dir} face={face} walk={walk} bodyS={1.4} hair="short" hairColor="#5a3a24" jacket="#4f8a5b" pants="#3a4560" hoodie freckles />
 	</g>
 );
-const Max: React.FC<{x: number; y: number; s: number; face?: F; armR?: [number, number]}> = (p) => <Char {...p} hair="lyokha" hairColor="#e0b04a" jacket="#d9483b" pants="#f4f1ea" hoodie headS={0.85} bodyS={1.14} headDrop={18} />;
-const Coach: React.FC<{x: number; y: number; s: number; face?: F}> = (p) => <Char {...p} hair="old" hairColor="#9a9a9a" mustache jacket="#2f4f86" pants="#2f4f86" hoodie headS={0.82} bodyS={1.14} headDrop={18} />;
-const Striker: React.FC<{x: number; y: number; s: number; face?: F}> = (p) => <Char {...p} hair="buzz" hairColor="#1b1410" jacket="#1d1f2a" pants="#1d1f2a" hoodie headS={0.85} bodyS={1.16} headDrop={18} />;
-const Mom: React.FC<{x: number; y: number; s: number; face?: F}> = (p) => <Char {...p} hair="long" hairColor="#5a3a24" jacket="#c0603e" pants="#3a4560" skirt="#3a4560" headS={0.82} bodyS={1.1} headDrop={18} />;
+const Max: React.FC<{x: number; y: number; s: number; face?: F; armR?: [number, number]}> = (p) => <Char {...p} hair="lyokha" hairColor="#e0b04a" jacket="#d9483b" pants="#f4f1ea" hoodie headS={0.85} bodyS={1.42} headDrop={18} />;
+const Coach: React.FC<{x: number; y: number; s: number; face?: F}> = (p) => <Char {...p} hair="old" hairColor="#9a9a9a" mustache jacket="#2f4f86" pants="#2f4f86" hoodie headS={0.82} bodyS={1.42} headDrop={18} />;
+const Striker: React.FC<{x: number; y: number; s: number; face?: F}> = (p) => <Char {...p} hair="buzz" hairColor="#1b1410" jacket="#1d1f2a" pants="#1d1f2a" hoodie headS={0.85} bodyS={1.45} headDrop={18} />;
+const Mom: React.FC<{x: number; y: number; s: number; face?: F}> = (p) => <Char {...p} hair="long" hairColor="#5a3a24" jacket="#c0603e" pants="#3a4560" skirt="#3a4560" headS={0.82} bodyS={1.38} headDrop={18} />;
 
 const Label: React.FC<{x: number; y: number; name: string; role: string}> = ({x, y, name, role}) => (
 	<g>
