@@ -13,16 +13,16 @@ export const Sanya: React.FC<{x: number; y: number; s: number; face?: F; armL?: 
 	const p = {hair: 'crew' as const, hairColor: '#5a3a24', jacket: '#4f8a5b', pants: '#3a4560', hoodie: true, headS: 0.92, bodyS: 1.4, headDrop: 30, face, talk, freckles: true, ...(armL ? {armL} : {}), ...(armR ? {armR} : {})};
 	return (
 		<g>
-			<g transform={`translate(${x} ${y}) scale(1.42 1) translate(${-x} ${-y})`}>
+			<g transform={`translate(${x} ${y}) scale(1.75 1) translate(${-x} ${-y})`}>
 				<Char x={x} y={y} s={s} {...p} headS={0.001} />
 			</g>
-			<Char x={x} y={y} s={s} {...p} headS={1.08} headOnly />
+			<Char x={x} y={y} s={s} {...p} headS={1.16} headOnly />
 			{gloves && armL && armR && null}
 		</g>
 	);
 };
 export const SanyaSide: React.FC<{x: number; y: number; s: number; dir?: 1 | -1; face?: React.ComponentProps<typeof SideChar>['face']; walk?: number}> = ({x, y, s, dir = 1, face = 'smile', walk = 0}) => (
-	<g transform={`translate(${x} ${y}) scale(1.35 1) translate(${-x} ${-y})`}>
+	<g transform={`translate(${x} ${y}) scale(1.6 1) translate(${-x} ${-y})`}>
 		<SideChar x={x} y={y} s={s} dir={dir} face={face} walk={walk} bodyS={1.4} hair="short" hairColor="#5a3a24" jacket="#4f8a5b" pants="#3a4560" hoodie freckles />
 	</g>
 );
@@ -43,10 +43,10 @@ export const StenaSheet: React.FC = () => (
 			<svg width={1080} height={1920} viewBox="0 0 1080 1920">
 				<text x={540} y={80} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={58} fill="#3b2a22">«СТЕНА» · персонажи</text>
 				{/* Sanya: front, emotions, side */}
-				<Sanya x={230} y={860} s={0.78} face="sad" />
-				<Sanya x={510} y={860} s={0.6} face="determined" />
-				<Sanya x={745} y={860} s={0.6} face="joy" armL={[150, 20]} armR={[150, 20]} />
-				<SanyaSide x={960} y={860} s={0.6} dir={-1} face="determined" walk={0.6} />
+				<Sanya x={210} y={860} s={0.74} face="sad" />
+				<Sanya x={500} y={860} s={0.52} face="determined" />
+				<Sanya x={740} y={860} s={0.52} face="joy" armL={[150, 20]} armR={[150, 20]} />
+				<SanyaSide x={975} y={860} s={0.52} dir={-1} face="determined" walk={0.6} />
 				<Label x={540} y={940} name="Саня «Стена»" role="главный герой · вратарь" />
 				{/* others */}
 				<Max x={160} y={1700} s={0.62} face="smile" />
