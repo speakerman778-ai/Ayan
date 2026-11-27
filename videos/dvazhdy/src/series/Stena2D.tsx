@@ -60,30 +60,55 @@ const SPEAK: {who: string; start: number; end: number}[] = (() => {
 const talkOf = (who: string, abs: number) => (SPEAK.some((s) => s.who === who && abs >= s.start - 0.03 && abs <= s.end + 0.05) ? clamp01(((ENV[Math.round(abs * FPS)] ?? 0) - 0.12) * 1.5) : 0);
 
 // ------------------------------------------------------------------ flat backgrounds
-const Classroom: React.FC = () => (
+const Classroom: React.FC<{t: number}> = ({t}) => (
 	<g>
 		<rect width={VW} height={VH} fill="#f3e3c3" />
-		<rect y={0} width={VW} height={130} fill="#e8d4ad" />
-		<rect x={140} y={250} width={800} height={430} rx={16} fill="#2f5a45" stroke={O} strokeWidth={10} />
-		<rect x={120} y={680} width={840} height={22} rx={8} fill="#c98c55" stroke={O} strokeWidth={6} />
-		<text x={540} y={420} textAnchor="middle" fontFamily="Comic Sans MS, Inter" fontWeight={700} fontSize={64} fill="#f4f1ea" opacity={0.85}>2 + 2 = ?</text>
-		<text x={540} y={520} textAnchor="middle" fontFamily="Comic Sans MS, Inter" fontWeight={700} fontSize={44} fill="#f4f1ea" opacity={0.7}>Классная работа</text>
-		<rect x={30} y={240} width={70} height={360} rx={10} fill="#bfe0ff" stroke={O} strokeWidth={8} />
-		<rect x={980} y={240} width={70} height={360} rx={10} fill="#bfe0ff" stroke={O} strokeWidth={8} />
-		{[0, 1, 2, 3].map((k) => (
-			<rect key={k} x={170 + k * 210} y={140} width={60} height={80} rx={6} fill={['#d9483b', '#3d6fb5', '#e8a93a', '#5f9e55'][k]} stroke={O} strokeWidth={5} />
+		<rect y={0} width={VW} height={110} fill="#e8d4ad" />
+		{/* left wall in perspective with the blackboard */}
+		<path d="M 0 0 L 300 160 L 300 1180 L 0 1420 Z" fill="#ead6b0" stroke={O} strokeWidth={8} />
+		<path d="M 30 330 L 270 380 L 270 900 L 30 1010 Z" fill="#2f5a45" stroke={O} strokeWidth={9} />
+		<path d="M 30 1010 L 270 900 L 270 920 L 30 1036 Z" fill="#c98c55" stroke={O} strokeWidth={5} />
+		<text transform="translate(150 560) skewY(12)" textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={46} fill="#f4f1ea" opacity={0.85}>2+2=?</text>
+		<text transform="translate(150 660) skewY(12)" textAnchor="middle" fontFamily="Inter" fontWeight={700} fontSize={28} fill="#f4f1ea" opacity={0.7}>Классная работа</text>
+		{/* teacher's desk (empty) near the board */}
+		<path d="M 300 1060 L 470 1040 L 470 1180 L 300 1210 Z" fill="#9c6338" stroke={O} strokeWidth={7} />
+		<path d="M 290 1040 L 480 1020 L 480 1050 L 290 1070 Z" fill="#c98c55" stroke={O} strokeWidth={6} />
+		<rect x={340} y={990} width={40} height={50} rx={6} fill="#3d6fb5" stroke={O} strokeWidth={4} />
+		<circle cx={430} cy={1005} r={22} fill="#d9483b" stroke={O} strokeWidth={4} />
+		{/* back wall: windows, clock, posters, shelf with globe and books, plant */}
+		<rect x={760} y={190} width={260} height={360} rx={12} fill="#bfe0ff" stroke={O} strokeWidth={8} />
+		<path d="M 890 190 L 890 550 M 760 370 L 1020 370" stroke={O} strokeWidth={6} />
+		<circle cx={560} cy={220} r={56} fill="#fff" stroke={O} strokeWidth={7} />
+		<path d={`M 560 220 L ${560 + Math.sin(t * 0.5) * 34} ${220 - Math.cos(t * 0.5) * 34} M 560 220 L 580 236`} stroke={O} strokeWidth={6} strokeLinecap="round" />
+		<rect x={360} y={330} width={160} height={210} rx={8} fill="#fbf3e2" stroke={O} strokeWidth={6} />
+		<text x={440} y={400} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#d9483b">А Б В</text>
+		<text x={440} y={450} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#3d6fb5">Г Д Е</text>
+		<text x={440} y={500} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={30} fill="#5f9e55">Ё Ж З</text>
+		<rect x={560} y={420} width={170} height={120} rx={8} fill="#fbf3e2" stroke={O} strokeWidth={6} />
+		<path d="M 580 520 L 620 470 L 650 500 L 690 450 L 710 520 Z" fill="#5f9e55" stroke={O} strokeWidth={4} />
+		<rect x={360} y={640} width={420} height={22} rx={6} fill="#9c6338" stroke={O} strokeWidth={5} />
+		{[0, 1, 2, 3, 4].map((k) => (
+			<rect key={k} x={380 + k * 34} y={570} width={28} height={70} rx={4} fill={['#d9483b', '#3d6fb5', '#e8a93a', '#5f9e55', '#8a5a9a'][k]} stroke={O} strokeWidth={4} />
 		))}
-		<rect y={1350} width={VW} height={VH - 1350} fill="#c98c55" />
-		{Array.from({length: 6}).map((_, i) => (
-			<path key={i} d={`M 0 ${1400 + i * 90} L ${VW} ${1400 + i * 90}`} stroke="#9c6338" strokeWidth={5} opacity={0.6} />
+		<circle cx={690} cy={590} r={42} fill="#7fc4f0" stroke={O} strokeWidth={6} />
+		<path d="M 660 580 Q 690 560 720 590 M 670 610 Q 690 600 710 615" stroke="#5f9e55" strokeWidth={8} fill="none" />
+		<rect x={684} y={632} width={12} height={10} fill={O} />
+		<rect x={900} y={1000} width={90} height={90} rx={14} fill="#c0603e" stroke={O} strokeWidth={6} />
+		{[0, 1, 2].map((k) => <ellipse key={k} cx={945 + (k - 1) * 28} cy={970 - (k % 2) * 30} rx={26} ry={44} fill="#5f9e55" stroke={O} strokeWidth={5} transform={`rotate(${(k - 1) * 25} ${945 + (k - 1) * 28} 990)`} />)}
+		{/* floor */}
+		<path d={`M 0 1420 L 300 1180 L ${VW} 1180 L ${VW} ${VH} L 0 ${VH} Z`} fill="#c98c55" />
+		{Array.from({length: 7}).map((_, i) => (
+			<path key={i} d={`M ${300 + i * 130} 1180 L ${i * 210 - 200} ${VH}`} stroke="#9c6338" strokeWidth={5} opacity={0.5} />
 		))}
 	</g>
 );
-const Desk: React.FC<{x: number; y: number}> = ({x, y}) => (
-	<g>
-		<rect x={x - 150} y={y} width={300} height={34} rx={8} fill="#d9b07a" stroke={O} strokeWidth={7} />
-		<rect x={x - 140} y={y + 34} width={24} height={170} fill="#9c6338" stroke={O} strokeWidth={5} />
-		<rect x={x + 116} y={y + 34} width={24} height={170} fill="#9c6338" stroke={O} strokeWidth={5} />
+/** desk seen from the side-front, kid sits behind it facing the board (left) */
+const Desk: React.FC<{x: number; y: number; s?: number}> = ({x, y, s = 1}) => (
+	<g transform={`translate(${x} ${y}) scale(${s})`}>
+		<path d="M -150 0 L 130 -14 L 150 10 L -130 26 Z" fill="#d9b07a" stroke={O} strokeWidth={7} strokeLinejoin="round" />
+		<rect x={-124} y={22} width={22} height={150} fill="#9c6338" stroke={O} strokeWidth={5} />
+		<rect x={118} y={6} width={22} height={150} fill="#9c6338" stroke={O} strokeWidth={5} />
+		<rect x={-60} y={-30} width={70} height={24} rx={4} fill="#fbf3e2" stroke={O} strokeWidth={4} transform="rotate(-4)" />
 	</g>
 );
 const Gym: React.FC<{t: number; banner?: string}> = ({t, banner}) => (
@@ -127,18 +152,22 @@ const Gym: React.FC<{t: number; banner?: string}> = ({t, banner}) => (
 		))}
 	</g>
 );
-const GoalFrame: React.FC<{y?: number}> = ({y = 1500}) => (
-	<g>
-		<rect x={150} y={y - 700} width={780} height={700} fill="none" stroke="#f4f1ea" strokeWidth={26} />
-		<rect x={150} y={y - 700} width={780} height={700} fill="none" stroke={O} strokeWidth={6} />
-		{Array.from({length: 13}).map((_, i) => (
-			<path key={i} d={`M ${163 + i * 58} ${y - 690} L ${163 + i * 58} ${y}`} stroke="#fff" strokeWidth={3} opacity={0.6} />
-		))}
-		{Array.from({length: 12}).map((_, i) => (
-			<path key={i} d={`M 163 ${y - 690 + i * 58} L 917 ${y - 690 + i * 58}`} stroke="#fff" strokeWidth={3} opacity={0.6} />
-		))}
-	</g>
-);
+const GoalFrame: React.FC<{y?: number; w?: number; h?: number}> = ({y = 1500, w = 980, h = 560}) => {
+	const x0 = 540 - w / 2;
+	return (
+		<g>
+			<rect x={x0} y={y - h} width={w} height={h} fill="#ffffff" opacity={0.12} />
+			{Array.from({length: Math.floor(w / 50)}).map((_, i) => (
+				<path key={i} d={`M ${x0 + 12 + i * 50} ${y - h} L ${x0 + 12 + i * 50} ${y}`} stroke="#fff" strokeWidth={3} opacity={0.6} />
+			))}
+			{Array.from({length: Math.floor(h / 50)}).map((_, i) => (
+				<path key={i} d={`M ${x0} ${y - h + 12 + i * 50} L ${x0 + w} ${y - h + 12 + i * 50}`} stroke="#fff" strokeWidth={3} opacity={0.6} />
+			))}
+			<path d={`M ${x0} ${y} L ${x0} ${y - h} L ${x0 + w} ${y - h} L ${x0 + w} ${y}`} fill="none" stroke={O} strokeWidth={34} strokeLinejoin="round" />
+			<path d={`M ${x0} ${y} L ${x0} ${y - h} L ${x0 + w} ${y - h} L ${x0 + w} ${y}`} fill="none" stroke="#f4f1ea" strokeWidth={22} strokeLinejoin="round" />
+		</g>
+	);
+};
 const Ball: React.FC<{x: number; y: number; r?: number; spin?: number}> = ({x, y, r = 46, spin = 0}) => (
 	<g transform={`translate(${x} ${y}) rotate(${spin})`}>
 		<circle r={r} fill="#fff" stroke={O} strokeWidth={6} />
@@ -189,7 +218,7 @@ const Clock: React.FC<{t: number; x: number; y: number}> = ({t, x, y}) => (
 		<path d="M 0 0 L 0 -8" stroke="#cfe0ff" strokeWidth={3} />
 	</g>
 );
-const Kid: React.FC<{x: number; y: number; s: number; k: number; face?: React.ComponentProps<typeof Char>['face']; armR?: [number, number]}> = ({k, ...p}) => {
+const Kid: React.FC<{x: number; y: number; s: number; k: number; face?: React.ComponentProps<typeof Char>['face']; armR?: [number, number]; turn?: number}> = ({k, ...p}) => {
 	const tops = ['#3d6fb5', '#8a5a9a', '#e8a93a', '#5f9e55', '#c0603e', '#2b9a9a'];
 	const hairs = ['boy', 'curly', 'crew', 'sweep', 'buzz', 'shaggy'] as const;
 	const hc = ['#2b211d', '#7a4a2a', '#e0b04a', '#1b1410', '#a0522d', '#4a3a30'];
@@ -223,21 +252,29 @@ SC.push({
 	const oink = T('хрюкает') - at;
 	SC.push({
 		at,
-		zoom: (t) => [1, 540, 960],
-		draw: (t) => (
-			<>
-				<Classroom />
-				{[[230, 0], [540, 1], [850, 2]].map(([x, k]) => (
-					<g key={k}>
-						<Kid x={x} y={1330} s={0.48} k={k} face={t > oink ? 'laugh' : 'neutral'} armR={t > oink && k === 1 ? [140, 30] : undefined} />
-						<Desk x={x} y={1160} />
-					</g>
-				))}
-				<Sanya x={lerp(1250, 800, ease((t - walk) / 2))} y={1760} s={0.7} face={t > oink + 0.5 ? 'sad' : 'neutral'} />
-				<Big t={t} at={oink} out={oink + 1.6} text="ХРЮ!" y={1000} size={170} color="#ff9fb0" />
-				{t > oink + 0.4 && [0, 1, 2].map((k) => <text key={k} x={180 + k * 330} y={1010 - Math.abs(Math.sin(t * 6 + k)) * 20} fontFamily="Inter" fontWeight={900} fontSize={50} fill="#d9483b">ха-ха</text>)}
-			</>
-		),
+		zoom: () => [1, 540, 960],
+		draw: (t) => {
+			const looked = t > oink - 0.3;
+			const seats: [number, number, number, number][] = [
+				[520, 1250, 0, 0.42], [760, 1250, 1, 0.42], [600, 1470, 2, 0.5], [860, 1470, 3, 0.5],
+			];
+			return (
+				<>
+					<Classroom t={t} />
+					{seats.map(([x, y, k, sc]) => (
+						<g key={k}>
+							<g transform={looked ? '' : `translate(${2 * x} 0) scale(-1 1)`}>
+								<Kid x={x} y={y + 70 * sc / 0.42} s={sc} k={k} face={t > oink ? 'laugh' : 'neutral'} turn={0.8} armR={t > oink && k === 2 ? [140, 30] : undefined} />
+							</g>
+							<Desk x={x - 10} y={y - 110 * sc / 0.42} s={sc / 0.42 * 0.85} />
+						</g>
+					))}
+					<Sanya x={lerp(1250, 930, ease((t - walk) / 2))} y={1800} s={0.62} face={t > oink + 0.5 ? 'sad' : 'neutral'} />
+					<Big t={t} at={oink} out={oink + 1.6} text="ХРЮ!" y={880} size={170} color="#ff9fb0" />
+					{t > oink + 0.4 && [0, 1, 2].map((k) => <text key={k} x={470 + k * 180} y={1000 - Math.abs(Math.sin(t * 6 + k)) * 20} fontFamily="Inter" fontWeight={900} fontSize={46} fill="#d9483b">ха-ха</text>)}
+				</>
+			);
+		},
 	});
 }
 
@@ -311,30 +348,104 @@ SC.push({
 	});
 }
 
-// 6. saves
+// 6. saves — ball meets the gloves exactly (hand positions computed from the arm angles)
+/** Sanya's hand position (local units at s=1, feet at 0,0; body stretched 1.3 in x) */
+const hand = (side: -1 | 1, ang: number, bend: number): [number, number] => {
+	const d = Math.PI / 180;
+	const a1 = side > 0 ? ang : -ang;
+	const a2 = side > 0 ? bend : -bend;
+	const sx = side * 76;
+	const sy = -451;
+	const jx = sx + Math.sin(a1 * d) * 110;
+	const jy = sy + Math.cos(a1 * d) * 110;
+	return [(jx + Math.sin((a1 + a2) * d) * 100) * 1.3, jy + Math.cos((a1 + a2) * d) * 100];
+};
+const Keeper2D: React.FC<{x: number; y: number; s: number; rot?: number; armL: [number, number]; armR: [number, number]; face?: React.ComponentProps<typeof Char>['face']}> = ({x, y, s, rot = 0, armL, armR, face = 'determined'}) => {
+	const hl = hand(-1, armL[0], armL[1]);
+	const hr = hand(1, armR[0], armR[1]);
+	return (
+		<g transform={`translate(${x} ${y}) rotate(${rot})`}>
+			<Sanya x={0} y={0} s={s} face={face} armL={armL} armR={armR} />
+			{[hl, hr].map(([hx, hy], k) => (
+				<g key={k} transform={`translate(${hx * s} ${hy * s})`}>
+					<circle r={34 * s} fill="#f2c230" stroke={O} strokeWidth={6 * s} />
+					<rect x={-26 * s} y={14 * s} width={52 * s} height={22 * s} rx={6 * s} fill="#2b2b2b" />
+				</g>
+			))}
+		</g>
+	);
+};
+const world = (x: number, y: number, rot: number, s: number, p: [number, number]): [number, number] => {
+	const r = (rot * Math.PI) / 180;
+	const lx = p[0] * s;
+	const ly = p[1] * s;
+	return [x + lx * Math.cos(r) - ly * Math.sin(r), y + lx * Math.sin(r) + ly * Math.cos(r)];
+};
 {
 	const at = S('первый');
-	const s1 = T('прыгаю') - at;
+	const s1 = T('прыгаю') - at + 0.25;
 	const s2 = T('отбиваю') - at;
 	const s3 = T('лицо') - at;
 	const pain = T('больно') - at;
 	const no = T('но', idx('больно')) - at;
+	const KX = 540;
+	const KY = 1520;
+	const KS = 0.6;
 	SC.push({
 		at,
 		draw: (t) => {
-			const shot = (tc: number, ex: number, ey: number) => (t > tc - 0.6 && t < tc + 0.05 ? {k: clamp01((t - tc + 0.6) / 0.6), ex, ey} : null);
-			const sh = shot(s1, 380, 1050) ?? shot(s2, 760, 950) ?? shot(s3, 540, 1020);
-			const dive = t > s1 - 0.2 && t < s1 + 0.6 ? -1 : t > s2 - 0.2 && t < s2 + 0.6 ? 1 : 0;
+			// poses
+			const ready: [number, number] = [55, 35];
+			let rot = 0;
+			let x = KX;
+			let lift = 0;
+			let armL: [number, number] = ready;
+			let armR: [number, number] = ready;
+			let face: React.ComponentProps<typeof Char>['face'] = 'determined';
+			const k1 = clamp01((t - (s1 - 0.35)) / 0.35);
+			const k2 = clamp01((t - (s2 - 0.3)) / 0.3);
+			if (t > s1 - 0.35 && t < s2 - 0.9) {
+				// catch at chest: both hands in front
+				armL = [lerp(55, 40, k1), lerp(35, -120, k1)];
+				armR = [lerp(55, 40, k1), lerp(35, -120, k1)];
+				lift = Math.sin(clamp01((t - s1 + 0.35) / 0.7) * Math.PI) * 40;
+			} else if (t > s2 - 0.3 && t < s3 - 0.9) {
+				// dive right + punch with the right glove
+				rot = 22 * k2;
+				x = KX + 160 * k2;
+				lift = 60 * k2;
+				armR = [lerp(55, 155, k2), lerp(35, 0, k2)];
+				armL = [lerp(55, 120, k2), lerp(35, 10, k2)];
+			}
+			if (t > s3 - 0.05 && t < pain + 1.2) face = 'wince';
+			const y = KY - lift;
+			const chest = world(x, y, rot, KS, [0, -350]);
+			const fist = world(x, y, rot, KS, hand(1, armR[0], armR[1]));
+			const head = world(x, y, rot, KS, [0, -600]);
+			// ball
+			let ball: [number, number, number] | null = null;
+			const fly = (tc: number, p: [number, number]) => {
+				const k = clamp01((t - (tc - 0.5)) / 0.5);
+				return [lerp(540, p[0], k), lerp(1900, p[1], k) - Math.sin(k * Math.PI) * 80, lerp(80, 36, k)] as [number, number, number];
+			};
+			if (t > s1 - 0.5 && t < s1) ball = fly(s1, [KX, KY - 0.6 * 350 - 40]);
+			else if (t >= s1 && t < s2 - 0.9) ball = [chest[0], chest[1], 36];
+			else if (t > s2 - 0.5 && t < s2) ball = fly(s2, [KX + 160 + 150, KY - 60 - 380]);
+			else if (t >= s2 && t < s2 + 0.6) {
+				const k = (t - s2) / 0.6;
+				ball = [lerp(fist[0], 1200, k), lerp(fist[1], 300, k), 36];
+			} else if (t > s3 - 0.5 && t < s3) ball = fly(s3, [KX, KY - 0.6 * 600]);
+			else if (t >= s3 && t < s3 + 0.7) {
+				const k = (t - s3) / 0.7;
+				ball = [lerp(head[0], 300, k), lerp(head[1], 1700, k) - Math.sin(k * Math.PI) * 200, 36];
+			}
 			return (
 				<>
 					<Gym t={t} />
-					<GoalFrame />
-					<g transform={`rotate(${dive * 18} 540 1560)`}>
-						<Sanya x={540 + dive * 120} y={1560} s={0.72} face={t > s3 && t < pain + 1.2 ? 'wince' : 'determined'} armL={dive < 0 ? [160, 10] : [70, 40]} armR={dive > 0 ? [160, 10] : [70, 40]} />
-					</g>
-					{sh && <Ball x={lerp(540, sh.ex, sh.k)} y={lerp(1880, sh.ey, sh.k)} r={lerp(80, 40, sh.k)} spin={t * 400} />}
-					{t > s1 && t < s2 - 0.6 && <Ball x={380} y={1080} r={40} />}
-					{t > s2 && t < s2 + 0.6 && <Ball x={lerp(760, 1100, (t - s2) / 0.6)} y={lerp(950, 600, (t - s2) / 0.6)} r={40} spin={t * 500} />}
+					<GoalFrame y={1560} w={1000} h={560} />
+					<Keeper2D x={x} y={y} s={KS} rot={rot} armL={armL} armR={armR} face={face} />
+					{ball && <Ball x={ball[0]} y={ball[1]} r={ball[2]} spin={t * 400} />}
+					{t > s2 && t < s2 + 0.25 && <circle cx={fist[0]} cy={fist[1]} r={40 + 300 * (t - s2)} fill="none" stroke="#f5c542" strokeWidth={10} opacity={1 - (t - s2) / 0.25} />}
 					{t > s3 && t < s3 + 0.35 && <rect width={VW} height={VH} fill="#fff" opacity={0.8 * (1 - (t - s3) / 0.35)} />}
 					<Big t={t} at={s1} out={s2 - 0.4} text="ПОЙМАЛ!" color="#5fdc7a" y={560} />
 					<Big t={t} at={s2} out={s3 - 0.5} text="ОТБИЛ!" color="#5fdc7a" y={560} />
@@ -520,8 +631,8 @@ SC.push({
 				<Gym t={t} />
 				{t < mom ? (
 					<>
-						<GoalFrame />
-						<Sanya x={540} y={1560} s={0.72} face="determined" armL={[70, 40]} armR={[70, 40]} />
+						<GoalFrame y={1560} w={1000} h={560} />
+						<Keeper2D x={540} y={1520} s={0.6} armL={[55, 35]} armR={[55, 35]} />
 					</>
 				) : (
 					<>
@@ -554,8 +665,8 @@ SC.push({
 			return (
 				<>
 					<Gym t={tt} />
-					<GoalFrame y={1180} />
-					<Sanya x={540} y={1220} s={0.42} face="determined" armL={[70, 40]} armR={[70, 40]} />
+					<GoalFrame y={1200} w={700} h={380} />
+					<Keeper2D x={540} y={1180} s={0.4} armL={[55, 35]} armR={[55, 35]} />
 					<Ball x={lerp(560, 640, k)} y={lerp(1640, 1000, k)} r={lerp(60, 36, k)} spin={tt * 300 * (tt > kick ? 1 : 0)} />
 					<Striker x={tt < run ? 760 : lerp(860, 660, ease((tt - run) / Math.max(0.3, kick - run)))} y={1880} s={0.85} face={tt > close ? 'smile' : 'determined'} talk={talkOf('str', abs)} />
 					{tt > close && tt < run && <text x={540} y={560} textAnchor="middle" fontFamily="Inter" fontWeight={900} fontSize={56} fill="#fff" stroke={O} strokeWidth={8} paintOrder="stroke">«Ну что, влезешь?»</text>}
