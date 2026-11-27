@@ -7,7 +7,7 @@ export type Word = {text: string; start: number; end: number};
  * Karaoke subtitle: the whole phrase is visible but faded;
  * only the word being spoken right now is solid and highlighted.
  */
-export const KaraokeLine: React.FC<{words: Word[]; t: number; y?: number; maxPerRow?: number}> = ({words, t, y = 1440, maxPerRow = 3}) => {
+export const KaraokeLine: React.FC<{words: Word[]; t: number; y?: number; maxPerRow?: number; keepSpoken?: boolean}> = ({words, t, y = 1440, maxPerRow = 3, keepSpoken = false}) => {
 	if (!words.length) return null;
 	const first = words[0].start;
 	const last = words[words.length - 1].end;
@@ -33,6 +33,7 @@ export const KaraokeLine: React.FC<{words: Word[]; t: number; y?: number; maxPer
 				<div key={ri} style={{display: 'flex', columnGap: 30, rowGap: 10, flexWrap: 'wrap', justifyContent: 'center', width: '100%'}}>
 					{row.map((w, wi) => {
 						const active = t >= w.start && t < w.end;
+						const lit = active || (keepSpoken && t >= w.end);
 						const k = active ? interpolate(t, [w.start, w.start + 0.12], [0, 1], {extrapolateRight: 'clamp'}) : 0;
 						return (
 							<span
@@ -44,10 +45,10 @@ export const KaraokeLine: React.FC<{words: Word[]; t: number; y?: number; maxPer
 									lineHeight: 1.15,
 									textTransform: 'uppercase',
 									color: '#ffffff',
-									opacity: active ? 1 : 0.32,
-									WebkitTextStroke: active ? '10px #1a1424' : '0px',
+									opacity: lit ? 1 : 0.32,
+									WebkitTextStroke: lit ? '10px #1a1424' : '0px',
 									paintOrder: 'stroke fill',
-									textShadow: active ? '0 6px 0 #1a1424, 0 0 24px rgba(0,0,0,0.45)' : '0 3px 8px rgba(0,0,0,0.35)',
+									textShadow: lit ? '0 6px 0 #1a1424, 0 0 24px rgba(0,0,0,0.45)' : '0 3px 8px rgba(0,0,0,0.35)',
 									transform: `scale(${1 + 0.06 * k})`,
 									display: 'inline-block',
 								}}
